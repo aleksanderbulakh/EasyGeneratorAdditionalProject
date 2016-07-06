@@ -150,10 +150,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\main.js" />
-    <Content Include="App\viewmodels\home.js" />
+    <Content Include="App\viewmodels\courseContentPage.js" />
+    <Content Include="App\viewmodels\courseCreatePage.js" />
+    <Content Include="App\viewmodels\coursePreviewPage.js" />
+    <Content Include="App\viewmodels\loginPage.js" />
     <Content Include="App\viewmodels\shell.js" />
-    <Content Include="App\views\home.html" />
+    <Content Include="App\viewmodels\userRegistrationPage.js" />
+    <Content Include="App\views\courseContentPage.html" />
+    <Content Include="App\views\courseCreatePage.html" />
+    <Content Include="App\views\coursePreviewPage.html" />
+    <Content Include="App\views\loginPage.html" />
     <Content Include="App\views\shell.html" />
+    <Content Include="App\views\userRegistrationPage.html" />
     <Content Include="Content\durandal.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\almond-custom.js" />
@@ -205,6 +213,7 @@
     </Content>
     <Content Include="Scripts\jquery-3.0.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.0.0.min.map" />
+    <Content Include="Content\style.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

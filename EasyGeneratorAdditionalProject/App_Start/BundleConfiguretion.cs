@@ -17,12 +17,14 @@ namespace EasyGeneratorAdditionalProject.App_Start
               new ScriptBundle("~/Scripts/vendor")
                   .Include("~/Scripts/jquery-{version}.js")
                   .Include("~/Scripts/knockout-{version}.js")
+                  .Include("~/Scripts/less-{version}.js")
 
               );
 
             bundles.Add(
               new StyleBundle("~/Content/css")
                 .Include("~/Content/durandal.css")
+                .Include("~/Content/style.less")
               );
         }
     }

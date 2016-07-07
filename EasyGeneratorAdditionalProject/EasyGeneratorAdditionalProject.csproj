@@ -200,6 +200,15 @@
     <Compile Include="App_Start\BundleConfiguretion.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Database\Context\DatabaseContext.cs" />
+    <Compile Include="Database\Entities\Courses.cs" />
+    <Compile Include="Database\Entities\Questions.cs" />
+    <Compile Include="Database\Entities\QuestionType.cs" />
+    <Compile Include="Database\Entities\Roles.cs" />
+    <Compile Include="Database\Entities\Sections.cs" />
+    <Compile Include="Database\Entities\Users.cs" />
+    <Compile Include="Database\Hasher\CustomPasswordHasher.cs" />
+    <Compile Include="Database\Initializer\DatabaseInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -223,7 +232,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

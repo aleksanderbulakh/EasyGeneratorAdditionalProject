@@ -11,20 +11,23 @@ namespace EasyGeneratorAdditionalProject.Database.Providers
 {
     public class UsersDataProvider : IUsersDataProvider
     {
+        private DatabaseContext db = new DatabaseContext();
+
         public IEnumerable<Users> GetAllUsers()
         {
-            using (var db = new DatabaseContext())
-            {
-                return db.Users;
-            }
+            //using (var db = new DatabaseContext())
+            //{
+            var us = db.Users;
+                return us;
+            //}
         }
 
         public Users GetUserById(Guid id)
         {
-            using (var db = new DatabaseContext())
-            {
+            //using (var db = new DatabaseContext())
+            //{
                 return db.Users.Find(id);
-            }
+            //}
         }
 
         public void CreateUser(Users userModel)

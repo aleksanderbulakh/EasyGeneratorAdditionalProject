@@ -157,7 +157,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\data\courseContext.js" />
+    <Content Include="App\http\httpWrapper.js" />
     <Content Include="App\main.js" />
+    <Content Include="App\models\course.js" />
     <Content Include="App\viewmodels\courseContentPage.js" />
     <Content Include="App\viewmodels\courseCreatePage.js" />
     <Content Include="App\viewmodels\coursePreviewPage.js" />

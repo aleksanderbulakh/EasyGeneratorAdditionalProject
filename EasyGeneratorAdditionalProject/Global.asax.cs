@@ -1,4 +1,5 @@
 ﻿using EasyGeneratorAdditionalProject.Configuration;
+using EasyGeneratorAdditionalProject.Database.Initializer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,13 @@ namespace EasyGeneratorAdditionalProject
     {
         protected void Application_Start()
         {
-            AreaRegistration.RegisterAllAreas();
+            System.Data.Entity.Database.SetInitializer(new DatabaseInitializer());
+
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfiguretion.Configure();
-            ContainerConfiguration.Configure();
+            ContainerConfiguration.Configure();            
+
+            AreaRegistration.RegisterAllAreas();            
         }
     }
 }

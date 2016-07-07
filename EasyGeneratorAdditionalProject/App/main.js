@@ -10,7 +10,7 @@
 define('jquery', function () { return jQuery; });
 define('knockout', ko);
 
-define(['durandal/system', 'durandal/app', 'durandal/viewLocator'], function (system, app, viewLocator) {
+define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'data/courseContext'], function (system, app, viewLocator, courseContext) {
     system.debug(true);
 
     app.title = 'EG Additional Project';
@@ -22,7 +22,9 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator'], function (sy
 
     app.start().then(function () {
         viewLocator.useConvention();
-
-        app.setRoot('viewmodels/shell', 'entrance')
+        
+        courseContext.initialize().then(function () {
+            app.setRoot('viewmodels/shell', 'entrance')
+        });
     });
 });

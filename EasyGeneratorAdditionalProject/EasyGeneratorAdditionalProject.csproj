@@ -209,6 +209,12 @@
     <Compile Include="Database\Entities\Users.cs" />
     <Compile Include="Database\Hasher\CustomPasswordHasher.cs" />
     <Compile Include="Database\Initializer\DatabaseInitializer.cs" />
+    <Compile Include="Database\Interfaces\ICoursesDataProvider.cs" />
+    <Compile Include="Database\Interfaces\IRolesDataProvider.cs" />
+    <Compile Include="Database\Interfaces\IUsersDataProvider.cs" />
+    <Compile Include="Database\Providers\CoursesDataProvider.cs" />
+    <Compile Include="Database\Providers\RolesDataProvider.cs" />
+    <Compile Include="Database\Providers\UsersDataProvider.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -232,6 +238,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Database\Managers\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

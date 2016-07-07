@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Database.Interfaces
 {
-    interface IUsersDataProvider
+    public interface IUsersDataProvider
     {
         IEnumerable<Users> GetAllUsers();
 

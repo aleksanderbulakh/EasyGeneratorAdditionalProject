@@ -1,4 +1,4 @@
-﻿using EasyGeneratorAdditionalProject.App_Start;
+﻿using EasyGeneratorAdditionalProject.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +8,14 @@ using System.Web.Routing;
 
 namespace EasyGeneratorAdditionalProject
 {
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfiguretion.Configure();
+            ContainerConfiguration.Configure();
         }
     }
 }

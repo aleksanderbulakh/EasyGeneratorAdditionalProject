@@ -47,6 +47,14 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc, Version=3.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.3.3.4\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -197,8 +205,10 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\BundleConfiguretion.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Configuration\BundleConfiguretion.cs" />
+    <Compile Include="Configuration\ContainerConfiguration.cs" />
+    <Compile Include="Configuration\RouteConfig.cs" />
+    <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Database\Context\DatabaseContext.cs" />
     <Compile Include="Database\Entities\Courses.cs" />
@@ -212,6 +222,9 @@
     <Compile Include="Database\Interfaces\ICoursesDataProvider.cs" />
     <Compile Include="Database\Interfaces\IRolesDataProvider.cs" />
     <Compile Include="Database\Interfaces\IUsersDataProvider.cs" />
+    <Compile Include="Database\Managers\CoursesManager.cs" />
+    <Compile Include="Database\Managers\RolesManager.cs" />
+    <Compile Include="Database\Managers\UsersManager.cs" />
     <Compile Include="Database\Providers\CoursesDataProvider.cs" />
     <Compile Include="Database\Providers\RolesDataProvider.cs" />
     <Compile Include="Database\Providers\UsersDataProvider.cs" />
@@ -238,7 +251,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Database\Managers\" />
+    <Folder Include="Views\Courses\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

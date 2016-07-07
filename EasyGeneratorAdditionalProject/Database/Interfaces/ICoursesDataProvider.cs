@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Database.Interfaces
 {
-    interface ICoursesDataProvider
+    public interface ICoursesDataProvider
     {
         IEnumerable<Courses> GetAllCourses();
 

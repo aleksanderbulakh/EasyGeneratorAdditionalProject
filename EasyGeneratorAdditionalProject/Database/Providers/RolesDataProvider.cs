@@ -11,47 +11,38 @@ namespace EasyGeneratorAdditionalProject.Database.Providers
 {
     public class RolesDataProvider : IRolesDataProvider
     {
+        private DatabaseContext _context;
+        public RolesDataProvider(DatabaseContext context)
+        {
+            _context = context;
+        }
+
         public IEnumerable<Roles> GetAllRoles()
         {
-            using (var db = new DatabaseContext())
-            {
-                return db.Roles;
-            }
+            return _context.Roles;
         }
 
         public Roles GetRoleById(Guid id)
         {
-            using (var db = new DatabaseContext())
-            {
-                return db.Roles.Find(id);
-            }
+            return _context.Roles.Find(id);
         }
 
         public void CreateRole(Roles roleModel)
         {
-            using (var db = new DatabaseContext())
-            {
-                db.Roles.Add(roleModel);
-                db.SaveChanges();
-            }
+            _context.Roles.Add(roleModel);
+            _context.SaveChanges();
         }
 
         public void EditRole(Roles roleModel)
         {
-            using (var db = new DatabaseContext())
-            {
-                db.Entry(roleModel).State = EntityState.Modified;
-                db.SaveChanges();
-            }
+            _context.Entry(roleModel).State = EntityState.Modified;
+            _context.SaveChanges();
         }
 
         public void DeleteRole(Guid id)
         {
-            using (var db = new DatabaseContext())
-            {
-                db.Roles.Remove(db.Roles.Find(id));
-                db.SaveChanges();
-            }
+            _context.Roles.Remove(_context.Roles.Find(id));
+            _context.SaveChanges();
         }
     }
 }

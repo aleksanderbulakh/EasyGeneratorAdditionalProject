@@ -15,11 +15,11 @@ namespace EasyGeneratorAdditionalProject.Database.Entities
         public DateTime LastModifiedDate { get; set; }
         public DateTime CreatedBy { get; set; }
 
-        public virtual ICollection<Questions> Questions { get; set; }
+        public virtual ICollection<Content> Content { get; set; }
 
         public Sections()
         {
-            Questions = new List<Questions>();
+            Content = new List<Content>();
         }
     }
 }

@@ -8,5 +8,5 @@
         this.lastModified = spec.lastModified;
     }
 
-    return Option;
+    return Course;
 });

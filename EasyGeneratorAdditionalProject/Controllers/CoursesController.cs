@@ -1,4 +1,5 @@
-﻿using EasyGeneratorAdditionalProject.Database.Interfaces;
+﻿using EasyGeneratorAdditionalProject.Database.Entities;
+using EasyGeneratorAdditionalProject.Database.Interfaces;
 using EasyGeneratorAdditionalProject.Database.Managers;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,13 @@ namespace EasyGeneratorAdditionalProject.Controllers
         [Route("courses", Name = "coursesList")]
         public JsonResult CoursesList()
         {
-            using (var usersManager = new UsersManager(_userProvider))
+            var userId = Guid.Parse("625d5b37-a48b-42f8-be15-63187d81c9c0");
+            
+            using (var courseManager = new CoursesManager(_courseProvider))
             {
-                return Json((usersManager.GetAllUsers().ToList())[0].CoursesCollection, JsonRequestBehavior.AllowGet);
+                var data = courseManager.GetCoursesByUserId(userId).ToList();
+                
+                return Json(data, JsonRequestBehavior.AllowGet);
             }
         }
     }

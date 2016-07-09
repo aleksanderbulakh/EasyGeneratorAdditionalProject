@@ -7,14 +7,15 @@
 <html>
 <head profile="http://www.w3.org/2005/10/profile">
     <title>EG Additional Project</title>
-        
-        <link rel="icon" type="image/x-icon" href="~/favicon.ico">
-        <meta charset="utf-8" />
+
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico">
+    <meta charset="utf-8" />
+    <link href="~/Content/style.less" rel="stylesheet/less" type="text/css"/>
 
 
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/Scripts/vendor")
-    </head>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/Scripts/vendor")
+</head>
 <body>
     <div id="applicationHost"></div>
     <script type="text/javascript" src="~/Scripts/require.js" data-main="/App/main"></script>

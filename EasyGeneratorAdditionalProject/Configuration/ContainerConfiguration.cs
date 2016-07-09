@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
+using EasyGeneratorAdditionalProject.Database.Context;
 using EasyGeneratorAdditionalProject.Database.Interfaces;
 using EasyGeneratorAdditionalProject.Database.Providers;
 using System;
@@ -21,6 +22,7 @@ namespace EasyGeneratorAdditionalProject.Configuration
             builder.RegisterType<RolesDataProvider>().As<IRolesDataProvider>();
             builder.RegisterType<UsersDataProvider>().As<IUsersDataProvider>();
             builder.RegisterType<CoursesDataProvider>().As<ICoursesDataProvider>();
+            builder.RegisterType<DatabaseContext>().As<DatabaseContext>();
             
             //builder.Register(c => Mapper.Instance).As<IMapper>().InstancePerLifetimeScope();
 

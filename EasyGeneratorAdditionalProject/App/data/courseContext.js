@@ -15,7 +15,7 @@
         var self = this;
         return http.post('courses').then(function (data) {
             data.forEach(function (course) {
-                self.courseOptions.push(mapOption(course));
+                self.courseList.push(mapCourse(course));
             });
         });
     }

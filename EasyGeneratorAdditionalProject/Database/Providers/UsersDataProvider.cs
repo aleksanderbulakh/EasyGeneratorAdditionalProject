@@ -11,51 +11,38 @@ namespace EasyGeneratorAdditionalProject.Database.Providers
 {
     public class UsersDataProvider : IUsersDataProvider
     {
-        private DatabaseContext db = new DatabaseContext();
+        private DatabaseContext _context;
+        public UsersDataProvider(DatabaseContext context)
+        {
+            _context = context;
+        }
 
         public IEnumerable<Users> GetAllUsers()
         {
-            //using (var db = new DatabaseContext())
-            //{
-            var us = db.Users;
-                return us;
-            //}
+            return _context.Users;
         }
 
         public Users GetUserById(Guid id)
         {
-            //using (var db = new DatabaseContext())
-            //{
-                return db.Users.Find(id);
-            //}
+            return _context.Users.Find(id);
         }
 
         public void CreateUser(Users userModel)
         {
-            using (var db = new DatabaseContext())
-            {
-                db.Users.Add(userModel);
-                db.SaveChanges();
-            }
+            _context.Users.Add(userModel);
+            _context.SaveChanges();
         }
 
         public void EditUser(Users userModel)
         {
-            using (var db = new DatabaseContext())
-            {
-                db.Entry(userModel).State = EntityState.Modified;
-                db.SaveChanges();
-            }
+            _context.Entry(userModel).State = EntityState.Modified;
+            _context.SaveChanges();
         }
 
         public void DeleteUser(Guid id)
         {
-            using (var db = new DatabaseContext())
-            {
-                db.Users.Remove(db.Users.Find(id));
-                db.SaveChanges();
-            }
-
+            _context.Users.Remove(_context.Users.Find(id));
+            _context.SaveChanges();
         }
     }
 }

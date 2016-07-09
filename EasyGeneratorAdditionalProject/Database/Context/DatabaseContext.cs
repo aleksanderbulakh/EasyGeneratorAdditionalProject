@@ -13,7 +13,11 @@ namespace EasyGeneratorAdditionalProject.Database.Context
         public DbSet<Users> Users { get; set; }
         public DbSet<Courses> Courses { get; set; }
         public DbSet<Sections> Sections { get; set; }
-        public DbSet<QuestionType> QuestionTypes { get; set; }
-        public DbSet<Questions> Questions { get; set; }
+        public DbSet<Content> Content { get; set; }
+        public DbSet<Materials> Materials { get; set; }
+        public DbSet<SingleSelectQuestions> SingleSelectQuestion { get; set; }
+        public DbSet<MultipleSelectQuestion> MultipleSelectQuestion { get; set; }
+        public DbSet<SingleSelectImageQuestions> SingleSelectImageQuestions { get; set; }
+
     }
 }

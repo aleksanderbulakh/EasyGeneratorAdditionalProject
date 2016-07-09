@@ -24,7 +24,6 @@ namespace EasyGeneratorAdditionalProject.Configuration
             bundles.Add(
               new StyleBundle("~/Content/css")
                 .Include("~/Content/durandal.css")
-                .Include("~/Content/style.less")
               );
         }
     }

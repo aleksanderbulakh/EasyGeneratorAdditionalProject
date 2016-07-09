@@ -158,17 +158,20 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\data\courseContext.js" />
+    <Content Include="App\data\courseProvider.js" />
     <Content Include="App\http\httpWrapper.js" />
     <Content Include="App\main.js" />
     <Content Include="App\models\course.js" />
     <Content Include="App\viewmodels\courseContentPage.js" />
     <Content Include="App\viewmodels\courseCreatePage.js" />
+    <Content Include="App\viewmodels\courseListPage.js" />
     <Content Include="App\viewmodels\coursePreviewPage.js" />
     <Content Include="App\viewmodels\loginPage.js" />
     <Content Include="App\viewmodels\shell.js" />
     <Content Include="App\viewmodels\userRegistrationPage.js" />
     <Content Include="App\views\courseContentPage.html" />
     <Content Include="App\views\courseCreatePage.html" />
+    <Content Include="App\views\courseListPage.html" />
     <Content Include="App\views\coursePreviewPage.html" />
     <Content Include="App\views\loginPage.html" />
     <Content Include="App\views\shell.html" />
@@ -214,11 +217,14 @@
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Database\Context\DatabaseContext.cs" />
+    <Compile Include="Database\Entities\Content.cs" />
     <Compile Include="Database\Entities\Courses.cs" />
-    <Compile Include="Database\Entities\Questions.cs" />
-    <Compile Include="Database\Entities\QuestionType.cs" />
+    <Compile Include="Database\Entities\Materials.cs" />
+    <Compile Include="Database\Entities\MultipleSelectQuestion.cs" />
     <Compile Include="Database\Entities\Roles.cs" />
     <Compile Include="Database\Entities\Sections.cs" />
+    <Compile Include="Database\Entities\SingleSelectImageQuestions.cs" />
+    <Compile Include="Database\Entities\SingleSelectQuestions.cs" />
     <Compile Include="Database\Entities\Users.cs" />
     <Compile Include="Database\Hasher\CustomPasswordHasher.cs" />
     <Compile Include="Database\Initializer\DatabaseInitializer.cs" />
@@ -237,6 +243,14 @@
     <Compile Include="Migrations\201607071951570_Db First Version.cs" />
     <Compile Include="Migrations\201607071951570_Db First Version.Designer.cs">
       <DependentUpon>201607071951570_Db First Version.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607092008560_Db 2.0.cs" />
+    <Compile Include="Migrations\201607092008560_Db 2.0.Designer.cs">
+      <DependentUpon>201607092008560_Db 2.0.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607092011591_Db 2.0.1.cs" />
+    <Compile Include="Migrations\201607092011591_Db 2.0.1.Designer.cs">
+      <DependentUpon>201607092011591_Db 2.0.1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -264,6 +278,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201607071951570_Db First Version.resx">
       <DependentUpon>201607071951570_Db First Version.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607092008560_Db 2.0.resx">
+      <DependentUpon>201607092008560_Db 2.0.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607092011591_Db 2.0.1.resx">
+      <DependentUpon>201607092011591_Db 2.0.1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

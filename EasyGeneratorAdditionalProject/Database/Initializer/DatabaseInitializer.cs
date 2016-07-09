@@ -8,7 +8,7 @@ using System.Web;
 
 namespace EasyGeneratorAdditionalProject.Database.Initializer
 {
-    public class DatabaseInitializer : DropCreateDatabaseAlways<DatabaseContext>
+    public class DatabaseInitializer : DropCreateDatabaseIfModelChanges<DatabaseContext>
     {
         protected override void Seed(DatabaseContext db)
         {

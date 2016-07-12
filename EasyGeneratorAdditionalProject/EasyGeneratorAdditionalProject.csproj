@@ -162,6 +162,12 @@
     <Content Include="App\http\httpWrapper.js" />
     <Content Include="App\main.js" />
     <Content Include="App\models\course.js" />
+    <Content Include="App\models\materials.js" />
+    <Content Include="App\models\multipleSelectQuestion.js" />
+    <Content Include="App\models\sectionContent.js" />
+    <Content Include="App\models\singleSelectImageQuestion.js" />
+    <Content Include="App\models\singleSelectQuestion.js" />
+    <Content Include="App\models\section.js" />
     <Content Include="App\viewmodels\courseContentPage.js" />
     <Content Include="App\viewmodels\courseCreatePage.js" />
     <Content Include="App\viewmodels\courseListPage.js" />
@@ -228,14 +234,35 @@
     <Compile Include="Database\Entities\Users.cs" />
     <Compile Include="Database\Hasher\CustomPasswordHasher.cs" />
     <Compile Include="Database\Initializer\DatabaseInitializer.cs" />
+    <Compile Include="Database\Interfaces\IContentDataProvider.cs" />
     <Compile Include="Database\Interfaces\ICoursesDataProvider.cs" />
+    <Compile Include="Database\Interfaces\IMaterialsDataProvider.cs" />
+    <Compile Include="Database\Interfaces\IMultipleSelectQuestionDataProvider.cs" />
     <Compile Include="Database\Interfaces\IRolesDataProvider.cs" />
+    <Compile Include="Database\Interfaces\ISectionsDataProvider.cs" />
+    <Compile Include="Database\Interfaces\ISingleSelectImageQuestionsDataProvider.cs" />
+    <Compile Include="Database\Interfaces\ISingleSelectQuestionsDataProvider.cs" />
     <Compile Include="Database\Interfaces\IUsersDataProvider.cs" />
+    <Compile Include="Database\Managers\ContentManager.cs" />
     <Compile Include="Database\Managers\CoursesManager.cs" />
     <Compile Include="Database\Managers\RolesManager.cs" />
+    <Compile Include="Database\Managers\SectionManager.cs" />
     <Compile Include="Database\Managers\UsersManager.cs" />
+    <Compile Include="Database\Models\CourseModel.cs" />
+    <Compile Include="Database\Models\MaterialModel.cs" />
+    <Compile Include="Database\Models\MultipleSelectQuestionPartialModel.cs" />
+    <Compile Include="Database\Models\ContentModel.cs" />
+    <Compile Include="Database\Models\SectionModel.cs" />
+    <Compile Include="Database\Models\SingleSelectImageQuestionPartialModel.cs" />
+    <Compile Include="Database\Models\SingleSelectQuestionPartialModel.cs" />
+    <Compile Include="Database\Providers\ContentDataProvider.cs" />
     <Compile Include="Database\Providers\CoursesDataProvider.cs" />
+    <Compile Include="Database\Providers\MaterialsDataProvider.cs" />
+    <Compile Include="Database\Providers\MultipleSelectQuestionDataProvider.cs" />
     <Compile Include="Database\Providers\RolesDataProvider.cs" />
+    <Compile Include="Database\Providers\SectionsDataProvider.cs" />
+    <Compile Include="Database\Providers\SingleSelectImageQuestionsDataProvider.cs" />
+    <Compile Include="Database\Providers\SingleSelectQuestionsDataProvider.cs" />
     <Compile Include="Database\Providers\UsersDataProvider.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -251,6 +278,14 @@
     <Compile Include="Migrations\201607092011591_Db 2.0.1.cs" />
     <Compile Include="Migrations\201607092011591_Db 2.0.1.Designer.cs">
       <DependentUpon>201607092011591_Db 2.0.1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607111203002_created by string parameter.cs" />
+    <Compile Include="Migrations\201607111203002_created by string parameter.Designer.cs">
+      <DependentUpon>201607111203002_created by string parameter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607111344191_SSIQ string to bool.cs" />
+    <Compile Include="Migrations\201607111344191_SSIQ string to bool.Designer.cs">
+      <DependentUpon>201607111344191_SSIQ string to bool.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -284,6 +319,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607092011591_Db 2.0.1.resx">
       <DependentUpon>201607092011591_Db 2.0.1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607111203002_created by string parameter.resx">
+      <DependentUpon>201607111203002_created by string parameter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607111344191_SSIQ string to bool.resx">
+      <DependentUpon>201607111344191_SSIQ string to bool.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

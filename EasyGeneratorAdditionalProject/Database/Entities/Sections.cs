@@ -13,7 +13,7 @@ namespace EasyGeneratorAdditionalProject.Database.Entities
         public string Title { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime LastModifiedDate { get; set; }
-        public DateTime CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
 
         public virtual ICollection<Content> Content { get; set; }
 

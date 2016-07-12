@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace EasyGeneratorAdditionalProject.Database.Entities
+namespace EasyGeneratorAdditionalProject.Database.Models
 {
-    public class SingleSelectImageQuestions
+    public class SingleSelectImageQuestionPartialModel
     {
         public Guid Id { get; set; }
-        public Guid ContentId { get; set; }
-        public Content Content { get; set; }
         public string Text { get; set; }
         public bool IsAnswer { get; set; }
         public string Photo { get; set; }

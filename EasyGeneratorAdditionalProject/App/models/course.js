@@ -6,6 +6,7 @@
         this.createdOn = spec.createdOn;
         this.createdBy = spec.createdBy;
         this.lastModified = spec.lastModified;
+        this.sectionList = spec.sectionList;
     }
 
     return Course;

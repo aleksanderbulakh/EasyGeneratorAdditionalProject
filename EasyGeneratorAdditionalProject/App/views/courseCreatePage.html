@@ -1,11 +1,54 @@
 ﻿<div class="container">
-    <div class="course-name">course name</div>
-    <div class="container-navigation">
-        <button class="navigation-add-content">Add new content</button>
+    <div class="course-title">
+        <span>Course title: </span>
+        <span name="course-title" data-bind="contentEditable: true, htmlLazy: courseTitle"></span>
     </div>
-    <div class="container-content">
-        <div class="content-element">
-
+    <div class="course-description">
+        <div>
+            <span>Description: </span>
+            <span name="course-description" data-bind="contentEditable: true, htmlLazy: courseDescription"></span>
+        </div>
+    </div>
+    <hr />
+    <div class="course-section-list" data-bind="foreach: courseSection">
+        <div class="section-info">
+            <div class="section-title">
+                <span>Section title: </span>
+                <span data-bind="contentEditable: true, htmlLazy: title"></span>
+            </div>
+            <div class="section-created-by">
+                <span>Created by: </span>
+                <span data-bind="text: createdBy"></span>
+            </div>
+            <div class="section-created-on">
+                <span>Created on: </span>
+                <span data-bind="text: createdOn"></span>
+            </div>
+            <div class="section-last-modified-date">
+                <span>Last modified</span>
+                <span data-bind="text: lastModifiedDate"></span>
+            </div>
+        </div>
+        <hr />
+        <div class="content-list" data-bind="foreach: contentList">
+            <div class="list-info">
+                <div class="content-title">
+                    <span>Content title: </span>
+                    <span data-bind="contentEditable: true, htmlLazy: title"></span>
+                </div>
+                <div class="content-type">
+                    <span>Content type: </span>
+                    <span data-bind="text: type"></span>
+                </div>
+                <hr />
+                <div class="content-value" data-bind="foreach: contentValueList">
+                    <div class="value-text">
+                        <span>Value text: </span>
+                        <span data-bind="contentEditable: true, htmlLazy: text"></span>
+                    </div>
+                </div>
+                <hr />
+            </div>
         </div>
     </div>
 </div>

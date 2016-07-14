@@ -35,7 +35,7 @@
 
         function mapContent(contentList) {
             var contentValues = [];
-            (contentList.Content).forEach(function (contentValue) {
+            contentList.Content.forEach(function (contentValue) {
                 contentValues.push(mapContentValue(contentValue, contentList.Type));
             });
 
@@ -49,24 +49,23 @@
 
         function mapSection(sectionList) {
             var contents = [];
-            (sectionList.ContentList).forEach(function (content) {
+            sectionList.ContentList.forEach(function (content) {
                 contents.push(mapContent(content));
             });
 
             return new Section({
                 id: sectionList.Id,
                 title: sectionList.Title,
-                createdBy: sectionList.createdBy,
+                createdBy: sectionList.CreatedBy,
                 createdOn: sectionList.CreatedOn,
                 lastModified: sectionList.LastModifiedDate,
                 contentList: contents
-
             });
         }
 
         function mapCourse(course) {
             var sections = [];
-            (course.SectionsList).forEach(function (section) {
+            course.SectionsList.forEach(function (section) {
                 sections.push(mapSection(section));
             });
 
@@ -75,7 +74,7 @@
                 title: course.Title,
                 description: course.Description,
                 createdOn: course.CreatedOn,
-                createdBy: course.UserName,
+                createdBy: course.CreatedBy,
                 lastModified: course.LastModifiedDate,
                 sectionList: sections
             });

@@ -168,14 +168,13 @@
     <Content Include="App\models\singleSelectImageQuestion.js" />
     <Content Include="App\models\singleSelectQuestion.js" />
     <Content Include="App\models\section.js" />
-    <Content Include="App\viewmodels\courseContentPage.js" />
+    <Content Include="App\services\mapService.js" />
     <Content Include="App\viewmodels\courseCreatePage.js" />
     <Content Include="App\viewmodels\courseListPage.js" />
     <Content Include="App\viewmodels\coursePreviewPage.js" />
     <Content Include="App\viewmodels\loginPage.js" />
     <Content Include="App\viewmodels\shell.js" />
     <Content Include="App\viewmodels\userRegistrationPage.js" />
-    <Content Include="App\views\courseContentPage.html" />
     <Content Include="App\views\courseCreatePage.html" />
     <Content Include="App\views\courseListPage.html" />
     <Content Include="App\views\coursePreviewPage.html" />
@@ -207,6 +206,8 @@
     <Content Include="Scripts\jquery-3.0.0.slim.min.js" />
     <Content Include="Scripts\knockout-3.4.0.debug.js" />
     <Content Include="Scripts\knockout-3.4.0.js" />
+    <Content Include="Scripts\knockout-bindings\content-editabled-binding.js" />
+    <Content Include="Scripts\knockout-bindings\html-lazy-binding.js" />
     <Content Include="Scripts\less-1.5.1.js" />
     <Content Include="Scripts\less-1.5.1.min.js" />
     <Content Include="Scripts\r.js" />

@@ -58,7 +58,7 @@ namespace EasyGeneratorAdditionalProject.Database.Managers
                                 Id = el.Id,
                                 Content = materialList,
                                 Type = el.Type,
-                                Tytle = el.Type
+                                Title = el.Type
                             };
                             result.Add(contentModel);
                         }
@@ -83,7 +83,7 @@ namespace EasyGeneratorAdditionalProject.Database.Managers
                             {
                                 Id = el.Id,
                                 Type = el.Type,
-                                Tytle = el.Title,
+                                Title = el.Title,
                                 Content = questionValueList
                             };
                             result.Add(questionModel);
@@ -109,7 +109,7 @@ namespace EasyGeneratorAdditionalProject.Database.Managers
                             {
                                 Id = el.Id,
                                 Type = el.Type,
-                                Tytle = el.Title,
+                                Title = el.Title,
                                 Content = questionValueList
                             };
                             result.Add(questionModel);
@@ -136,7 +136,7 @@ namespace EasyGeneratorAdditionalProject.Database.Managers
                             {
                                 Id = el.Id,
                                 Type = el.Type,
-                                Tytle = el.Title,
+                                Title = el.Title,
                                 Content = questionValueList
                             };
                             result.Add(questionModel);
@@ -172,7 +172,7 @@ namespace EasyGeneratorAdditionalProject.Database.Managers
                             Id = content.Id,
                             Content = materialList,
                             Type = content.Type,
-                            Tytle = content.Type
+                            Title = content.Type
                         };
                         return contentModel;
                     }
@@ -196,7 +196,7 @@ namespace EasyGeneratorAdditionalProject.Database.Managers
                         {
                             Id = content.Id,
                             Type = content.Type,
-                            Tytle = content.Title,
+                            Title = content.Title,
                             Content = questionValueList
                         };
                         return questionModel;
@@ -221,7 +221,7 @@ namespace EasyGeneratorAdditionalProject.Database.Managers
                         {
                             Id = content.Id,
                             Type = content.Type,
-                            Tytle = content.Title,
+                            Title = content.Title,
                             Content = questionValueList
                         };
                         return questionModel;
@@ -247,7 +247,7 @@ namespace EasyGeneratorAdditionalProject.Database.Managers
                         {
                             Id = content.Id,
                             Type = content.Type,
-                            Tytle = content.Title,
+                            Title = content.Title,
                             Content = questionValueList
                         };
                         return questionModel;

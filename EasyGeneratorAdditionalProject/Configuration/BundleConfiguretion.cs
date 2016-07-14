@@ -18,7 +18,7 @@ namespace EasyGeneratorAdditionalProject.Configuration
                   .Include("~/Scripts/jquery-{version}.js")
                   .Include("~/Scripts/knockout-{version}.js")
                   .Include("~/Scripts/less-{version}.js")
-
+                  .IncludeDirectory("~/Scripts/knockout-bindings/", "*binding.js")
               );
 
             bundles.Add(

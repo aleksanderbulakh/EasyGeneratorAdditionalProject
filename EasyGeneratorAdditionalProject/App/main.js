@@ -10,21 +10,24 @@
 define('jquery', function () { return jQuery; });
 define('knockout', ko);
 
-define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'data/courseContext'], function (system, app, viewLocator, courseContext) {
-    system.debug(true);
+define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'durandal/composition', 'data/courseContext'],
+    function (system, app, viewLocator, composition, courseContext) {
+        system.debug(true);
 
-    app.title = 'EG Additional Project';
+        app.title = 'EG Additional Project';
 
-    app.configurePlugins({
-        router: true,
-        dialog: true
-    });
+        app.configurePlugins({
+            router: true,
+            dialog: true
+        });
 
-    app.start().then(function () {
-        viewLocator.useConvention();
-        
-        courseContext.initialize().then(function () {
-            app.setRoot('viewmodels/shell', 'entrance')
+        composition.addBindingHandler('click');
+
+        app.start().then(function () {
+            viewLocator.useConvention();
+
+            courseContext.initialize().then(function () {
+                app.setRoot('viewmodels/shell', 'entrance')
+            });
         });
     });
-});

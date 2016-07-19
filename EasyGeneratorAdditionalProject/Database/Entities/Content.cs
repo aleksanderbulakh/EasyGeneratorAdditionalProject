@@ -9,21 +9,21 @@ namespace EasyGeneratorAdditionalProject.Database.Entities
     {
         public Guid Id { get; set; }
         public Guid SectionId { get; set; }
-        public Sections Section { get; set; }
+        public Section Section { get; set; }
         public string Title { get; set; }
         public string Type { get; set; }
 
-        public virtual ICollection<Materials> MaterialsCollection { get; set; }
-        public virtual ICollection<SingleSelectQuestions> SingleSelectQuestionsCollection { get; set; }
-        public virtual ICollection<MultipleSelectQuestion> MultipleSelectQuestionCollection { get; set; }
-        public virtual ICollection<SingleSelectImageQuestions> SingleSelectImageQuestionCollection { get; set; }
+        public virtual ICollection<Material> MaterialsCollection { get; set; }
+        public virtual ICollection<SingleSelectAnswer> SingleSelectAnswerCollection { get; set; }
+        public virtual ICollection<MultipleSelectAnswer> MultipleSelectAnswerCollection { get; set; }
+        public virtual ICollection<SingleSelectImageAnswer> SingleSelectImageAnswerCollection { get; set; }
 
         public Content()
         {
-            MaterialsCollection = new List<Materials>();
-            SingleSelectQuestionsCollection = new List<SingleSelectQuestions>();
-            MultipleSelectQuestionCollection = new List<MultipleSelectQuestion>();
-            SingleSelectImageQuestionCollection = new List<SingleSelectImageQuestions>();
+            MaterialsCollection = new List<Material>();
+            SingleSelectAnswerCollection = new List<SingleSelectAnswer>();
+            MultipleSelectAnswerCollection = new List<MultipleSelectAnswer>();
+            SingleSelectImageAnswerCollection = new List<SingleSelectImageAnswer>();
         }
     }
 }

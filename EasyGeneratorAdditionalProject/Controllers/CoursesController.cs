@@ -1,7 +1,6 @@
 ﻿using EasyGeneratorAdditionalProject.Database.Context;
 using EasyGeneratorAdditionalProject.Database.Entities;
 using EasyGeneratorAdditionalProject.Database.Interfaces;
-using EasyGeneratorAdditionalProject.Database.Managers;
 using EasyGeneratorAdditionalProject.Database.Models;
 using System;
 using System.Collections.Generic;
@@ -13,95 +12,100 @@ namespace EasyGeneratorAdditionalProject.Controllers
 {
     public class CoursesController : Controller
     {
-        private readonly ICoursesDataProvider _courseProvider;
-        private readonly IUsersDataProvider _userProvider;
-        private readonly ISectionsDataProvider _sectionPtovider;
-        private readonly IContentDataProvider _contentProvider;
-        private readonly IMaterialsDataProvider _materialProvider;
-        private readonly ISingleSelectQuestionsDataProvider _SSQProvider;
-        private readonly IMultipleSelectQuestionDataProvider _MSQProvider;
-        private readonly ISingleSelectImageQuestionsDataProvider _SSIQProvider;
-        public CoursesController(ICoursesDataProvider courseProvider, IUsersDataProvider userProvider,
-            ISectionsDataProvider sectionProvider, IContentDataProvider contentProvideer,
-            IMaterialsDataProvider materialProvider, ISingleSelectQuestionsDataProvider SSQProvider,
-            IMultipleSelectQuestionDataProvider MSQProvider, ISingleSelectImageQuestionsDataProvider SSIQProvider)
+        private readonly IUserRepository _userRepository;
+        private readonly ICourseRepository _courseRepository;
+        public CoursesController(IUserRepository userRepository, ICourseRepository courseRepository)
         {
-            _courseProvider = courseProvider;
-            _userProvider = userProvider;
-            _sectionPtovider = sectionProvider;
-            _contentProvider = contentProvideer;
-            _materialProvider = materialProvider;
-            _SSQProvider = SSQProvider;
-            _MSQProvider = MSQProvider;
-            _SSIQProvider = SSIQProvider;
+            _userRepository = userRepository;
+            _courseRepository = courseRepository;
         }
 
-        [Route("courses", Name = "coursesList")]
+        [HttpPost]
+        [Route("course/edit", Name = "EditCourse")]
+        public JsonResult EditCourse(EditeCourseViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return Json(false, JsonRequestBehavior.AllowGet);
+
+            var course = _courseRepository.GetCourseById(Guid.Parse(model.Id));
+            course.Title = model.Title;
+            course.Description = model.Description;
+
+            _courseRepository.EditCourse(course);
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [Route("course/delete", Name = "DeleteCourse")]
+        public JsonResult DeleteCourse(string id)
+        {
+            var result = _courseRepository.DeleteCourse(Guid.Parse(id));
+            return Json(result, JsonRequestBehavior.DenyGet);
+        }
+
+        [HttpPost]
+        [Route("course/create", Name = "CreateCourse")]
+        public JsonResult CreateCourse()
+        {
+            var db = new DatabaseContext();
+
+            var user = db.Users.ToList()[0];
+
+            var courseId = _courseRepository.CreateCourse(new Course
+            {
+                Title = "course title",
+                Description = "course description",
+                UserId = user.Id,
+                CreatedOn = DateTime.Now,
+                LastModifiedDate = DateTime.Now
+            });
+            var course = _courseRepository.GetCourseById(courseId);
+
+            var courseModel = new CourseModel
+            {
+                Id = course.Id,
+                Title = course.Title,
+                Description = course.Description,
+                CreatedBy = user.FirstName + user.Surname,
+                CreatedOn = course.CreatedOn.ToShortDateString(),
+                LastModifiedDate = course.LastModifiedDate.ToShortDateString()
+            };
+
+            return Json(courseModel, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        [Route("course/list", Name = "CoursesList")]
         public JsonResult CoursesList()
         {
             var db = new DatabaseContext();
 
-            var userId = db.Users.ToList()[0].Id;
-            var data = courseListWrapper(userId);
+            var user = db.Users.ToList()[0];
 
-            return Json(data, JsonRequestBehavior.AllowGet);
-        }
+            var courses = _courseRepository.GetCoursesByUserId(user.Id);
 
-        private List<CourseModel> courseListWrapper(Guid id)
-        {
-            using (var userManager = new UsersManager(_userProvider))
+            var courseModelList = new List<CourseModel>();
+
+            foreach (var course in courses)
             {
-                using (var courseManager = new CoursesManager(_courseProvider))
+                var courseModel = new CourseModel
                 {
-                    using (var sectionManager = new SectionManager(_sectionPtovider))
-                    {
-                        using (var contentManager = new ContentManager(_contentProvider, _materialProvider, _SSQProvider, _MSQProvider, _SSIQProvider))
-                        {
-                            var courseList = courseManager.GetCoursesByUserId(id).ToList();
-
-                            var result = new List<CourseModel>();
-
-                            foreach (var courseObj in courseList)
-                            {
-                                var courseSections = sectionManager.GetSectionsByCourseId(courseObj.Id);
-                                var sectionList = new List<SectionModel>();
-
-                                foreach (var sectionObj in courseSections)
-                                {
-                                    var sectionContent = contentManager.GetContentBySectionId(sectionObj.Id);
-
-                                    var sectionModel = new SectionModel
-                                    {
-                                        Id = sectionObj.Id,
-                                        Title = sectionObj.Title,
-                                        CreatedBy = sectionObj.CreatedBy,
-                                        CreatedOn = sectionObj.CreatedOn.ToShortDateString(),
-                                        LastModifiedDate = sectionObj.LastModifiedDate.ToShortDateString(),
-                                        ContentList = sectionContent
-                                    };
-
-                                    sectionList.Add(sectionModel);
-                                }
-
-                                var courseModel = new CourseModel
-                                {
-                                    Id = courseObj.Id,
-                                    Title = courseObj.Title,
-                                    Description = courseObj.Description,
-                                    CreatedBy = userManager.GetUserById(courseObj.UserId).UserName,
-                                    CreatedOn = courseObj.CreatedOn.ToShortDateString(),
-                                    LastModifiedDate = courseObj.LastModifiedDate.ToShortDateString(),
-                                    SectionsList = sectionList
-                                };
-
-                                result.Add(courseModel);
-                            }
-
-                            return result;
-                        }
-                    }
-                }
+                    Id = course.Id,
+                    Title = course.Title,
+                    Description = course.Description,
+                    CreatedBy = user.FirstName + user.Surname,
+                    CreatedOn = course.CreatedOn.ToShortDateString(),
+                    LastModifiedDate = course.LastModifiedDate.ToShortDateString(),
+                    SectionsList = null
+                };
+                courseModelList.Add(courseModel);
             }
+
+            return Json(courseModelList, JsonRequestBehavior.AllowGet);
         }
     }
 }
+
+
+

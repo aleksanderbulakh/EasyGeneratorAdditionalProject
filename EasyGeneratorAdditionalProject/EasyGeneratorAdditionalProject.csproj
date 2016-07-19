@@ -158,7 +158,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\data\courseContext.js" />
-    <Content Include="App\data\courseProvider.js" />
     <Content Include="App\http\httpWrapper.js" />
     <Content Include="App\main.js" />
     <Content Include="App\models\course.js" />
@@ -168,6 +167,7 @@
     <Content Include="App\models\singleSelectImageQuestion.js" />
     <Content Include="App\models\singleSelectQuestion.js" />
     <Content Include="App\models\section.js" />
+    <Content Include="App\data\courseRepository.js" />
     <Content Include="App\services\mapService.js" />
     <Content Include="App\viewmodels\courseCreatePage.js" />
     <Content Include="App\viewmodels\courseListPage.js" />
@@ -210,6 +210,8 @@
     <Content Include="Scripts\knockout-bindings\html-lazy-binding.js" />
     <Content Include="Scripts\less-1.5.1.js" />
     <Content Include="Scripts\less-1.5.1.min.js" />
+    <Content Include="Scripts\q.js" />
+    <Content Include="Scripts\q.min.js" />
     <Content Include="Scripts\r.js" />
     <Content Include="Scripts\require.js" />
     <Content Include="Scripts\text.js" />
@@ -225,46 +227,42 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Database\Context\DatabaseContext.cs" />
     <Compile Include="Database\Entities\Content.cs" />
-    <Compile Include="Database\Entities\Courses.cs" />
-    <Compile Include="Database\Entities\Materials.cs" />
-    <Compile Include="Database\Entities\MultipleSelectQuestion.cs" />
-    <Compile Include="Database\Entities\Roles.cs" />
-    <Compile Include="Database\Entities\Sections.cs" />
-    <Compile Include="Database\Entities\SingleSelectImageQuestions.cs" />
-    <Compile Include="Database\Entities\SingleSelectQuestions.cs" />
-    <Compile Include="Database\Entities\Users.cs" />
+    <Compile Include="Database\Entities\Course.cs" />
+    <Compile Include="Database\Entities\Material.cs" />
+    <Compile Include="Database\Entities\MultipleSelectAnswer.cs" />
+    <Compile Include="Database\Entities\Role.cs" />
+    <Compile Include="Database\Entities\Section.cs" />
+    <Compile Include="Database\Entities\SingleSelectImageAnswer.cs" />
+    <Compile Include="Database\Entities\SingleSelectAnswer.cs" />
+    <Compile Include="Database\Entities\User.cs" />
     <Compile Include="Database\Hasher\CustomPasswordHasher.cs" />
     <Compile Include="Database\Initializer\DatabaseInitializer.cs" />
-    <Compile Include="Database\Interfaces\IContentDataProvider.cs" />
-    <Compile Include="Database\Interfaces\ICoursesDataProvider.cs" />
-    <Compile Include="Database\Interfaces\IMaterialsDataProvider.cs" />
-    <Compile Include="Database\Interfaces\IMultipleSelectQuestionDataProvider.cs" />
-    <Compile Include="Database\Interfaces\IRolesDataProvider.cs" />
-    <Compile Include="Database\Interfaces\ISectionsDataProvider.cs" />
-    <Compile Include="Database\Interfaces\ISingleSelectImageQuestionsDataProvider.cs" />
-    <Compile Include="Database\Interfaces\ISingleSelectQuestionsDataProvider.cs" />
-    <Compile Include="Database\Interfaces\IUsersDataProvider.cs" />
-    <Compile Include="Database\Managers\ContentManager.cs" />
-    <Compile Include="Database\Managers\CoursesManager.cs" />
-    <Compile Include="Database\Managers\RolesManager.cs" />
-    <Compile Include="Database\Managers\SectionManager.cs" />
-    <Compile Include="Database\Managers\UsersManager.cs" />
+    <Compile Include="Database\Interfaces\IContentRepository.cs" />
+    <Compile Include="Database\Interfaces\ICourseRepository.cs" />
+    <Compile Include="Database\Interfaces\IMaterialRepository.cs" />
+    <Compile Include="Database\Interfaces\IMultipleSelectAnswerRepository.cs" />
+    <Compile Include="Database\Interfaces\IRoleRepository.cs" />
+    <Compile Include="Database\Interfaces\ISectionRepository.cs" />
+    <Compile Include="Database\Interfaces\ISingleSelectImageAnswerRepository.cs" />
+    <Compile Include="Database\Interfaces\ISingleSelectAnswerRepository.cs" />
+    <Compile Include="Database\Interfaces\IUserRepository.cs" />
     <Compile Include="Database\Models\CourseModel.cs" />
+    <Compile Include="Database\Models\EditeCourseViewModel.cs" />
     <Compile Include="Database\Models\MaterialModel.cs" />
     <Compile Include="Database\Models\MultipleSelectQuestionPartialModel.cs" />
     <Compile Include="Database\Models\ContentModel.cs" />
     <Compile Include="Database\Models\SectionModel.cs" />
     <Compile Include="Database\Models\SingleSelectImageQuestionPartialModel.cs" />
     <Compile Include="Database\Models\SingleSelectQuestionPartialModel.cs" />
-    <Compile Include="Database\Providers\ContentDataProvider.cs" />
-    <Compile Include="Database\Providers\CoursesDataProvider.cs" />
-    <Compile Include="Database\Providers\MaterialsDataProvider.cs" />
-    <Compile Include="Database\Providers\MultipleSelectQuestionDataProvider.cs" />
-    <Compile Include="Database\Providers\RolesDataProvider.cs" />
-    <Compile Include="Database\Providers\SectionsDataProvider.cs" />
-    <Compile Include="Database\Providers\SingleSelectImageQuestionsDataProvider.cs" />
-    <Compile Include="Database\Providers\SingleSelectQuestionsDataProvider.cs" />
-    <Compile Include="Database\Providers\UsersDataProvider.cs" />
+    <Compile Include="Database\Providers\ContentRepository.cs" />
+    <Compile Include="Database\Providers\CoursesRepository.cs" />
+    <Compile Include="Database\Providers\MaterialsRepository.cs" />
+    <Compile Include="Database\Providers\MultipleSelectAnswerRepository.cs" />
+    <Compile Include="Database\Providers\RolesRepository.cs" />
+    <Compile Include="Database\Providers\SectionsRepository.cs" />
+    <Compile Include="Database\Providers\SingleSelectImageAnswerRepository.cs" />
+    <Compile Include="Database\Providers\SingleSelectAnswerRepository.cs" />
+    <Compile Include="Database\Providers\UsersRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -287,6 +285,18 @@
     <Compile Include="Migrations\201607111344191_SSIQ string to bool.cs" />
     <Compile Include="Migrations\201607111344191_SSIQ string to bool.Designer.cs">
       <DependentUpon>201607111344191_SSIQ string to bool.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607172025278_Fluent API.cs" />
+    <Compile Include="Migrations\201607172025278_Fluent API.Designer.cs">
+      <DependentUpon>201607172025278_Fluent API.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607172055208_Fluent API v2.cs" />
+    <Compile Include="Migrations\201607172055208_Fluent API v2.Designer.cs">
+      <DependentUpon>201607172055208_Fluent API v2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607192211298_title required.cs" />
+    <Compile Include="Migrations\201607192211298_title required.Designer.cs">
+      <DependentUpon>201607192211298_title required.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -326,6 +336,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607111344191_SSIQ string to bool.resx">
       <DependentUpon>201607111344191_SSIQ string to bool.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607172025278_Fluent API.resx">
+      <DependentUpon>201607172025278_Fluent API.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607172055208_Fluent API v2.resx">
+      <DependentUpon>201607172055208_Fluent API v2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607192211298_title required.resx">
+      <DependentUpon>201607192211298_title required.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

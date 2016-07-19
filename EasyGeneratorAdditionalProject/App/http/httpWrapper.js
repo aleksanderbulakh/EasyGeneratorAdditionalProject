@@ -6,7 +6,14 @@
         });
     }
 
+    function get(url, data) {
+        return http.get(url, data).fail(function (data) {
+            alert('Request failed :(');
+        });
+    }
+
     return {
-        post: post
+        post: post,
+        get: get
     };
 });

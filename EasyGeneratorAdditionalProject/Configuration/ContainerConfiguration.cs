@@ -19,15 +19,15 @@ namespace EasyGeneratorAdditionalProject.Configuration
 
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
 
-            builder.RegisterType<RolesDataProvider>().As<IRolesDataProvider>();
-            builder.RegisterType<UsersDataProvider>().As<IUsersDataProvider>();
-            builder.RegisterType<CoursesDataProvider>().As<ICoursesDataProvider>();
-            builder.RegisterType<SectionsDataProvider>().As<ISectionsDataProvider>();
-            builder.RegisterType<ContentDataProvider>().As<IContentDataProvider>();
-            builder.RegisterType<MaterialsDataProvider>().As<IMaterialsDataProvider>();
-            builder.RegisterType<SingleSelectQuestionsDataProvider>().As<ISingleSelectQuestionsDataProvider>();
-            builder.RegisterType<MultipleSelectQuestionDataProvider>().As<IMultipleSelectQuestionDataProvider>();
-            builder.RegisterType<SingleSelectImageQuestionsDataProvider>().As<ISingleSelectImageQuestionsDataProvider>();
+            builder.RegisterType<RolesRepository>().As<IRoleRepository>();
+            builder.RegisterType<UsersRepository>().As<IUserRepository>();
+            builder.RegisterType<CoursesRepository>().As<ICourseRepository>();
+            builder.RegisterType<SectionsRepository>().As<ISectionRepository>();
+            builder.RegisterType<ContentRepository>().As<IContentRepository>();
+            builder.RegisterType<MaterialsRepository>().As<IMaterialRepository>();
+            builder.RegisterType<SingleSelectAnswerRepository>().As<ISingleSelectAnswerRepository>();
+            builder.RegisterType<MultipleSelectAnswerRepository>().As<IMultipleSelectAnswerRepository>();
+            builder.RegisterType<SingleSelectImageAnswerRepository>().As<ISingleSelectImageAnswerRepository>();
             builder.RegisterType<DatabaseContext>().As<DatabaseContext>();
             
             //builder.Register(c => Mapper.Instance).As<IMapper>().InstancePerLifetimeScope();

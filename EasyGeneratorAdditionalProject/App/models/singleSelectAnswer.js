@@ -1,9 +1,9 @@
 ﻿define(function () {
-    function SSQ(spec) {
+    function SingleSelectAnswer(spec) {
         this.id = spec.id;
         this.text = spec.text;
         this.isAnswer = spec.isAnswer;
     }
 
-    return SSQ;
+    return SingleSelectAnswer;
 });

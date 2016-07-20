@@ -1,11 +1,8 @@
-﻿using EasyGeneratorAdditionalProject.Database.Context;
-using EasyGeneratorAdditionalProject.Database.Entities;
+﻿using EasyGeneratorAdditionalProject.Database.Entities;
 using EasyGeneratorAdditionalProject.Database.Interfaces;
 using EasyGeneratorAdditionalProject.Database.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace EasyGeneratorAdditionalProject.Controllers
@@ -13,25 +10,37 @@ namespace EasyGeneratorAdditionalProject.Controllers
     public class CoursesController : Controller
     {
         private readonly IUserRepository _userRepository;
-        private readonly ICourseRepository _courseRepository;
-        public CoursesController(IUserRepository userRepository, ICourseRepository courseRepository)
+        private readonly IRepository<Course> _courseRepository;
+        public CoursesController(IUserRepository userRepository, IRepository<Course> courseRepository)
         {
             _userRepository = userRepository;
             _courseRepository = courseRepository;
         }
 
         [HttpPost]
-        [Route("course/edit", Name = "EditCourse")]
-        public JsonResult EditCourse(EditeCourseViewModel model)
+        [Route("course/edit/title", Name = "EditCourseTitle")]
+        public JsonResult EditCourseTitle(Course course, string title)
         {
-            if (!ModelState.IsValid)
+            if (course == null)
                 return Json(false, JsonRequestBehavior.AllowGet);
 
-            var course = _courseRepository.GetCourseById(Guid.Parse(model.Id));
-            course.Title = model.Title;
-            course.Description = model.Description;
+            course.UpdateTitle(title);
 
-            _courseRepository.EditCourse(course);
+            _courseRepository.Edit(course);
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [Route("course/edit/description", Name = "EditCourseDescription")]
+        public JsonResult EditCourseDescription(Course course, string description)
+        {
+            if (course == null)
+                return Json(false, JsonRequestBehavior.AllowGet);
+
+            course.UpdateDescription(description);
+
+            _courseRepository.Edit(course);
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
@@ -40,7 +49,7 @@ namespace EasyGeneratorAdditionalProject.Controllers
         [Route("course/delete", Name = "DeleteCourse")]
         public JsonResult DeleteCourse(string id)
         {
-            var result = _courseRepository.DeleteCourse(Guid.Parse(id));
+            var result = _courseRepository.Delete(Guid.Parse(id));
             return Json(result, JsonRequestBehavior.DenyGet);
         }
 
@@ -48,11 +57,9 @@ namespace EasyGeneratorAdditionalProject.Controllers
         [Route("course/create", Name = "CreateCourse")]
         public JsonResult CreateCourse()
         {
-            var db = new DatabaseContext();
+            var user = _userRepository.GetFirstUser();
 
-            var user = db.Users.ToList()[0];
-
-            var courseId = _courseRepository.CreateCourse(new Course
+            var newCourse = new Course
             {
                 Title = "course title",
                 Description = "course description",
@@ -60,53 +67,48 @@ namespace EasyGeneratorAdditionalProject.Controllers
                 CreatedOn = DateTime.Now,
                 LastModifiedDate = DateTime.Now,
                 CreatedBy = user.FirstName + " " + user.Surname
-            });
-            var course = _courseRepository.GetCourseById(courseId);
+            };
 
-            var courseModel = new CourseModel
+            var course = _courseRepository.Create(newCourse);
+
+            var courseViewModel = new CourseModel
             {
                 Id = course.Id,
                 Title = course.Title,
                 Description = course.Description,
                 CreatedBy = course.CreatedBy,
-                CreatedOn = course.CreatedOn.ToShortDateString(),
-                LastModifiedDate = course.LastModifiedDate.ToShortDateString()
+                CreatedOn = course.CreatedOn.ToLongTimeString(),
+                LastModifiedDate = course.LastModifiedDate.ToLongTimeString()
             };
 
-            return Json(courseModel, JsonRequestBehavior.AllowGet);
+            return Json(courseViewModel, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         [Route("course/list", Name = "CoursesList")]
         public JsonResult CoursesList()
         {
-            var db = new DatabaseContext();
+            var user = _userRepository.GetFirstUser();
 
-            var user = db.Users.ToList()[0];
+            var courses = _courseRepository.GetByUserId(user.Id);
 
-            var courses = _courseRepository.GetCoursesByUserId(user.Id);
-
-            var courseModelList = new List<CourseModel>();
+            var courseViewModelList = new List<CourseModel>();
 
             foreach (var course in courses)
             {
-                var courseModel = new CourseModel
+                var courseViewModel = new CourseModel
                 {
                     Id = course.Id,
                     Title = course.Title,
                     Description = course.Description,
                     CreatedBy = course.CreatedBy,
-                    CreatedOn = course.CreatedOn.ToShortDateString(),
-                    LastModifiedDate = course.LastModifiedDate.ToShortDateString(),
-                    SectionsList = null
+                    CreatedOn = course.CreatedOn.ToLongTimeString(),
+                    LastModifiedDate = course.LastModifiedDate.ToLongTimeString()
                 };
-                courseModelList.Add(courseModel);
+                courseViewModelList.Add(courseViewModel);
             }
 
-            return Json(courseModelList, JsonRequestBehavior.AllowGet);
+            return Json(courseViewModelList, JsonRequestBehavior.AllowGet);
         }
     }
 }
-
-
-

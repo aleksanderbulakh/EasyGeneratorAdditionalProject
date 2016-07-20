@@ -1,6 +1,7 @@
 ﻿using EasyGeneratorAdditionalProject.Database.Context;
 using EasyGeneratorAdditionalProject.Database.Entities;
 using EasyGeneratorAdditionalProject.Database.Interfaces;
+using EasyGeneratorAdditionalProject.Database.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,7 +10,7 @@ using System.Web;
 
 namespace EasyGeneratorAdditionalProject.Database.Providers
 {
-    public class CoursesRepository : ICourseRepository
+    public class CoursesRepository : IRepository<Course>
     {
         private DatabaseContext _context;
         public CoursesRepository(DatabaseContext context)
@@ -17,44 +18,58 @@ namespace EasyGeneratorAdditionalProject.Database.Providers
             _context = context;
         }
 
-        public IEnumerable<Course> GetAllCourses()
+        public IEnumerable<Course> GetAll()
         {
             return _context.Courses;
         }
 
-        public Guid CreateCourse(Course modelObj)
+        public Course Create(Course modelObj)
         {
-            modelObj.Id = Guid.NewGuid();
-
             _context.Courses.Add(modelObj);
             _context.SaveChanges();
 
-            return modelObj.Id;
+            var course = GetById(modelObj.Id);
+
+            return course;
         }
 
-        public IEnumerable<Course> GetCoursesByUserId(Guid id)
+        public List<Course> GetByUserId(Guid id)
         {
-            return _context.Courses.Where(d => d.UserId.Equals(id));
+            var courses = _context.Courses.Where(d => d.UserId.Equals(id));
+
+            return courses.ToList();
         }
 
-        public Course GetCourseById(Guid id)
+        public Course GetById(Guid id)
         {
             return _context.Courses.Find(id);
         }
 
-        public void EditCourse(Course modelObj)
+        public void Edit(Course modelObj)
         {
-            modelObj.LastModifiedDate = DateTime.Now;
-            _context.Entry(modelObj).State = EntityState.Modified;
+            var course = new Course
+            {
+                Id = modelObj.Id,
+                Title = modelObj.Title,
+                UserId = modelObj.UserId,
+                CreatedBy = modelObj.CreatedBy,
+                CreatedOn = modelObj.CreatedOn,
+                Description = modelObj.Description,
+                LastModifiedDate = modelObj.LastModifiedDate,
+                SectionsList = modelObj.SectionsList,
+                User = modelObj.User
+            };
+
+            _context.Entry(course).State = EntityState.Modified;
             _context.SaveChanges();
         }
 
-        public bool DeleteCourse(Guid id)
+        public bool Delete(Guid id)
         {
             _context.Courses.Remove(_context.Courses.Find(id));
             _context.SaveChanges();
 
-            if (GetCourseById(id) == null)
+            if (GetById(id) == null)
                 return true;
             else
                 return false;

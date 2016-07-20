@@ -1,7 +1,6 @@
 ﻿<div class="container">
     <a href="#">To course list</a>
     <div class="course-title">
-        <button data-bind="click: edit">Save</button>
         <span>Course title: </span>
         <span name="course-title" data-bind="contentEditable: true, htmlLazy: courseTitle"></span>
     </div>
@@ -62,4 +61,6 @@
     </div>
     <!-- /ko -->
     <button class="add-section">Add section</button>
+    <button data-bind="click: editTitle">Save Title</button>
+    <button data-bind="click: editDescription">Save Description</button>
 </div>

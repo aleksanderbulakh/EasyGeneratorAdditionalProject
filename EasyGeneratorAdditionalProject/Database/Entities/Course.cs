@@ -16,9 +16,52 @@ namespace EasyGeneratorAdditionalProject.Database.Entities
 
         public Course()
         {
-            Id = Guid.NewGuid();
-            LastModifiedDate = DateTime.Now;
+            SetId();
             SectionsList = new List<Section>();
         }
+
+        public Course(string title, string description, string userName)
+        {
+            ThrowIfTileInvalid(title);
+            ThrowIfDescriptionInvalid(description);
+
+            SetId();
+            Title = title;
+            Description = description;
+            CreatedBy = userName;
+            SetDateFields();
+        }
+
+        #region Update
+        public void UpdateTitle(string title)
+        {
+            ThrowIfTileInvalid(title);
+
+            Title = title;
+            MarkAsModified();
+        }
+
+        public void UpdateDescription(string description)
+        {
+            ThrowIfDescriptionInvalid(description);
+
+            Description = description;
+            MarkAsModified();
+        }
+        #endregion
+
+        #region Validation
+        private void ThrowIfTileInvalid(string title)
+        {
+            if (title == null || title.Length > 225)
+                throw new ArgumentException("Invalid title");
+        }
+
+        private void ThrowIfDescriptionInvalid(string description)
+        {
+            if (description == null)
+                throw new ArgumentException("Invalid Description");
+        }
+        #endregion
     }
 }

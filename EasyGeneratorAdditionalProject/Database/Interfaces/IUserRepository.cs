@@ -18,5 +18,7 @@ namespace EasyGeneratorAdditionalProject.Database.Interfaces
         void EditUser(User userModel);
 
         void DeleteUser(Guid id);
+
+        User GetFirstUser();
     }
 }

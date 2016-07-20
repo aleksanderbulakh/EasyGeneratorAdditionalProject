@@ -1,10 +1,9 @@
 ﻿define(function () {
-    function SSIQ(spec) {
+    function MultipleSelectImageAnswer(spec) {
         this.id = spec.id;
         this.text = spec.text;
         this.isAnswer = spec.isAnswer;
-        this.photo = spec.photo;
     }
 
-    return SSIQ;
+    return MultipleSelectImageAnswer;
 });

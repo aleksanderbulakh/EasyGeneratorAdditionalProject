@@ -4,20 +4,23 @@
             router: router,
             courseList: ko.observableArray(),
             activate: function () {
-                this.courseList(courseRepository.getCourseList());
+                var self = this;
+                courseRepository.getCourseList().then(function (data) {
+                    self.courseList(data);
+                });
             },
             coursePreview: function () {
                 router.navigate('#preview');
             },
             deleteCourse: function (id, canClick) {
                 if (confirm("Are you sure?"))
-                    courseRepository.deleteCourse(id).done(function (result) {
+                    courseRepository.deleteCourse(id).then(function (result) {
                         alert(result);
                         location.reload();
                     });
             },
             createCourse: function () {
-                courseRepository.createCourse().done(function (courseId) {
+                courseRepository.createCourse().then(function (courseId) {
                     router.navigate('#new-course/' + courseId);
                 });
             }

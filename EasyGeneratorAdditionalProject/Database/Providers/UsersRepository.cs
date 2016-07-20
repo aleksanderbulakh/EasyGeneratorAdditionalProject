@@ -44,5 +44,10 @@ namespace EasyGeneratorAdditionalProject.Database.Providers
             _context.Users.Remove(_context.Users.Find(id));
             _context.SaveChanges();
         }
+
+        public User GetFirstUser()
+        {
+            return _context.Users.First();
+        }
     }
 }

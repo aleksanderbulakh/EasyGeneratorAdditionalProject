@@ -1,5 +1,10 @@
 ﻿using EasyGeneratorAdditionalProject.Configuration;
+using EasyGeneratorAdditionalProject.Database.Context;
+using EasyGeneratorAdditionalProject.Database.Entities;
 using EasyGeneratorAdditionalProject.Database.Initializer;
+using EasyGeneratorAdditionalProject.Database.Interfaces;
+using EasyGeneratorAdditionalProject.Database.ModelBinders;
+using EasyGeneratorAdditionalProject.Database.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +24,9 @@ namespace EasyGeneratorAdditionalProject
             BundleConfiguretion.Configure();
             ContainerConfiguration.Configure();            
 
-            AreaRegistration.RegisterAllAreas();            
+            AreaRegistration.RegisterAllAreas();
+
+            ModelBinders.Binders.Add(typeof(Course), new CourseEditModelBinder());
         }
     }
 }

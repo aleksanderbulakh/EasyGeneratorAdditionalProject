@@ -68,6 +68,7 @@
             getCourseList: function () {
                 return courseContext.courseList;
             },
+
             createCourse: function () {
                 return http.post('course/create').then(function (course) {
                     var courseId = course.Id;
@@ -83,11 +84,21 @@
                     return courseId;
                 });
             },
+
+            getCourseById: function (courseId) {
+                var course = courseContext.courseList.find(function (item) {
+                    if (item.id === courseId)
+                        return item.id = courseId;
+                });
+                return course;
+            },
+
             editCourse: function (courseId, courseTitle, courseDescription) {
                 return http.post('course/edit', { Id: courseId, Title: courseTitle, Description: courseDescription }).then(function (result) {
                     if (result) {
                         var course = courseContext.courseList.find(function (item) {
-                            return item.id = courseId;
+                            if (item.id === courseId)
+                                return item.id = courseId;
                         });
 
                         course.title = courseTitle;
@@ -98,6 +109,7 @@
                     return result;
                 });
             },
+
             deleteCourse: function (courseId) {
                 return http.post('course/delete', { id: courseId }).then(function (result) {
                     if (result) {

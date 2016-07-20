@@ -14,6 +14,7 @@ namespace EasyGeneratorAdditionalProject.Database.Entities
 
         public Role()
         {
+            Id = Guid.NewGuid();
             UserCollection = new List<User>();
         }
 

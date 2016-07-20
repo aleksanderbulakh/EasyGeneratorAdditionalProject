@@ -58,7 +58,8 @@ namespace EasyGeneratorAdditionalProject.Controllers
                 Description = "course description",
                 UserId = user.Id,
                 CreatedOn = DateTime.Now,
-                LastModifiedDate = DateTime.Now
+                LastModifiedDate = DateTime.Now,
+                CreatedBy = user.FirstName + " " + user.Surname
             });
             var course = _courseRepository.GetCourseById(courseId);
 
@@ -67,7 +68,7 @@ namespace EasyGeneratorAdditionalProject.Controllers
                 Id = course.Id,
                 Title = course.Title,
                 Description = course.Description,
-                CreatedBy = user.FirstName + user.Surname,
+                CreatedBy = course.CreatedBy,
                 CreatedOn = course.CreatedOn.ToShortDateString(),
                 LastModifiedDate = course.LastModifiedDate.ToShortDateString()
             };
@@ -94,7 +95,7 @@ namespace EasyGeneratorAdditionalProject.Controllers
                     Id = course.Id,
                     Title = course.Title,
                     Description = course.Description,
-                    CreatedBy = user.FirstName + user.Surname,
+                    CreatedBy = course.CreatedBy,
                     CreatedOn = course.CreatedOn.ToShortDateString(),
                     LastModifiedDate = course.LastModifiedDate.ToShortDateString(),
                     SectionsList = null

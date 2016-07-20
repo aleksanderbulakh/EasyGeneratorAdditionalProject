@@ -22,6 +22,7 @@ namespace EasyGeneratorAdditionalProject.Database.Entities
 
         public User()
         {
+            Id = Guid.NewGuid();
             CoursesCollection = new List<Course>();
         }
 

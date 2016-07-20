@@ -1,12 +1,12 @@
-﻿define(['knockout', 'plugins/router', 'durandal/app', 'services/mapService', 'data/courseRepository'],
-    function (ko, router, app, mapService, courseRepository) {
+﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/courseRepository'],
+    function (ko, router, app, courseRepository) {
         return {
             courseId: ko.observable(),
             courseTitle: ko.observable(),
             courseSection: ko.observable(),
             courseDescription: ko.observable(),
             activate: function (id) {
-                var course = mapService.courseMapById(id);
+                var course = courseRepository.getCourseById(id);
 
                 this.courseTitle(course.title);
                 this.courseSection(course.sectionList);

@@ -2,7 +2,7 @@
 using Autofac.Integration.Mvc;
 using EasyGeneratorAdditionalProject.DataAccess.Context;
 using EasyGeneratorAdditionalProject.DataAccess.Interfaces;
-using EasyGeneratorAdditionalProject.DataAccess.Providers;
+using EasyGeneratorAdditionalProject.DataAccess.Repositories;
 using EasyGeneratorAdditionalProject.DataAccess.UnitOfWork;
 using EasyGeneratorAdditionalProject.Models.Entities;
 using System.Web.Mvc;
@@ -17,14 +17,17 @@ namespace EasyGeneratorAdditionalProject.Web.Configuration
 
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
 
-            builder.RegisterType<UnitOfWork>().As<UnitOfWork>();
 
-            builder.RegisterType<DatabaseContext>().As<DatabaseContext>();
+            builder.RegisterType<DatabaseContext>()
+                .As<IDatabaseContext>()
+                .As<IUnitOfWork>()
+                .InstancePerLifetimeScope();
+
 
             builder.RegisterType<RolesRepository>().As<IRepository<Role>>();
             builder.RegisterType<UsersRepository>().As<IRepository<User>>();
             builder.RegisterType<CoursesRepository>().As<IRepository<Course>>();
-            
+
             //builder.Register(c => Mapper.Instance).As<IMapper>().InstancePerLifetimeScope();
 
             var container = builder.Build();

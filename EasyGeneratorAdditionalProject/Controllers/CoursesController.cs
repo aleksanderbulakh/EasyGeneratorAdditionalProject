@@ -10,15 +10,19 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 {
     public class CoursesController : Controller
     {
-        private readonly UnitOfWork _work;
-        public CoursesController(UnitOfWork work)
+        private readonly IUnitOfWork _work;
+        private readonly IRepository<User> _userRepository;
+        private readonly IRepository<Course> _courseRepository;
+        public CoursesController(IUnitOfWork work, IRepository<User> userRepository, IRepository<Course> courseRepository)
         {
             _work = work;
+            _userRepository = userRepository;
+            _courseRepository = courseRepository;
         }
 
         private User GetFirstUser()
         {
-            return _work.userRepository.GetAll()[0];
+            return _userRepository.GetAll()[0];
         }
 
         [HttpPost]
@@ -29,8 +33,6 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
                 return Json(false, JsonRequestBehavior.AllowGet);
 
             course.UpdateTitle(title);
-
-            _work.courseRepository.Edit(course);
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
@@ -44,8 +46,6 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
             course.UpdateDescription(description);
 
-            _work.courseRepository.Edit(course);
-
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
@@ -53,8 +53,9 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         [Route("course/delete", Name = "DeleteCourse")]
         public JsonResult DeleteCourse(string id)
         {
-            var result = _work.courseRepository.Delete(Guid.Parse(id));
-            return Json(result, JsonRequestBehavior.DenyGet);
+            _courseRepository.Delete(Guid.Parse(id));
+
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -63,26 +64,18 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         {
             var user = GetFirstUser();
 
-            var newCourse = new Course
-            {
-                Title = "course title",
-                Description = "course description",
-                UserId = user.Id,
-                CreatedOn = DateTime.Now,
-                LastModifiedDate = DateTime.Now,
-                CreatedBy = user.FirstName + " " + user.Surname
-            };
+            var newCourse = new Course("course title", "course description", user.Id, user.FirstName + " " + user.Surname);
 
-            var course = _work.courseRepository.Create(newCourse);
+            _courseRepository.Create(newCourse);
 
             var courseViewModel = new CourseViewModel
             {
-                Id = course.Id,
-                Title = course.Title,
-                Description = course.Description,
-                CreatedBy = course.CreatedBy,
-                CreatedOn = course.CreatedOn.ToLongTimeString(),
-                LastModifiedDate = course.LastModifiedDate.ToLongTimeString()
+                Id = newCourse.Id,
+                Title = newCourse.Title,
+                Description = newCourse.Description,
+                CreatedBy = newCourse.CreatedBy,
+                CreatedOn = newCourse.CreatedOn.ToLongTimeString(),
+                LastModifiedDate = newCourse.LastModifiedDate.ToLongTimeString()
             };
 
             return Json(courseViewModel, JsonRequestBehavior.AllowGet);
@@ -94,7 +87,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         {
             var user = GetFirstUser();
 
-            var courses = _work.courseRepository.GetByForeignId(user.Id);
+            var courses = _courseRepository.GetByForeignId(user.Id);
 
             var courseViewModelList = new List<CourseViewModel>();
 
@@ -113,6 +106,12 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             }
 
             return Json(courseViewModelList, JsonRequestBehavior.AllowGet);
+        }
+
+        protected override void OnActionExecuted(ActionExecutedContext filterContext)
+        {
+            _work.Save();
+            base.OnActionExecuted(filterContext);
         }
     }
 }

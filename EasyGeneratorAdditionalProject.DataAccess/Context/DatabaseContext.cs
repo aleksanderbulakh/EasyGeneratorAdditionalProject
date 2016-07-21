@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EasyGeneratorAdditionalProject.Models.Entities;
+using EasyGeneratorAdditionalProject.DataAccess.Interfaces;
 
 namespace EasyGeneratorAdditionalProject.DataAccess.Context
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : DbContext, IUnitOfWork, IDatabaseContext
     {
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users { get; set; }
@@ -19,6 +20,11 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Context
         public DbSet<SingleSelectAnswer> SingleSelectAnswers { get; set; }
         public DbSet<MultipleSelectAnswer> MultipleSelectAnswers { get; set; }
         public DbSet<SingleSelectImageAnswer> SingleSelectImageAnswers { get; set; }
+
+        public IDbSet<T> GetSet<T>() where T : class
+        {
+            return Set<T>();
+        }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -95,6 +101,11 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Context
             modelBuilder.Entity<SingleSelectImageAnswer>().Property(t => t.IsCorrect).IsRequired();
             modelBuilder.Entity<SingleSelectImageAnswer>().Property(t => t.Photo).IsRequired();
             #endregion
+        }
+
+        public void Save()
+        {
+            SaveChanges();
         }
     }
 }

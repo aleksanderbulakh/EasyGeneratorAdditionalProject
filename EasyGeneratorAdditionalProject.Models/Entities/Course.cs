@@ -21,7 +21,7 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             SectionsList = new List<Section>();
         }
 
-        public Course(string title, string description, string userName)
+        public Course(string title, string description, Guid userId, string userName)
         {
             ThrowIfTileInvalid(title);
             ThrowIfDescriptionInvalid(description);
@@ -29,6 +29,7 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             SetId();
             Title = title;
             Description = description;
+            UserId = userId;
             CreatedBy = userName;
             SetDateFields();
         }

@@ -3,6 +3,7 @@
     <div class="course-title">
         <span>Course title: </span>
         <span name="course-title" data-bind="contentEditable: true, htmlLazy: courseTitle"></span>
+        <span class="course-title-validate-message" data-bind="visible: courseTitle.hasError, text: courseTitle.validationMessage"></span>
     </div>
     <div class="course-description">
         <div>
@@ -61,6 +62,6 @@
     </div>
     <!-- /ko -->
     <button class="add-section">Add section</button>
-    <button data-bind="click: editTitle">Save Title</button>
+    <button data-bind="click: editTitle, disable: courseTitle.hasError">Save Title</button>
     <button data-bind="click: editDescription">Save Description</button>
 </div>

@@ -44,9 +44,9 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Repositories
             Entity().Add(modelObj);
         }
 
-        public void Delete(Guid id)
+        public void Delete(Role modelObj)
         {
-            Entity().Remove(_context.GetSet<Role>().Find(id));
+            Entity().Remove(modelObj);
         }
 
         public List<Role> GetByForeignId(Guid id)

@@ -38,9 +38,9 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Repositories
             Entity().Add(modelObj);
         }
 
-        public void Delete(Guid id)
+        public void Delete(User modelObj)
         {
-            Entity().Remove(_context.GetSet<User>().Find(id));
+            Entity().Remove(modelObj);
         }
 
         public List<User> GetByForeignId(Guid id)

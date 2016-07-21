@@ -55,7 +55,7 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
         #region Validation
         private void ThrowIfTileInvalid(string title)
         {
-            if (title == null || title.Length > 225)
+            if (title == null || title.Length == 0 || title.Length > 225)
                 throw new ArgumentException("Invalid title");
         }
 

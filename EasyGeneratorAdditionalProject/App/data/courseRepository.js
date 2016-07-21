@@ -6,10 +6,13 @@
             },
 
             createCourse: function () {
-                return Q(http.post('course/create').then(function (course) {
-                    courseContext.courseList.push(mapper.mapCourse(course));
-                    return course.Id;
-                }));
+                return http.post('course/create').then(function (result) {
+                    if (typeof result === 'object') {
+                        courseContext.courseList.push(mapper.mapCourse(result));
+                        return result.Id;
+                    }
+                    else alert(result);
+                });
             },
 
             getCourseById: function (courseId) {
@@ -22,7 +25,7 @@
 
             editCourseTitle: function (courseId, courseTitle) {
                 return http.post('course/edit/title', { courseId: courseId, title: courseTitle }).then(function (result) {
-                    if (result) {
+                    if (result[0]) {
                         var course = courseContext.courseList.find(function (item) {
                             if (item.id === courseId)
                                 return item.id = courseId;
@@ -32,13 +35,13 @@
                         course.lastModified = new Date().toDateString();
                     }
 
-                    return Q(result);
+                    return Q(result[1]);
                 });
             },
 
             editCourseDescription: function (courseId, courseDescription) {
                 return http.post('course/edit/description', { courseId: courseId, description: courseDescription }).then(function (result) {
-                    if (result) {
+                    if (result[0]) {
                         var course = courseContext.courseList.find(function (item) {
                             if (item.id === courseId)
                                 return item.id = courseId;
@@ -48,13 +51,13 @@
                         course.lastModified = new Date().toDateString();
                     }
 
-                    return Q(result);
+                    return Q(result[1]);
                 });
             },
 
             deleteCourse: function (courseId) {
-                return http.post('course/delete', { id: courseId }).then(function (result) {
-                    if (result) {
+                return http.post('course/delete', { courseId: courseId }).then(function (result) {
+                    if (result[0]) {
                         var course = courseContext.courseList;
                         var elementId = 0;
                         for (var i = 0; i < course.length; i++) {
@@ -68,7 +71,7 @@
                         courseContext.courseList.splice(elementId, 1);
                     }
 
-                    return Q(result);
+                    return Q(result[1]);
                 });
             }
         }

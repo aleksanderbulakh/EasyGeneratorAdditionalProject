@@ -16,7 +16,8 @@ namespace EasyGeneratorAdditionalProject
 
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfiguretion.Configure();
-            ContainerConfiguration.Configure();            
+            ContainerConfiguration.Configure();
+            MappingConfiguration.Configure();        
 
             AreaRegistration.RegisterAllAreas();
 

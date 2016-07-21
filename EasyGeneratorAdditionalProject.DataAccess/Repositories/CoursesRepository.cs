@@ -45,9 +45,9 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Repositories
             return Entity().Find(id);
         }
 
-        public void Delete(Guid id)
+        public void Delete(Course modelObj)
         {
-            Entity().Remove(Entity().Find(id));
+            Entity().Remove(modelObj);
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
+using AutoMapper;
 using EasyGeneratorAdditionalProject.DataAccess.Context;
 using EasyGeneratorAdditionalProject.DataAccess.Interfaces;
 using EasyGeneratorAdditionalProject.DataAccess.Repositories;
-using EasyGeneratorAdditionalProject.DataAccess.UnitOfWork;
 using EasyGeneratorAdditionalProject.Models.Entities;
 using System.Web.Mvc;
 
@@ -28,7 +28,7 @@ namespace EasyGeneratorAdditionalProject.Web.Configuration
             builder.RegisterType<UsersRepository>().As<IRepository<User>>();
             builder.RegisterType<CoursesRepository>().As<IRepository<Course>>();
 
-            //builder.Register(c => Mapper.Instance).As<IMapper>().InstancePerLifetimeScope();
+            builder.Register(c => Mapper.Instance).As<IMapper>().InstancePerLifetimeScope();
 
             var container = builder.Build();
 

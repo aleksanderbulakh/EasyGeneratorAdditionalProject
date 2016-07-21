@@ -12,6 +12,6 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Interfaces
         void Create(T modelObj);
         List<T> GetByForeignId(Guid id);
         T GetById(Guid id);
-        void Delete(Guid id);
+        void Delete(T modelObj);
     }
 }

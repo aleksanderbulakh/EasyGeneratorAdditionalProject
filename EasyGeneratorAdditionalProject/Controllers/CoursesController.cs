@@ -1,20 +1,25 @@
-﻿using EasyGeneratorAdditionalProject.Database.Entities;
-using EasyGeneratorAdditionalProject.Database.Interfaces;
-using EasyGeneratorAdditionalProject.Database.Models;
+﻿using EasyGeneratorAdditionalProject.DataAccess.Interfaces;
+using EasyGeneratorAdditionalProject.Models.Entities;
+using EasyGeneratorAdditionalProject.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace EasyGeneratorAdditionalProject.Controllers
+namespace EasyGeneratorAdditionalProject.Web.Controllers
 {
     public class CoursesController : Controller
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IRepository<User> _userRepository;
         private readonly IRepository<Course> _courseRepository;
-        public CoursesController(IUserRepository userRepository, IRepository<Course> courseRepository)
+        public CoursesController(IRepository<User> userRepository, IRepository<Course> courseRepository)
         {
             _userRepository = userRepository;
             _courseRepository = courseRepository;
+        }
+
+        private User GetFirstUser()
+        {
+            return _userRepository.GetAll()[0];
         }
 
         [HttpPost]
@@ -57,7 +62,7 @@ namespace EasyGeneratorAdditionalProject.Controllers
         [Route("course/create", Name = "CreateCourse")]
         public JsonResult CreateCourse()
         {
-            var user = _userRepository.GetFirstUser();
+            var user = GetFirstUser();
 
             var newCourse = new Course
             {
@@ -71,7 +76,7 @@ namespace EasyGeneratorAdditionalProject.Controllers
 
             var course = _courseRepository.Create(newCourse);
 
-            var courseViewModel = new CourseModel
+            var courseViewModel = new CourseViewModel
             {
                 Id = course.Id,
                 Title = course.Title,
@@ -88,15 +93,15 @@ namespace EasyGeneratorAdditionalProject.Controllers
         [Route("course/list", Name = "CoursesList")]
         public JsonResult CoursesList()
         {
-            var user = _userRepository.GetFirstUser();
+            var user = GetFirstUser();
 
-            var courses = _courseRepository.GetByUserId(user.Id);
+            var courses = _courseRepository.GetByForeignId(user.Id);
 
-            var courseViewModelList = new List<CourseModel>();
+            var courseViewModelList = new List<CourseViewModel>();
 
             foreach (var course in courses)
             {
-                var courseViewModel = new CourseModel
+                var courseViewModel = new CourseViewModel
                 {
                     Id = course.Id,
                     Title = course.Title,

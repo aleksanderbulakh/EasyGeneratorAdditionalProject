@@ -1,13 +1,7 @@
-﻿using EasyGeneratorAdditionalProject.Configuration;
-using EasyGeneratorAdditionalProject.Database.Context;
-using EasyGeneratorAdditionalProject.Database.Entities;
-using EasyGeneratorAdditionalProject.Database.Initializer;
-using EasyGeneratorAdditionalProject.Database.Interfaces;
-using EasyGeneratorAdditionalProject.Database.ModelBinders;
-using EasyGeneratorAdditionalProject.Database.Providers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using EasyGeneratorAdditionalProject.DataAccess.Initializer;
+using EasyGeneratorAdditionalProject.Models.Entities;
+using EasyGeneratorAdditionalProject.Web.Configuration;
+using EasyGeneratorAdditionalProject.Web.ModelBinders;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;

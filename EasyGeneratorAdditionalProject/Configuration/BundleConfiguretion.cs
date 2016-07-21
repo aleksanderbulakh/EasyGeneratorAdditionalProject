@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Optimization;
 
-namespace EasyGeneratorAdditionalProject.Configuration
+namespace EasyGeneratorAdditionalProject.Web.Configuration
 {
     public class BundleConfiguretion
     {

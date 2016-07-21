@@ -60,7 +60,7 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Providers
             //    User = modelObj.User
             //};
 
-           // _context.Entry(modelObj).State = EntityState.Modified;
+           _context.Entry(modelObj).State = EntityState.Modified;
             _context.SaveChanges();
         }
 

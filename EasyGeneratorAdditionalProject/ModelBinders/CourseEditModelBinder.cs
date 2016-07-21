@@ -1,4 +1,5 @@
 ﻿using EasyGeneratorAdditionalProject.DataAccess.Interfaces;
+using EasyGeneratorAdditionalProject.DataAccess.UnitOfWork;
 using EasyGeneratorAdditionalProject.Models.Entities;
 using System;
 using System.Web.Mvc;
@@ -16,8 +17,8 @@ namespace EasyGeneratorAdditionalProject.Web.ModelBinders
             if (courseId == null)
                 return new ArgumentException("Don't have id");
 
-            var _courseRepository = DependencyResolver.Current.GetService<IRepository<Course>>();
-            return _courseRepository.GetById(courseId);
+            var _courseRepository = DependencyResolver.Current.GetService<UnitOfWork>();
+            return _courseRepository.courseRepository.GetById(courseId);
         }
     }
 }

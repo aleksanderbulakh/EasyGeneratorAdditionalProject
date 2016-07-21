@@ -1,4 +1,5 @@
 ﻿using EasyGeneratorAdditionalProject.DataAccess.Interfaces;
+using EasyGeneratorAdditionalProject.DataAccess.UnitOfWork;
 using EasyGeneratorAdditionalProject.Models.Entities;
 using EasyGeneratorAdditionalProject.Models.Models;
 using System;
@@ -9,17 +10,15 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 {
     public class CoursesController : Controller
     {
-        private readonly IRepository<User> _userRepository;
-        private readonly IRepository<Course> _courseRepository;
-        public CoursesController(IRepository<User> userRepository, IRepository<Course> courseRepository)
+        private readonly UnitOfWork _work;
+        public CoursesController(UnitOfWork work)
         {
-            _userRepository = userRepository;
-            _courseRepository = courseRepository;
+            _work = work;
         }
 
         private User GetFirstUser()
         {
-            return _userRepository.GetAll()[0];
+            return _work.userRepository.GetAll()[0];
         }
 
         [HttpPost]
@@ -31,7 +30,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
             course.UpdateTitle(title);
 
-            _courseRepository.Edit(course);
+            _work.courseRepository.Edit(course);
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
@@ -45,7 +44,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
             course.UpdateDescription(description);
 
-            _courseRepository.Edit(course);
+            _work.courseRepository.Edit(course);
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
@@ -54,7 +53,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         [Route("course/delete", Name = "DeleteCourse")]
         public JsonResult DeleteCourse(string id)
         {
-            var result = _courseRepository.Delete(Guid.Parse(id));
+            var result = _work.courseRepository.Delete(Guid.Parse(id));
             return Json(result, JsonRequestBehavior.DenyGet);
         }
 
@@ -74,7 +73,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
                 CreatedBy = user.FirstName + " " + user.Surname
             };
 
-            var course = _courseRepository.Create(newCourse);
+            var course = _work.courseRepository.Create(newCourse);
 
             var courseViewModel = new CourseViewModel
             {
@@ -95,7 +94,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         {
             var user = GetFirstUser();
 
-            var courses = _courseRepository.GetByForeignId(user.Id);
+            var courses = _work.courseRepository.GetByForeignId(user.Id);
 
             var courseViewModelList = new List<CourseViewModel>();
 

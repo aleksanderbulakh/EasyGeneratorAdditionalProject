@@ -69,6 +69,7 @@
     <Compile Include="Providers\CoursesRepository.cs" />
     <Compile Include="Providers\RolesRepository.cs" />
     <Compile Include="Providers\UsersRepository.cs" />
+    <Compile Include="UnitOfWork\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

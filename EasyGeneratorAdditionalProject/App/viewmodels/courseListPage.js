@@ -12,16 +12,23 @@
             coursePreview: function () {
                 router.navigate('#preview');
             },
-            deleteCourse: function (id, canClick) {
+            deleteCourse: function (id) {
+                var self = this;
                 if (confirm("Are you sure?"))
                     courseRepository.deleteCourse(id).then(function (result) {
-                        alert(result);
-                        location.reload();
+                        if (typeof result === "object") {
+                            if (result[0]) {
+                                self.courseList.valueHasMutated()
+                            }
+                            alert(result[1]);
+                        }
+                        else
+                            alert(result);
                     });
             },
             createCourse: function () {
                 courseRepository.createCourse().then(function (courseId) {
-                    router.navigate('#new-course/' + courseId);
+                    router.navigate('#course/' + courseId);
                 });
             }
         };

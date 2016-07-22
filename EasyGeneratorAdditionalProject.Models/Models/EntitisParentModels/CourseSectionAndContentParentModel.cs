@@ -8,6 +8,11 @@ namespace EasyGeneratorAdditionalProject.Models.Models.EntitisParentModels
 {
     public class CourseSectionAndContentParentModel
     {
+        public CourseSectionAndContentParentModel()
+        {
+            Id = Guid.NewGuid();
+        }
+
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string CreatedBy { get; set; }

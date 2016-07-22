@@ -15,18 +15,17 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
 
         public virtual ICollection<Section> SectionsList { get; set; }
 
-        public Course()
+        public Course() 
+                :base()
         {
-            SetId();
             SectionsList = new List<Section>();
         }
 
-        public Course(string title, string description, Guid userId, string userName)
+        public Course(string title, string description, Guid userId, string userName):this()
         {
             ThrowIfTileInvalid(title);
             ThrowIfDescriptionInvalid(description);
 
-            SetId();
             Title = title;
             Description = description;
             UserId = userId;

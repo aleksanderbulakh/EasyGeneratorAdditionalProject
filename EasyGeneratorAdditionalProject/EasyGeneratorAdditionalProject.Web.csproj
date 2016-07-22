@@ -173,13 +173,13 @@
     <Content Include="App\models\singleSelectAnswer.js" />
     <Content Include="App\models\section.js" />
     <Content Include="App\data\courseRepository.js" />
-    <Content Include="App\viewmodels\courseCreatePage.js" />
+    <Content Include="App\viewmodels\coursePage.js" />
     <Content Include="App\viewmodels\courseListPage.js" />
     <Content Include="App\viewmodels\coursePreviewPage.js" />
     <Content Include="App\viewmodels\loginPage.js" />
     <Content Include="App\viewmodels\shell.js" />
     <Content Include="App\viewmodels\userRegistrationPage.js" />
-    <Content Include="App\views\courseCreatePage.html" />
+    <Content Include="App\views\coursePage.html" />
     <Content Include="App\views\courseListPage.html" />
     <Content Include="App\views\coursePreviewPage.html" />
     <Content Include="App\views\loginPage.html" />

@@ -17,46 +17,62 @@
 
             getCourseById: function (courseId) {
                 var course = courseContext.courseList.find(function (item) {
-                    if (item.id === courseId)
-                        return item.id = courseId;
+                    return item.id === courseId;
                 });
-                return Q(course);
+
+                if (course === undefined)
+                    return "Course not found.";
+
+                return course;
             },
 
             editCourseTitle: function (courseId, courseTitle) {
                 return http.post('course/edit/title', { courseId: courseId, title: courseTitle }).then(function (result) {
+                    if (typeof result !== "object")
+                        return alert("Fail in processing request.");
+
                     if (result[0]) {
                         var course = courseContext.courseList.find(function (item) {
-                            if (item.id === courseId)
-                                return item.id = courseId;
+                            return item.id === courseId;
                         });
+
+                        if (course === undefined)
+                            return "Course not found.";
 
                         course.title = courseTitle;
                         course.lastModified = new Date().toDateString();
                     }
 
-                    return Q(result[1]);
+                    return result[1];
                 });
             },
 
             editCourseDescription: function (courseId, courseDescription) {
                 return http.post('course/edit/description', { courseId: courseId, description: courseDescription }).then(function (result) {
+                    if (typeof result !== "object")
+                        return alert("Fail in processing request.");
+
                     if (result[0]) {
                         var course = courseContext.courseList.find(function (item) {
-                            if (item.id === courseId)
-                                return item.id = courseId;
+                            return item.id === courseId;
                         });
+
+                        if (course === undefined)
+                            return "Course not found.";
 
                         course.description = courseDescription;
                         course.lastModified = new Date().toDateString();
                     }
 
-                    return Q(result[1]);
+                    return result[1];
                 });
             },
 
             deleteCourse: function (courseId) {
                 return http.post('course/delete', { courseId: courseId }).then(function (result) {
+                    if (typeof result !== "object")
+                        return alert("Fail in processing request.");
+
                     if (result[0]) {
                         var course = courseContext.courseList;
                         var elementId = 0;
@@ -71,7 +87,7 @@
                         courseContext.courseList.splice(elementId, 1);
                     }
 
-                    return Q(result[1]);
+                    return result;
                 });
             }
         }

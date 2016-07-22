@@ -1,5 +1,4 @@
 ﻿using EasyGeneratorAdditionalProject.DataAccess.Interfaces;
-using EasyGeneratorAdditionalProject.DataAccess.UnitOfWork;
 using EasyGeneratorAdditionalProject.Models.Entities;
 using System;
 using System.Web.Mvc;

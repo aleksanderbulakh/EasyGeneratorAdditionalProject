@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using EasyGeneratorAdditionalProject.DataAccess.Interfaces;
-using EasyGeneratorAdditionalProject.DataAccess.UnitOfWork;
 using EasyGeneratorAdditionalProject.Models.Entities;
 using EasyGeneratorAdditionalProject.Models.Models;
 using System;
@@ -41,6 +40,16 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
                 return Json(requestResult, JsonRequestBehavior.AllowGet);
             }
 
+            //DoAction(() =>
+            //{
+            //    course.UpdateTitle(title);
+
+            //    requestResult.Add(true);
+            //    requestResult.Add("Title changed.");
+            //    return requestResult;
+
+            //});
+
             try
             {
                 course.UpdateTitle(title);
@@ -54,6 +63,32 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
                 requestResult.Add(false);
                 requestResult.Add(exception.Message);
                 return Json(requestResult, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        class JsonFailedResult : JsonResult {
+            public JsonFailedResult(string errorMessage)
+            {
+                this.Data = new { Success = false, ErrorMessage = errorMessage };
+            }
+        }
+
+        class JsonSuccessResult : JsonResult
+        {
+            public JsonSuccessResult(object data)
+            {
+                this.Data = new { Success = true, Data = data };
+            }
+        }
+
+        ActionResult DoAction(Func<object> action) {
+            try
+            {
+                var result = action();
+                return new JsonSuccessResult(result);
+            }
+            catch (ArgumentException e) {
+                return new JsonFailedResult(e.Message);
             }
         }
 
@@ -154,5 +189,16 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             _work.Save();
             base.OnActionExecuted(filterContext);
         }
+
+        //protected override void OnException(ExceptionContext filterContext)
+        //{
+        //    if (!filterContext.ExceptionHandled) {
+        //        return;
+        //    }
+
+        //    if (filterContext.Exception is ArgumentException) {
+        //        filterContext.Result = new JsonFailedResult(filterContext.Exception.Message);
+        //    }
+        //}
     }
 }

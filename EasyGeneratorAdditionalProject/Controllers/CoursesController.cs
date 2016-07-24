@@ -2,6 +2,7 @@
 using EasyGeneratorAdditionalProject.DataAccess.Interfaces;
 using EasyGeneratorAdditionalProject.Models.Entities;
 using EasyGeneratorAdditionalProject.Models.Models;
+using EasyGeneratorAdditionalProject.Web.JsonResults;
 using EasyGeneratorAdditionalProject.Web.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -9,24 +10,6 @@ using System.Web.Mvc;
 
 namespace EasyGeneratorAdditionalProject.Web.Controllers
 {
-    class JsonSuccessResult : JsonResult
-    {
-        public JsonSuccessResult(object data)
-        {
-            this.Data = new { Success = true, RequestData = data };
-            this.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-        }
-    }
-
-    class JsonFailedResult : JsonResult
-    {
-        public JsonFailedResult(string errorMessage)
-        {
-            this.Data = new { Success = false, RequestData = errorMessage };
-            this.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-        }
-    }
-
     public class CoursesController : Controller
     {
         private readonly IUnitOfWork _work;

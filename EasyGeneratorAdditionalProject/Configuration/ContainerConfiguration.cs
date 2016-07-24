@@ -22,11 +22,12 @@ namespace EasyGeneratorAdditionalProject.Web.Configuration
                 .As<IDatabaseContext>()
                 .As<IUnitOfWork>()
                 .InstancePerLifetimeScope();
+            
+            builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
 
-
-            builder.RegisterType<RolesRepository>().As<IRepository<Role>>();
-            builder.RegisterType<UsersRepository>().As<IRepository<User>>();
-            builder.RegisterType<CoursesRepository>().As<IRepository<Course>>();
+            builder.RegisterType<RoleRepository>().As<IRoleRepository>();
+            builder.RegisterType<UserRepository>().As<IUserRepository>();
+            builder.RegisterType<CourseRepository>().As<ICourseRepository>();
 
             builder.Register(c => Mapper.Instance).As<IMapper>().InstancePerLifetimeScope();
 

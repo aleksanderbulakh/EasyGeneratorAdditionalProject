@@ -2,6 +2,7 @@
 using EasyGeneratorAdditionalProject.Models.Entities;
 using EasyGeneratorAdditionalProject.Web.Configuration;
 using EasyGeneratorAdditionalProject.Web.ModelBinders;
+using System.Data.Entity;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -12,12 +13,12 @@ namespace EasyGeneratorAdditionalProject
     {
         protected void Application_Start()
         {
-            System.Data.Entity.Database.SetInitializer(new DatabaseInitializer());
+            Database.SetInitializer(new DatabaseInitializer());
 
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfiguretion.Configure();
             ContainerConfiguration.Configure();
-            MappingConfiguration.Configure();        
+            MappingConfiguration.Configure();
 
             AreaRegistration.RegisterAllAreas();
 

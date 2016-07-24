@@ -9,7 +9,6 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
 {
     public class Content : CourseSectionAndContentParentModel
     {
-        public Guid SectionId { get; set; }
         public Section Section { get; set; }
         public string Type { get; set; }
 
@@ -20,9 +19,6 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
 
         public Content()
         {
-            Id = Guid.NewGuid();
-            LastModifiedDate = DateTime.Now;
-
             MaterialsCollection = new List<Material>();
             SingleSelectAnswerCollection = new List<SingleSelectAnswer>();
             MultipleSelectAnswerCollection = new List<MultipleSelectAnswer>();

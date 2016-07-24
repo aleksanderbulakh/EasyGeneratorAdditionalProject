@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using EasyGeneratorAdditionalProject.Models.Entities;
-using EasyGeneratorAdditionalProject.Models.Models;
+using EasyGeneratorAdditionalProject.Web.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -11,28 +11,26 @@ namespace EasyGeneratorAdditionalProject.Models.Models.EntitisParentModels
         public CourseSectionAndContentParentModel()
         {
             Id = Guid.NewGuid();
+            CreatedOn = DateToMiliseconds(DateTime.UtcNow);
+            MarkAsModified();
         }
 
         public Guid Id { get; set; }
         public string Title { get; set; }
         public string CreatedBy { get; set; }
-        public DateTime CreatedOn { get; set; }
-        public DateTime LastModifiedDate { get; set; }
+        public long CreatedOn { get; set; }
+        public long LastModifiedDate { get; set; }
 
         public void MarkAsModified()
         {
-            LastModifiedDate = DateTime.Now;
+            LastModifiedDate = DateToMiliseconds(DateTime.UtcNow);
         }
 
-        public void SetDateFields()
+        private long DateToMiliseconds(DateTime date)
         {
-            CreatedOn = DateTime.Now;
-            MarkAsModified();
-        }
+            DateTime minDate = new DateTime(1969, 12, 31, 0, 0, 0);
 
-        public void SetId()
-        {
-            Id = Guid.NewGuid();
+            return (date - minDate).Ticks / TimeSpan.TicksPerMillisecond;
         }
     }
 }

@@ -10,7 +10,6 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
     public class User : IUser<Guid>
     {
         public Guid Id { get; set; }
-        public Guid RoleId { get; set; }
         public Role Role { get; set; }
         public string FirstName { get; set; }
         public string Surname { get; set; }
@@ -26,10 +25,10 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             CoursesCollection = new List<Course>();
         }
 
-        public User(Guid roleId, string firstName, string surname, string email, string password)
+        public User(Role role, string firstName, string surname, string email, string password)
         {
             Id = Guid.NewGuid();
-            RoleId = roleId;
+            Role = role;
             FirstName = firstName;
             Surname = surname;
             UserName = firstName + " " + surname;

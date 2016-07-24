@@ -17,13 +17,13 @@
                 if (confirm("Are you sure?"))
                     courseRepository.deleteCourse(id).then(function (result) {
                         if (typeof result === "object") {
-                            if (result[0]) {
-                                self.courseList.valueHasMutated()
+                            if (result.Success) {
+                                self.courseList.valueHasMutated();
                             }
-                            alert(result[1]);
+                            alert(result.RequestData);
                         }
                         else
-                            alert(result);
+                            alert(result.RequestData);
                     });
             },
             createCourse: function () {

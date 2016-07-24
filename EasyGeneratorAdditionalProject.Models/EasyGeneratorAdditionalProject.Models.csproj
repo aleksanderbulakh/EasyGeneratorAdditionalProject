@@ -67,7 +67,6 @@
     <Compile Include="Entities\SingleSelectAnswer.cs" />
     <Compile Include="Entities\SingleSelectImageAnswer.cs" />
     <Compile Include="Entities\User.cs" />
-    <Compile Include="Models\CourseViewModel.cs" />
     <Compile Include="Models\EntitisParentModels\AnswersParentModel.cs" />
     <Compile Include="Models\EntitisParentModels\CourseSectionAndContentParentModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

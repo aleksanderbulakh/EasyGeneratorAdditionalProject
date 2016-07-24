@@ -8,10 +8,12 @@
             createCourse: function () {
                 return http.post('course/create').then(function (result) {
                     if (typeof result === 'object') {
-                        courseContext.courseList.push(mapper.mapCourse(result));
-                        return result.Id;
+                        if (result.Success) {
+                            courseContext.courseList.push(mapper.mapCourse(result.RequestData));
+                            return result.RequestData.Id;
+                        }
                     }
-                    else alert(result);
+                    else alert(result.RequestData);
                 });
             },
 
@@ -29,9 +31,9 @@
             editCourseTitle: function (courseId, courseTitle) {
                 return http.post('course/edit/title', { courseId: courseId, title: courseTitle }).then(function (result) {
                     if (typeof result !== "object")
-                        return alert("Fail in processing request.");
+                        return alert(result);
 
-                    if (result[0]) {
+                    if (result.Success) {
                         var course = courseContext.courseList.find(function (item) {
                             return item.id === courseId;
                         });
@@ -43,16 +45,16 @@
                         course.lastModified = new Date().toDateString();
                     }
 
-                    return result[1];
+                    return result.RequestData;
                 });
             },
 
             editCourseDescription: function (courseId, courseDescription) {
                 return http.post('course/edit/description', { courseId: courseId, description: courseDescription }).then(function (result) {
                     if (typeof result !== "object")
-                        return alert("Fail in processing request.");
+                        return alert(result);
 
-                    if (result[0]) {
+                    if (result.Success) {
                         var course = courseContext.courseList.find(function (item) {
                             return item.id === courseId;
                         });
@@ -64,31 +66,35 @@
                         course.lastModified = new Date().toDateString();
                     }
 
-                    return result[1];
+                    return result.RequestData;
                 });
             },
 
             deleteCourse: function (courseId) {
-                return http.post('course/delete', { courseId: courseId }).then(function (result) {
-                    if (typeof result !== "object")
-                        return alert("Fail in processing request.");
+                return http.post('course/delete', { courseId: courseId })
+                    .then(function (result) {
+                        if (typeof result !== "object")
+                            return alert(result);
 
-                    if (result[0]) {
-                        var course = courseContext.courseList;
-                        var elementId = 0;
-                        for (var i = 0; i < course.length; i++) {
-                            if (course[i].id !== courseId)
-                                continue;
+                        if (result.Success) {
+                            var course = courseContext.courseList;
+                            var elementId = 0;
+                            for (var i = 0; i < course.length; i++) {
+                                if (course[i].id !== courseId)
+                                    continue;
 
-                            elementId = i;
-                            break;
+                                elementId = i;
+                                break;
+                            }
+
+                            courseContext.courseList.splice(elementId, 1);
                         }
 
-                        courseContext.courseList.splice(elementId, 1);
-                    }
-
-                    return result;
+                        return result;
+                    })
+                .fail(function (result) {
+                    alert(result);
                 });
             }
-        }
+        };
     });

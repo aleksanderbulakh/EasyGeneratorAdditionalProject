@@ -11,7 +11,7 @@
                     check = false;
                 else {
                     newValue = newValue.trim();
-                    check = (newValue.length <= 255 && newValue.length > 0);
+                    check = newValue.length <= 255 && newValue.length > 0;
                 }
                 target.hasError(!check);
                 target.validationMessage(check ? "" : overrideMessage || "This field is required");

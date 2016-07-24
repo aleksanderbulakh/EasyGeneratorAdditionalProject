@@ -7,11 +7,11 @@
                     id: spec.Id,
                     title: spec.Title,
                     description: spec.Description,
-                    createdOn: spec.CreatedOn,
+                    createdOn: new Date(spec.CreatedOn).toLocaleDateString(),
                     createdBy: spec.CreatedBy,
-                    lastModified: spec.LastModifiedDate,
+                    lastModified: new Date(spec.LastModifiedDate).toLocaleDateString(),
                     sectionList: []
                 });
             }
-        }
+        };
     });

@@ -9,7 +9,6 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
 {
     public class Course : CourseSectionAndContentParentModel
     {
-        public Guid UserId { get; set; }
         public User User { get; set; }
         public string Description { get; set; }
 
@@ -21,16 +20,15 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             SectionsList = new List<Section>();
         }
 
-        public Course(string title, string description, Guid userId, string userName):this()
+        public Course(string title, string description, User user):this()
         {
             ThrowIfTileInvalid(title);
             ThrowIfDescriptionInvalid(description);
 
             Title = title;
             Description = description;
-            UserId = userId;
-            CreatedBy = userName;
-            SetDateFields();
+            User = user;
+            CreatedBy = String.Format("{0} {1}", user.FirstName, user.Surname);
         }
 
         #region Update

@@ -31,7 +31,7 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Context
             #region Role
             modelBuilder.Entity<Role>().ToTable("Roles");
             modelBuilder.Entity<Role>().HasKey(t => t.Id);
-            modelBuilder.Entity<Role>().HasMany(t => t.UserCollection);
+            modelBuilder.Entity<Role>().HasMany(t => t.UserCollection).WithRequired(t => t.Role);
             #endregion
 
             #region User
@@ -42,7 +42,7 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Context
             modelBuilder.Entity<User>().Property(t => t.Email).IsRequired();
             modelBuilder.Entity<User>().Property(t => t.PasswordHash).IsRequired();
             modelBuilder.Entity<User>().Ignore(t => t.UserName);
-            modelBuilder.Entity<User>().HasMany(t => t.CoursesCollection);
+            modelBuilder.Entity<User>().HasMany(t => t.CoursesCollection).WithRequired(t => t.User);
             #endregion
 
             #region Course
@@ -50,7 +50,7 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Context
             modelBuilder.Entity<Course>().HasKey(t => t.Id);
             modelBuilder.Entity<Course>().Property(t => t.Title).IsRequired();
             modelBuilder.Entity<Course>().Property(t => t.Title).HasMaxLength(255);
-            modelBuilder.Entity<Course>().HasMany(t => t.SectionsList);
+            modelBuilder.Entity<Course>().HasMany(t => t.SectionsList).WithRequired(t => t.Course);
             #endregion
 
             #region Section
@@ -58,7 +58,7 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Context
             modelBuilder.Entity<Section>().HasKey(t => t.Id);
             modelBuilder.Entity<Section>().Property(t => t.Title).IsRequired();
             modelBuilder.Entity<Section>().Property(t => t.Title).HasMaxLength(255);
-            modelBuilder.Entity<Section>().HasMany(t => t.ContentCollection);
+            modelBuilder.Entity<Section>().HasMany(t => t.ContentCollection).WithRequired(t => t.Section);
             #endregion
 
             #region Content
@@ -67,7 +67,7 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Context
             modelBuilder.Entity<Content>().Property(t => t.Title).IsRequired();
             modelBuilder.Entity<Content>().Property(t => t.Title).HasMaxLength(255);
             modelBuilder.Entity<Content>().Property(t => t.Type).IsRequired();
-            modelBuilder.Entity<Content>().HasMany(t => t.MaterialsCollection);
+            modelBuilder.Entity<Content>().HasMany(t => t.MaterialsCollection).WithRequired(t => t.Content);
             modelBuilder.Entity<Content>().HasMany(t => t.SingleSelectAnswerCollection);
             modelBuilder.Entity<Content>().HasMany(t => t.MultipleSelectAnswerCollection);
             modelBuilder.Entity<Content>().HasMany(t => t.SingleSelectImageAnswerCollection);

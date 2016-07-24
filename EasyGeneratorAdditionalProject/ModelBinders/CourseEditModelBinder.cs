@@ -11,7 +11,7 @@ namespace EasyGeneratorAdditionalProject.Web.ModelBinders
         public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
             var valueProvider = bindingContext.ValueProvider;
-
+            
             var courseId = (Guid)valueProvider.GetValue("courseId").ConvertTo(typeof(Guid));
 
             if (courseId == null)

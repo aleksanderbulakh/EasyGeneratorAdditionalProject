@@ -2,19 +2,38 @@
 using EasyGeneratorAdditionalProject.DataAccess.Interfaces;
 using EasyGeneratorAdditionalProject.Models.Entities;
 using EasyGeneratorAdditionalProject.Models.Models;
+using EasyGeneratorAdditionalProject.Web.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace EasyGeneratorAdditionalProject.Web.Controllers
 {
+    class JsonSuccessResult : JsonResult
+    {
+        public JsonSuccessResult(object data)
+        {
+            this.Data = new { Success = true, RequestData = data };
+            this.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+        }
+    }
+
+    class JsonFailedResult : JsonResult
+    {
+        public JsonFailedResult(string errorMessage)
+        {
+            this.Data = new { Success = false, RequestData = errorMessage };
+            this.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+        }
+    }
+
     public class CoursesController : Controller
     {
         private readonly IUnitOfWork _work;
-        private readonly IRepository<User> _userRepository;
-        private readonly IRepository<Course> _courseRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly ICourseRepository _courseRepository;
         private readonly IMapper _mapper;
-        public CoursesController(IUnitOfWork work, IRepository<User> userRepository, IRepository<Course> courseRepository, IMapper mapper)
+        public CoursesController(IUnitOfWork work, IUserRepository userRepository, ICourseRepository courseRepository, IMapper mapper)
         {
             _work = work;
             _userRepository = userRepository;
@@ -24,122 +43,42 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
         private User GetFirstUser()
         {
-            return _userRepository.GetAll()[0];
+            return _userRepository.GetById(Guid.Parse("d4b0ce30-2555-4c74-9c83-34be6821112a"));
         }
 
         [HttpPost]
         [Route("course/edit/title", Name = "EditCourseTitle")]
         public JsonResult EditCourseTitle(Course course, string title)
         {
-            var requestResult = new List<object>();
+            course.UpdateTitle(title);
 
-            if (course == null)
-            {
-                requestResult.Add(false);
-                requestResult.Add("Course not find.");
-                return Json(requestResult, JsonRequestBehavior.AllowGet);
-            }
-
-            //DoAction(() =>
-            //{
-            //    course.UpdateTitle(title);
-
-            //    requestResult.Add(true);
-            //    requestResult.Add("Title changed.");
-            //    return requestResult;
-
-            //});
-
-            try
-            {
-                course.UpdateTitle(title);
-
-                requestResult.Add(true);
-                requestResult.Add("Title changed.");
-                return Json(requestResult, JsonRequestBehavior.AllowGet);
-            }
-            catch (ArgumentException exception)
-            {
-                requestResult.Add(false);
-                requestResult.Add(exception.Message);
-                return Json(requestResult, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        class JsonFailedResult : JsonResult {
-            public JsonFailedResult(string errorMessage)
-            {
-                this.Data = new { Success = false, ErrorMessage = errorMessage };
-            }
-        }
-
-        class JsonSuccessResult : JsonResult
-        {
-            public JsonSuccessResult(object data)
-            {
-                this.Data = new { Success = true, Data = data };
-            }
-        }
-
-        ActionResult DoAction(Func<object> action) {
-            try
-            {
-                var result = action();
-                return new JsonSuccessResult(result);
-            }
-            catch (ArgumentException e) {
-                return new JsonFailedResult(e.Message);
-            }
+            return new JsonSuccessResult("Title changed.");
         }
 
         [HttpPost]
         [Route("course/edit/description", Name = "EditCourseDescription")]
         public JsonResult EditCourseDescription(Course course, string description)
         {
-            var requestResult = new List<object>();
 
             if (course == null)
-            {
-                requestResult.Add(false);
-                requestResult.Add("Course not find.");
-                return Json(requestResult, JsonRequestBehavior.AllowGet);
-            }
+                return new JsonFailedResult("Course not find.");
 
-            try
-            {
-                course.UpdateDescription(description);
+            course.UpdateDescription(description);
 
-                requestResult.Add(true);
-                requestResult.Add("Description changed.");
-                return Json(requestResult, JsonRequestBehavior.AllowGet);
-            }
-            catch (ArgumentException exception)
-            {
-                requestResult.Add(false);
-                requestResult.Add(exception.Message);
-                return Json(requestResult, JsonRequestBehavior.AllowGet);
-            }
+            return new JsonSuccessResult("Description changed.");
         }
 
         [HttpPost]
         [Route("course/delete", Name = "DeleteCourse")]
         public JsonResult DeleteCourse(Course course)
         {
-            var requestResult = new List<object>();
 
             if (course == null)
-            {
-                requestResult.Add(false);
-                requestResult.Add("Course not find.");
-                return Json(requestResult, JsonRequestBehavior.AllowGet);
-            }
+                return new JsonFailedResult("Course not find.");
 
             _courseRepository.Delete(course);
 
-
-            requestResult.Add(true);
-            requestResult.Add("Course deleted.");
-            return Json(requestResult, JsonRequestBehavior.AllowGet);
+            return new JsonSuccessResult("Course deleted.");
         }
 
         [HttpPost]
@@ -148,20 +87,11 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         {
             var user = GetFirstUser();
 
-            try
-            {
-                var newCourse = new Course("course title", "course description", user.Id, user.FirstName + " " + user.Surname);
+            var newCourse = new Course("course title", "course description", user);
 
-                _courseRepository.Create(newCourse);
+            _courseRepository.Create(newCourse);
 
-                var courseViewModel = _mapper.Map<CourseViewModel>(newCourse);
-
-                return Json(courseViewModel, JsonRequestBehavior.AllowGet);
-            }
-            catch (ArgumentException exception)
-            {
-                return Json(exception.Message, JsonRequestBehavior.AllowGet);
-            }
+            return new JsonSuccessResult(_mapper.Map<CourseViewModel>(newCourse));
         }
 
         [HttpGet]
@@ -170,18 +100,18 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         {
             var user = GetFirstUser();
 
-            var courses = _courseRepository.GetByForeignId(user.Id);
+            var courses = new List<CourseViewModel>();
 
-            var courseViewModelList = new List<CourseViewModel>();
-
-            foreach (var course in courses)
+            foreach (var course in _courseRepository.GetByUserId(user.Id))
             {
-                var courseViewModel = _mapper.Map<CourseViewModel>(course);
-
-                courseViewModelList.Add(courseViewModel);
+                courses.Add(_mapper.Map<CourseViewModel>(course));
             }
 
-            return Json(courseViewModelList, JsonRequestBehavior.AllowGet);
+            var r = DateTime.MinValue;
+            var t = DateTime.Now;
+            var tr = (t - r).Ticks/TimeSpan.TicksPerMillisecond;
+
+            return new JsonSuccessResult(courses);
         }
 
         protected override void OnActionExecuted(ActionExecutedContext filterContext)
@@ -190,15 +120,18 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             base.OnActionExecuted(filterContext);
         }
 
-        //protected override void OnException(ExceptionContext filterContext)
-        //{
-        //    if (!filterContext.ExceptionHandled) {
-        //        return;
-        //    }
+        protected override void OnException(ExceptionContext filterContext)
+        {
+            if (filterContext.ExceptionHandled)
+            {
+                return;
+            }
 
-        //    if (filterContext.Exception is ArgumentException) {
-        //        filterContext.Result = new JsonFailedResult(filterContext.Exception.Message);
-        //    }
-        //}
+            if (filterContext.Exception is ArgumentException)
+            {
+                filterContext.Result = new JsonFailedResult(filterContext.Exception.Message);
+                filterContext.ExceptionHandled = true;
+            }
+        }
     }
 }

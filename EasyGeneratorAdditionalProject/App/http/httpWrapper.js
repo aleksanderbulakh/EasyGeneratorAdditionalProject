@@ -6,10 +6,10 @@
 
         http.post(url, data)
             .then(function (result) {
-                if (result && !result.ErrorMessage) {
+                if (result.Success) {
                     return defer.resolve(result);
                 }
-                defer.reject(onError(result.ErrorMessage));
+                defer.reject(onError(result.RequestData));
             })
         .fail(function (data) {
             defer.reject(onError());
@@ -21,10 +21,10 @@
         var defer = Q.defer();
 
         http.get(url, data).then(function (result) {
-            if (result && !result.ErrorMessage) {
+            if (result.Success) {
                 return defer.resolve(result);
             }
-            defer.reject(onError(result.ErrorMessage));
+            defer.reject(onError(result.RequestData));
         })
         .fail(function (data) {
             defer.reject(onError());

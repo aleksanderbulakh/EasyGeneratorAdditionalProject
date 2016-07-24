@@ -9,15 +9,12 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
 {
     public class Section : CourseSectionAndContentParentModel
     {
-        public Guid CourseId { get; set; }
         public Course Course { get; set; }
 
         public virtual ICollection<Content> ContentCollection { get; set; }
 
         public Section()
         {
-            Id = Guid.NewGuid();
-            LastModifiedDate = DateTime.Now;
             ContentCollection = new List<Content>();
         }
     }

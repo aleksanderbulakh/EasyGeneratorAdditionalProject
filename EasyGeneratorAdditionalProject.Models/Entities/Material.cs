@@ -9,7 +9,6 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
     public class Material
     {
         public Guid Id { get; set; }
-        public Guid ContentId { get; set; }
         public Content Content { get; set; }
         public string Text { get; set; }
 

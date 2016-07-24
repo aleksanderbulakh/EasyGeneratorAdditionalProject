@@ -10,7 +10,6 @@ namespace EasyGeneratorAdditionalProject.Models.Models.EntitisParentModels
     public class AnswersParentModel
     {
         public Guid Id { get; set; }
-        public Guid ContentId { get; set; }
         public Content Content { get; set; }
         public string Text { get; set; }
         public bool IsCorrect { get; set; }

@@ -6,22 +6,27 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Models.Models.EntitisParentModels
 {
-    public class CourseSectionAndContentParentModel
+    public class Titled : Identity
     {
-        public CourseSectionAndContentParentModel()
+        public Titled()
+            :base()
         {
-            Id = Guid.NewGuid();
             CreatedOn = DateToMiliseconds(DateTime.UtcNow);
             MarkAsModified();
         }
-
-        public Guid Id { get; set; }
+        
         public string Title { get; set; }
         public string CreatedBy { get; set; }
         public long CreatedOn { get; set; }
         public long LastModifiedDate { get; set; }
 
-        public void MarkAsModified()
+        protected void ThrowIfTileInvalid(string title)
+        {
+            if (title == null || title.Length == 0 || title.Length > 225)
+                throw new ArgumentException("Invalid title");
+        }
+
+        protected void MarkAsModified()
         {
             LastModifiedDate = DateToMiliseconds(DateTime.UtcNow);
         }

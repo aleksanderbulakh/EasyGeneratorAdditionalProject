@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Models.Entities
 {
-    public class Course : CourseSectionAndContentParentModel
+    public class Course : Titled
     {
         public User User { get; set; }
         public string Description { get; set; }
@@ -50,12 +50,6 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
         #endregion
 
         #region Validation
-        private void ThrowIfTileInvalid(string title)
-        {
-            if (title == null || title.Length == 0 || title.Length > 225)
-                throw new ArgumentException("Invalid title");
-        }
-
         private void ThrowIfDescriptionInvalid(string description)
         {
             if (description == null)

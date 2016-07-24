@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Models.Entities
 {
-    public class MultipleSelectAnswer : AnswersParentModel
+    public class MultipleSelectAnswer : Answers
     {
         public MultipleSelectAnswer()
         {

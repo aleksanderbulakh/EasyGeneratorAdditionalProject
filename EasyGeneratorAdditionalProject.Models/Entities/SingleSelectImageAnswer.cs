@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Models.Entities
 {
-    public class SingleSelectImageAnswer : AnswersParentModel
+    public class SingleSelectImageAnswer : Answers
     {
         public string Photo { get; set; }
 

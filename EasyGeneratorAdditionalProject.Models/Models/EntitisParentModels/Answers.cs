@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Models.Models.EntitisParentModels
 {
-    public class AnswersParentModel
+    public class Answers : Identity
     {
-        public Guid Id { get; set; }
         public Content Content { get; set; }
         public string Text { get; set; }
         public bool IsCorrect { get; set; }
+
+        public Answers() 
+            : base() { }
     }
 }

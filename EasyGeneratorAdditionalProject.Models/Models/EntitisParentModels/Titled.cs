@@ -33,7 +33,7 @@ namespace EasyGeneratorAdditionalProject.Models.Models.EntitisParentModels
 
         private long DateToMiliseconds(DateTime date)
         {
-            DateTime minDate = new DateTime(1969, 12, 31, 0, 0, 0);
+            DateTime minDate = new DateTime(1969, 12, 31, 23, 59, 59);
 
             return (date - minDate).Ticks / TimeSpan.TicksPerMillisecond;
         }

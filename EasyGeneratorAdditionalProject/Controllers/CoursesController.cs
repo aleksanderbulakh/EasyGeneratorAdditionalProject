@@ -33,22 +33,24 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         [Route("course/edit/title", Name = "EditCourseTitle")]
         public JsonResult EditCourseTitle(Course course, string title)
         {
+            if (course == null)
+                return new JsonFailedResult("Course not find.");
+
             course.UpdateTitle(title);
 
-            return new JsonSuccessResult("Title changed.");
+            return new JsonSuccessResult(course.LastModifiedDate);
         }
 
         [HttpPost]
         [Route("course/edit/description", Name = "EditCourseDescription")]
         public JsonResult EditCourseDescription(Course course, string description)
         {
-
             if (course == null)
                 return new JsonFailedResult("Course not find.");
 
             course.UpdateDescription(description);
 
-            return new JsonSuccessResult("Description changed.");
+            return new JsonSuccessResult(course.LastModifiedDate);
         }
 
         [HttpPost]

@@ -42,10 +42,10 @@
                             return "Course not found.";
 
                         course.title = courseTitle;
-                        course.lastModified = new Date().toDateString();
+                        course.lastModified = new Date(result.RequestData).toLocaleDateString();
                     }
 
-                    return result.RequestData;
+                    return "Title changed.";
                 });
             },
 
@@ -63,10 +63,10 @@
                             return "Course not found.";
 
                         course.description = courseDescription;
-                        course.lastModified = new Date().toDateString();
+                        course.lastModified = new Date(result.RequestData).toLocaleDateString();
                     }
 
-                    return result.RequestData;
+                    return "Description changed.";
                 });
             },
 

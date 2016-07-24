@@ -94,7 +94,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
             var r = DateTime.MinValue;
             var t = DateTime.Now;
-            var tr = (t - r).Ticks/TimeSpan.TicksPerMillisecond;
+            var tr = (t - r).Ticks / TimeSpan.TicksPerMillisecond;
 
             return new JsonSuccessResult(courses);
         }

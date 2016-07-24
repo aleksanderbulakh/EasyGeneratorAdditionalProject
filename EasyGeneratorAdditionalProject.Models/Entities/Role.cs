@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasyGeneratorAdditionalProject.Models.Models.EntitisParentModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,20 +7,20 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Models.Entities
 {
-    public class Role
+    public class Role : Identity
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
 
         public virtual ICollection<User> UserCollection { get; set; }
 
         public Role()
+            : base()
         {
-            Id = Guid.NewGuid();
             UserCollection = new List<User>();
         }
 
         public Role(string name)
+            : this()
         {
             Name = name;
         }

@@ -9,12 +9,12 @@ namespace EasyGeneratorAdditionalProject.Models.Models.EntitisParentModels
     public class Titled : Identity
     {
         public Titled()
-            :base()
+            : base()
         {
             CreatedOn = DateToMiliseconds(DateTime.UtcNow);
             MarkAsModified();
         }
-        
+
         public string Title { get; set; }
         public string CreatedBy { get; set; }
         public long CreatedOn { get; set; }

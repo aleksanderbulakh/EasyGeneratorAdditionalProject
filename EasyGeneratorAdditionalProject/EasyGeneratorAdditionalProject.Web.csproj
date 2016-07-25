@@ -169,6 +169,7 @@
     <Content Include="App\models\course.js" />
     <Content Include="App\models\section.js" />
     <Content Include="App\data\courseRepository.js" />
+    <Content Include="App\models\titled.js" />
     <Content Include="App\viewmodels\coursePage.js" />
     <Content Include="App\viewmodels\courseListPage.js" />
     <Content Include="App\viewmodels\coursePreviewPage.js" />

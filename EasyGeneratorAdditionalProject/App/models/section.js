@@ -1,10 +1,7 @@
-﻿define(function () {
+﻿define(['models/titled'], function (Titled) {
     function Section(spec) {
-        this.id = spec.id;
-        this.title = spec.title;
-        this.createdOn = spec.createdOn;
-        this.lastModifiedDate = spec.lastModified;
-        this.createdBy = spec.createdBy;
+        Titled.apply(this, arguments);
+
         this.contentList = spec.contentList;
     }
 

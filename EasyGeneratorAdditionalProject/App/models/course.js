@@ -1,11 +1,8 @@
-﻿define(function () {
+﻿define(['models/titled'], function (Titled) {
     function Course(spec) {
-        this.id = spec.id;
-        this.title = spec.title;
+        Titled.apply(this, arguments);
+
         this.description = spec.description;
-        this.createdOn = spec.createdOn;
-        this.createdBy = spec.createdBy;
-        this.lastModified = spec.lastModified;
         this.sectionList = spec.sectionList;
     }
 

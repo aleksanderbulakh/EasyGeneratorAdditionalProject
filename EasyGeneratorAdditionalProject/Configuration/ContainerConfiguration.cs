@@ -28,6 +28,7 @@ namespace EasyGeneratorAdditionalProject.Web.Configuration
             builder.RegisterType<RoleRepository>().As<IRoleRepository>();
             builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<CourseRepository>().As<ICourseRepository>();
+            builder.RegisterType<SectionRepository>().As<ISectionRepository>();
 
             builder.Register(c => Mapper.Instance).As<IMapper>().InstancePerLifetimeScope();
 

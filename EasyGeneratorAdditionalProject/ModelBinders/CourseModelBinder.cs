@@ -5,7 +5,7 @@ using System.Web.Mvc;
 
 namespace EasyGeneratorAdditionalProject.Web.ModelBinders
 {
-    public class CourseEditModelBinder : IModelBinder
+    public class CourseModelBinder : IModelBinder
     {
         
         public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
@@ -17,7 +17,7 @@ namespace EasyGeneratorAdditionalProject.Web.ModelBinders
             if (courseId == null)
                 return new ArgumentException("Don't have id");
 
-            var _courseRepository = DependencyResolver.Current.GetService<IRepository<Course>>();
+            var _courseRepository = DependencyResolver.Current.GetService<ICourseRepository>();
             return _courseRepository.GetById(courseId);
         }
     }

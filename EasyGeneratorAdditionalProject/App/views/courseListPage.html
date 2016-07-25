@@ -5,7 +5,7 @@
             <button class="navigation-create" data-bind="click: createCourse">Create new course</button>
         </div>
         <div class="list-course-data" data-bind="foreach: courseList">
-            <a data-bind="attr: {href: '#course/'+id }">
+            <a data-bind="click: (function(){ $root.toCourse(id)})">
                 <div class="course-data-position-top">
                     <div class="position-top-title" data-bind="text: title"></div>
                 </div>

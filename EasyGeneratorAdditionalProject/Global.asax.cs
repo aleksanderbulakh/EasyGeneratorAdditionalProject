@@ -22,7 +22,8 @@ namespace EasyGeneratorAdditionalProject
 
             AreaRegistration.RegisterAllAreas();
 
-            ModelBinders.Binders.Add(typeof(Course), new CourseEditModelBinder());
+            ModelBinders.Binders.Add(typeof(Course), new CourseModelBinder());
+            ModelBinders.Binders.Add(typeof(Section), new SectionModelBinder());
         }
     }
 }

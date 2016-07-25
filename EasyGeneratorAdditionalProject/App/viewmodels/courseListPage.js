@@ -1,5 +1,5 @@
-﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/courseRepository'],
-    function (ko, router, app, courseRepository) {
+﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/courseRepository', 'data/sectionRepository'],
+    function (ko, router, app, courseRepository, sectionRepository) {
         return {
             router: router,
             courseList: ko.observableArray(),
@@ -30,6 +30,18 @@
                 courseRepository.createCourse().then(function (courseId) {
                     router.navigate('#course/' + courseId);
                 });
+            },
+            toCourse: function (courseId) {
+                var course = courseRepository.getCourseById(courseId).then(function (course) {
+                    if(course.sectionList.length === 0)
+                        sectionRepository.getSectionByCourseId(courseId).then(function () {
+                            router.navigate('#course/' + courseId);
+                        });
+                    else
+                        router.navigate('#course/' + courseId);
+                });
+
+                
             }
         };
     });

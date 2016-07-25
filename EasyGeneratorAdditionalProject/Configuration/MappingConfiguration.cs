@@ -15,6 +15,7 @@ namespace EasyGeneratorAdditionalProject.Web.Configuration
             Mapper.Initialize(config =>
             {
                 config.CreateMap<Course, CourseViewModel>();
+                config.CreateMap<Section, SectionViewModel>();
             });
         }
     }

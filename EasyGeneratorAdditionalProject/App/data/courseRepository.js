@@ -25,7 +25,7 @@
                 if (course === undefined)
                     return "Course not found.";
 
-                return course;
+                return Q(course);
             },
 
             editCourseTitle: function (courseId, courseTitle) {
@@ -43,9 +43,11 @@
 
                         course.title = courseTitle;
                         course.lastModified = new Date(result.RequestData).toLocaleDateString();
+
+                        return "Title changed.";
                     }
 
-                    return "Title changed.";
+                    return "Title not changed";
                 });
             },
 

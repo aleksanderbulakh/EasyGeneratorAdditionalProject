@@ -92,10 +92,6 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
                 courses.Add(_mapper.Map<CourseViewModel>(course));
             }
 
-            var r = DateTime.MinValue;
-            var t = DateTime.Now;
-            var tr = (t - r).Ticks / TimeSpan.TicksPerMillisecond;
-
             return new JsonSuccessResult(courses);
         }
 

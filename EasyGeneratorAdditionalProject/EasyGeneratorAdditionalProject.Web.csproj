@@ -162,27 +162,25 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\data\courseContext.js" />
+    <Content Include="App\data\sectionRepository.js" />
     <Content Include="App\http\httpWrapper.js" />
     <Content Include="App\main.js" />
     <Content Include="App\mapper\mapper.js" />
     <Content Include="App\models\course.js" />
-    <Content Include="App\models\materials.js" />
-    <Content Include="App\models\multipleSelectAnswer.js" />
-    <Content Include="App\models\sectionContent.js" />
-    <Content Include="App\models\singleSelectImageAnswer.js" />
-    <Content Include="App\models\singleSelectAnswer.js" />
     <Content Include="App\models\section.js" />
     <Content Include="App\data\courseRepository.js" />
     <Content Include="App\viewmodels\coursePage.js" />
     <Content Include="App\viewmodels\courseListPage.js" />
     <Content Include="App\viewmodels\coursePreviewPage.js" />
     <Content Include="App\viewmodels\loginPage.js" />
+    <Content Include="App\viewmodels\sectionListPartialPage.js" />
     <Content Include="App\viewmodels\shell.js" />
     <Content Include="App\viewmodels\userRegistrationPage.js" />
     <Content Include="App\views\coursePage.html" />
     <Content Include="App\views\courseListPage.html" />
     <Content Include="App\views\coursePreviewPage.html" />
     <Content Include="App\views\loginPage.html" />
+    <Content Include="App\views\sectionListPartialPage.html" />
     <Content Include="App\views\shell.html" />
     <Content Include="App\views\userRegistrationPage.html" />
     <Content Include="Content\durandal.css" />
@@ -231,14 +229,17 @@
     <Compile Include="Configuration\RouteConfig.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SectionController.cs" />
     <Compile Include="JsonResults\JsonFailedResult.cs" />
     <Compile Include="JsonResults\JsonSuccessResult.cs" />
-    <Compile Include="ModelBinders\CourseEditModelBinder.cs" />
+    <Compile Include="ModelBinders\CourseModelBinder.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="ModelBinders\SectionModelBinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />
+    <Compile Include="ViewModels\SectionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -256,7 +257,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Srction\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyGeneratorAdditionalProject.DataAccess\EasyGeneratorAdditionalProject.DataAccess.csproj">
       <Project>{2d39c2b7-e29e-4484-adc5-6ca5797ad23b}</Project>

@@ -14,54 +14,10 @@
     <hr />
     <!-- ko if: courseSection !== undefined -->
     <div class="course-section-list" data-bind="foreach: courseSection">
-        <div class="section-info">
-            <div class="section-title">
-                <span>Section title: </span>
-                <span data-bind="contentEditable: true, htmlLazy: title"></span>
-            </div>
-            <div class="section-created-by">
-                <span>Created by: </span>
-                <span data-bind="text: createdBy"></span>
-            </div>
-            <div class="section-created-on">
-                <span>Created on: </span>
-                <span data-bind="text: createdOn"></span>
-            </div>
-            <div class="section-last-modified-date">
-                <span>Last modified</span>
-                <span data-bind="text: lastModifiedDate"></span>
-            </div>
-        </div>
-        <hr />
-        <!-- ko if: contentList !== undefined -->
-        <div class="content-list" data-bind="foreach: contentList">
-            <div class="list-info">
-                <div class="content-title">
-                    <span>Content title: </span>
-                    <span data-bind="contentEditable: true, htmlLazy: title"></span>
-                </div>
-                <div class="content-type">
-                    <span>Content type: </span>
-                    <span data-bind="text: type"></span>
-                </div>
-                <hr />
-                <!-- ko if: contentValueList !== undefined -->
-                <div class="content-value" data-bind="foreach: contentValueList">
-                    <div class="value-text">
-                        <span>Value text: </span>
-                        <span data-bind="contentEditable: true, htmlLazy: text"></span>
-                    </div>
-                </div>
-                <!-- /ko -->
-                <button class="add-content-value">Add content value</button>
-                <hr />
-            </div>
-        </div>
-        <!-- /ko -->
-        <button class="add-content">add content</button>
+        <div data-bind="compose: { model: 'viewmodels/sectionListPartialPage', activate: true, activationData: $data }"></div>
     </div>
     <!-- /ko -->
-    <button class="add-section">Add section</button>
-    <button data-bind="click: editTitle, disable: courseTitle.hasError">Save Title</button>
+    <button class="add-section" data-bind="click: (function(){createSection(courseId)})">Add section</button>
+    <button data-bind="click: editTitle, disable: courseTitle.hasError && courseTitle() == course().title ">Save Title</button>
     <button data-bind="click: editDescription">Save Description</button>
 </div>

@@ -1,0 +1,25 @@
+﻿<div class="partial-view-container">
+    <div class="section-info">
+        <div class="section-title">
+            <span>Section title: </span>
+            <span data-bind="contentEditable: true, htmlLazy: sectionTitle"></span>
+            <span class="course-title-validate-message" data-bind="visible: sectionTitle.hasError, text: sectionTitle.validationMessage"></span>
+        </div>
+        <div class="section-created-by">
+            <span>Created by: </span>
+            <span data-bind="text: sectionData().createdBy"></span>
+        </div>
+        <div class="section-created-on">
+            <span>Created on: </span>
+            <span data-bind="text: sectionData().createdOn"></span>
+        </div>
+        <div class="section-last-modified-date">
+            <span>Last modified</span>
+            <span data-bind="text: sectionData().lastModifiedDate"></span>
+        </div>
+    </div>
+    <hr />
+    <button class="add-content">add content</button>
+    <button data-bind="click: editSectionTitle, disable: sectionTitle.hasError && sectionTitle() == sectionData().title ">Edit section title</button>
+    <button data-bind="click: deleteSection">Delete Section</button>
+</div>

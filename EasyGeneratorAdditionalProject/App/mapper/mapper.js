@@ -1,6 +1,5 @@
-﻿define(['models/course', 'models/section', 'models/sectionContent', 'models/materials', 'models/singleSelectAnswer',
-    'models/singleSelectAnswer', 'models/singleSelectImageAnswer'],
-    function (Course, Section, SectionContent, Material, SingleSelectAnswer, MultipleSelectAnswer, SingleSelectImageAnswer) {
+﻿define(['models/course', 'models/section'],
+    function (Course, Section) {
         return {
             mapCourse: function (spec) {
                 return new Course({
@@ -11,6 +10,17 @@
                     createdBy: spec.CreatedBy,
                     lastModified: new Date(spec.LastModifiedDate).toLocaleDateString(),
                     sectionList: []
+                });
+            },
+
+            mapSection: function (spec) {
+                return new Section({
+                    id: spec.Id,
+                    title: spec.Title,
+                    createdBy: spec.CreatedBy,
+                    createdOn: new Date(spec.CreatedOn).toLocaleDateString(),
+                    lastModified: new Date(spec.LastModifiedDate).toLocaleDateString(),
+                    contentList: []
                 });
             }
         };

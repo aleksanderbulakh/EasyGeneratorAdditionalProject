@@ -32,6 +32,7 @@
             course: ko.observable(),
             activate: function (id) {
                 var self = this;
+
                 courseRepository.getCourseById(id).then(function (result) {
                     if (typeof result === "object") {
                         self.courseTitle(result.title);

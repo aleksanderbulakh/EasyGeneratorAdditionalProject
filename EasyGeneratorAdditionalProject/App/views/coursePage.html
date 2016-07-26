@@ -14,7 +14,7 @@
     <hr />
     <!-- ko if: courseSection !== undefined -->
     <div class="course-section-list" data-bind="foreach: courseSection">
-        <div data-bind="compose: { model: 'viewmodels/sectionListPartialPage', activate: true, activationData: $data }"></div>
+        <div data-bind="compose: { model: 'viewmodels/sectionPage', activate: true, activationData: $data }"></div>
     </div>
     <!-- /ko -->
     <button class="add-section" data-bind="click: (function(){createSection(courseId)})">Add section</button>

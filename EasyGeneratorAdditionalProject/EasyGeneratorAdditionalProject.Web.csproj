@@ -174,14 +174,14 @@
     <Content Include="App\viewmodels\courseListPage.js" />
     <Content Include="App\viewmodels\coursePreviewPage.js" />
     <Content Include="App\viewmodels\loginPage.js" />
-    <Content Include="App\viewmodels\sectionListPartialPage.js" />
+    <Content Include="App\viewmodels\sectionPage.js" />
     <Content Include="App\viewmodels\shell.js" />
     <Content Include="App\viewmodels\userRegistrationPage.js" />
     <Content Include="App\views\coursePage.html" />
     <Content Include="App\views\courseListPage.html" />
     <Content Include="App\views\coursePreviewPage.html" />
     <Content Include="App\views\loginPage.html" />
-    <Content Include="App\views\sectionListPartialPage.html" />
+    <Content Include="App\views\sectionPage.html" />
     <Content Include="App\views\shell.html" />
     <Content Include="App\views\userRegistrationPage.html" />
     <Content Include="Content\durandal.css" />

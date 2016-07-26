@@ -4,7 +4,7 @@
             getSectionByCourseId: function (courseId) {
                 return http.get('section/list', { courseId: courseId }).then(function (result) {
                     if (typeof result !== 'object')
-                        return result;
+                        alert(result);
 
                     if (result.Success) {
                         var course = courseContext.courseList.find(function (course) {

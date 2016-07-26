@@ -6,14 +6,18 @@
             },
 
             createCourse: function () {
-                return http.post('course/create').then(function (result) {
-                    if (typeof result === 'object') {
-                        if (result.Success) {
-                            courseContext.courseList.push(mapper.mapCourse(result.RequestData));
-                            return result.RequestData.Id;
+                return http.post('course/create')
+                    .then(function (result) {
+                        if (typeof result === 'object') {
+                            if (result.Success) {
+                                courseContext.courseList.push(mapper.mapCourse(result.RequestData));
+                                return result.RequestData.Id;
+                            }
                         }
-                    }
-                    else alert(result.RequestData);
+                        else alert(result.RequestData);
+                    })
+                .fail(function (result) {
+                    alert(result);
                 });
             },
 
@@ -29,46 +33,54 @@
             },
 
             editCourseTitle: function (courseId, courseTitle) {
-                return http.post('course/edit/title', { courseId: courseId, title: courseTitle }).then(function (result) {
-                    if (typeof result !== "object")
-                        return alert(result);
+                return http.post('course/edit/title', { courseId: courseId, title: courseTitle })
+                    .then(function (result) {
+                        if (typeof result !== "object")
+                            return alert(result);
 
-                    if (result.Success) {
-                        var course = courseContext.courseList.find(function (item) {
-                            return item.id === courseId;
-                        });
+                        if (result.Success) {
+                            var course = courseContext.courseList.find(function (item) {
+                                return item.id === courseId;
+                            });
 
-                        if (course === undefined)
-                            return "Course not found.";
+                            if (course === undefined)
+                                return "Course not found.";
 
-                        course.title = courseTitle;
-                        course.lastModified = new Date(result.RequestData).toLocaleDateString();
+                            course.title = courseTitle;
+                            course.lastModified = new Date(result.RequestData).toLocaleDateString();
 
-                        return "Title changed.";
-                    }
+                            return "Title changed.";
+                        }
 
-                    return "Title not changed";
-                });
+                        return "Title not changed";
+                    })
+                    .fail(function (result) {
+                        alert(result);
+                    });
             },
 
             editCourseDescription: function (courseId, courseDescription) {
-                return http.post('course/edit/description', { courseId: courseId, description: courseDescription }).then(function (result) {
-                    if (typeof result !== "object")
-                        return alert(result);
+                return http.post('course/edit/description', { courseId: courseId, description: courseDescription })
+                    .then(function (result) {
+                        if (typeof result !== "object")
+                            return alert(result);
 
-                    if (result.Success) {
-                        var course = courseContext.courseList.find(function (item) {
-                            return item.id === courseId;
-                        });
+                        if (result.Success) {
+                            var course = courseContext.courseList.find(function (item) {
+                                return item.id === courseId;
+                            });
 
-                        if (course === undefined)
-                            return "Course not found.";
+                            if (course === undefined)
+                                return "Course not found.";
 
-                        course.description = courseDescription;
-                        course.lastModified = new Date(result.RequestData).toLocaleDateString();
-                    }
+                            course.description = courseDescription;
+                            course.lastModified = new Date(result.RequestData).toLocaleDateString();
+                        }
 
-                    return "Description changed.";
+                        return "Description changed.";
+                    })
+                .fail(function (result) {
+                    alert(result);
                 });
             },
 

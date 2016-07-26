@@ -6,9 +6,9 @@
                     id: spec.Id,
                     title: spec.Title,
                     description: spec.Description,
-                    createdOn: new Date(spec.CreatedOn).toLocaleDateString(),
+                    createdOn: new Date(spec.CreatedOn),
                     createdBy: spec.CreatedBy,
-                    lastModified: new Date(spec.LastModifiedDate).toLocaleDateString(),
+                    lastModified: new Date(spec.LastModifiedDate),
                     sectionList: []
                 });
             },
@@ -18,8 +18,8 @@
                     id: spec.Id,
                     title: spec.Title,
                     createdBy: spec.CreatedBy,
-                    createdOn: new Date(spec.CreatedOn).toLocaleDateString(),
-                    lastModified: new Date(spec.LastModifiedDate).toLocaleDateString(),
+                    createdOn: new Date(spec.CreatedOn),
+                    lastModified: new Date(spec.LastModifiedDate),
                     contentList: []
                 });
             }

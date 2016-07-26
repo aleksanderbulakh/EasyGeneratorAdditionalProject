@@ -11,11 +11,11 @@
         </div>
         <div class="section-created-on">
             <span>Created on: </span>
-            <span data-bind="text: sectionData().createdOn"></span>
+            <span data-bind="dateToLocalFormat: sectionData().createdOn"></span>
         </div>
         <div class="section-last-modified-date">
             <span>Last modified</span>
-            <span data-bind="text: sectionData().lastModifiedDate"></span>
+            <span data-bind="dateToLocalFormat: sectionData().lastModifiedDate"></span>
         </div>
     </div>
     <hr />

@@ -2,7 +2,7 @@
     function (mapper, http, courseContext) {
         return {
             getSectionByCourseId: function (courseId) {
-                return http.get('section/list', { courseId: courseId })
+                return http.get('section/list', { courseId: courseId, parameterType: 'courseId' })
                     .then(function (result) {
                         if (typeof result !== 'object')
                             alert(result);
@@ -28,7 +28,7 @@
             },
 
             createSection: function (courseId) {
-                return http.post('section/create', { courseId: courseId })
+                return http.post('section/create', { courseId: courseId, parameterType: 'courseId' })
                     .then(function (result) {
                         if (typeof result === 'object') {
                             if (result.Success) {
@@ -52,7 +52,7 @@
             },
 
             editSectionTitle: function (sectionId, sectionTitle) {
-                return http.post('section/edit/title', { sectionId: sectionId, title: sectionTitle })
+                return http.post('section/edit/title', { sectionId: sectionId, title: sectionTitle, parameterType: 'sectionId' })
                     .then(function (result) {
                         if (typeof result !== "object")
                             return alert(result);
@@ -61,7 +61,7 @@
                             var resultMessage = "Section is not found";
                             courseContext.courseList.forEach(function (course) {
                                 var section = course.sectionList.find(function (section) {
-                                    return section.id == sectionId;
+                                    return section.id === sectionId;
                                 });
 
                                 if (section !== undefined) {
@@ -82,7 +82,7 @@
             },
 
             deleteSection: function (sectionId) {
-                return http.post('section/delete', { sectionId: sectionId })
+                return http.post('section/delete', { sectionId: sectionId, parameterType: 'sectionId' })
                     .then(function (result) {
                         if (typeof result !== "object")
                             return alert(result);

@@ -19,11 +19,12 @@ namespace EasyGeneratorAdditionalProject
             BundleConfiguretion.Configure();
             ContainerConfiguration.Configure();
             MappingConfiguration.Configure();
+            FilterConfiguration.RegisterGlobalFilters(GlobalFilters.Filters);
 
             AreaRegistration.RegisterAllAreas();
 
-            ModelBinders.Binders.Add(typeof(Course), new CourseModelBinder());
-            ModelBinders.Binders.Add(typeof(Section), new SectionModelBinder());
+            ModelBinders.Binders.Add(typeof(Course), new ModelBinder());
+            ModelBinders.Binders.Add(typeof(Section), new ModelBinder());
         }
     }
 }

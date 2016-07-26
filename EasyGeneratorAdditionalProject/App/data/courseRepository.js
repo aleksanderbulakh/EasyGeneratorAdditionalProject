@@ -33,7 +33,7 @@
             },
 
             editCourseTitle: function (courseId, courseTitle) {
-                return http.post('course/edit/title', { courseId: courseId, title: courseTitle })
+                return http.post('course/edit/title', { courseId: courseId, title: courseTitle, parameterType: 'courseId' })
                     .then(function (result) {
                         if (typeof result !== "object")
                             return alert(result);
@@ -60,7 +60,7 @@
             },
 
             editCourseDescription: function (courseId, courseDescription) {
-                return http.post('course/edit/description', { courseId: courseId, description: courseDescription })
+                return http.post('course/edit/description', { courseId: courseId, description: courseDescription, parameterType: 'courseId' })
                     .then(function (result) {
                         if (typeof result !== "object")
                             return alert(result);
@@ -85,7 +85,7 @@
             },
 
             deleteCourse: function (courseId) {
-                return http.post('course/delete', { courseId: courseId })
+                return http.post('course/delete', { courseId: courseId, parameterType: 'courseId' })
                     .then(function (result) {
                         if (typeof result !== "object")
                             return alert(result);

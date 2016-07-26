@@ -67,9 +67,9 @@
     <Compile Include="Entities\SingleSelectAnswer.cs" />
     <Compile Include="Entities\SingleSelectImageAnswer.cs" />
     <Compile Include="Entities\User.cs" />
-    <Compile Include="Models\EntitisParentModels\Answers.cs" />
-    <Compile Include="Models\EntitisParentModels\Identity.cs" />
-    <Compile Include="Models\EntitisParentModels\Titled.cs" />
+    <Compile Include="Entities\Answers.cs" />
+    <Compile Include="Entities\Identity.cs" />
+    <Compile Include="Entities\Titled.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

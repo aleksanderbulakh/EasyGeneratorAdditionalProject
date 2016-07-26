@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using EasyGeneratorAdditionalProject.DataAccess.Interfaces;
 using EasyGeneratorAdditionalProject.Models.Entities;
-using EasyGeneratorAdditionalProject.Models.Models;
 using EasyGeneratorAdditionalProject.Web.JsonResults;
 using EasyGeneratorAdditionalProject.Web.ViewModels;
 using System;
@@ -12,13 +11,11 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 {
     public class CoursesController : Controller
     {
-        private readonly IUnitOfWork _work;
         private readonly IUserRepository _userRepository;
         private readonly ICourseRepository _courseRepository;
         private readonly IMapper _mapper;
-        public CoursesController(IUnitOfWork work, IUserRepository userRepository, ICourseRepository courseRepository, IMapper mapper)
+        public CoursesController(IUserRepository userRepository, ICourseRepository courseRepository, IMapper mapper)
         {
-            _work = work;
             _userRepository = userRepository;
             _courseRepository = courseRepository;
             _mapper = mapper;
@@ -26,7 +23,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
         private User GetFirstUser()
         {
-            return _userRepository.GetById(Guid.Parse("d4b0ce30-2555-4c74-9c83-34be6821112a"));
+            return _userRepository.GetById(Guid.Parse("9f9338ba-55ab-4d12-a28a-fff7e8b3bda3"));
         }
 
         [HttpPost]
@@ -58,10 +55,8 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         public JsonResult DeleteCourse(Course course)
         {
 
-            if (course == null)
-                return new JsonFailedResult("Course not find.");
-
-            _courseRepository.Delete(course);
+            if (course != null)
+                _courseRepository.Delete(course);
 
             return new JsonSuccessResult("Course deleted.");
         }
@@ -93,26 +88,6 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             }
 
             return new JsonSuccessResult(courses);
-        }
-
-        protected override void OnActionExecuted(ActionExecutedContext filterContext)
-        {
-            _work.Save();
-            base.OnActionExecuted(filterContext);
-        }
-
-        protected override void OnException(ExceptionContext filterContext)
-        {
-            if (filterContext.ExceptionHandled)
-            {
-                return;
-            }
-
-            if (filterContext.Exception is ArgumentException)
-            {
-                filterContext.Result = new JsonFailedResult(filterContext.Exception.Message);
-                filterContext.ExceptionHandled = true;
-            }
         }
     }
 }

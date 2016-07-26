@@ -1,5 +1,4 @@
-﻿using EasyGeneratorAdditionalProject.Models.Models.EntitisParentModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +23,7 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
         {
             ThrowIfTileInvalid(title);
             ThrowIfDescriptionInvalid(description);
+            ThrowIfUserInvalid(user);
 
             Title = title;
             Description = description;
@@ -54,6 +54,12 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
         {
             if (description == null)
                 throw new ArgumentException("Invalid Description");
+        }
+
+        private void ThrowIfUserInvalid(User user)
+        {
+            if (user == null)
+                throw new ArgumentException("User is not found.");
         }
         #endregion
     }

@@ -1,5 +1,4 @@
-﻿using EasyGeneratorAdditionalProject.Models.Models.EntitisParentModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +22,7 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             :this()
         {
             ThrowIfTileInvalid(title);
+            ThrowIfCourseInvalid(course);
 
             Title = title;
             Course = course;
@@ -35,6 +35,12 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
 
             Title = title;
             MarkAsModified();
+        }
+
+        private void ThrowIfCourseInvalid(Course course)
+        {
+            if (course == null)
+                throw new ArgumentException("Course is not found.");
         }
     }
 }

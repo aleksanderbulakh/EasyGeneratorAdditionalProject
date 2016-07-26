@@ -13,13 +13,11 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 {
     public class SectionController : Controller
     {
-        private readonly IUnitOfWork _work;
         private readonly ICourseRepository _courseRepository;
         private readonly ISectionRepository _sectionRepository;
         private readonly IMapper _mapper;
-        public SectionController(IUnitOfWork work, ICourseRepository courseRepository, ISectionRepository sectionRepository, IMapper mapper)
+        public SectionController(ICourseRepository courseRepository, ISectionRepository sectionRepository, IMapper mapper)
         {
-            _work = work;
             _courseRepository = courseRepository;
             _sectionRepository = sectionRepository;
             _mapper = mapper;
@@ -41,11 +39,8 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         [Route("section/delete", Name = "DeleteSection")]
         public JsonResult DeleteSection(Section section)
         {
-
-            if (section == null)
-                return new JsonFailedResult("Section not find.");
-
-            _sectionRepository.Delete(section);
+            if (section != null)
+                _sectionRepository.Delete(section);
 
             return new JsonSuccessResult("section deleted.");
         }
@@ -54,6 +49,9 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         [Route("section/create", Name = "CreateSection")]
         public JsonResult CreateSection(Course course)
         {
+            if (course == null)
+                return new JsonFailedResult("Section not find.");
+
             var newSection = new Section("section title", course);
 
             _sectionRepository.Create(newSection);
@@ -76,26 +74,6 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             }
 
             return new JsonSuccessResult(sections);
-        }
-
-        protected override void OnActionExecuted(ActionExecutedContext filterContext)
-        {
-            _work.Save();
-            base.OnActionExecuted(filterContext);
-        }
-
-        protected override void OnException(ExceptionContext filterContext)
-        {
-            if (filterContext.ExceptionHandled)
-            {
-                return;
-            }
-
-            if (filterContext.Exception is ArgumentException)
-            {
-                filterContext.Result = new JsonFailedResult(filterContext.Exception.Message);
-                filterContext.ExceptionHandled = true;
-            }
         }
     }
 }

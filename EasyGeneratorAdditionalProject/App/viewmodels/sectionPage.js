@@ -63,6 +63,6 @@
                                 alert(result.RequestData);
                         });
                 }
-            }
-        }
+            };
+        };
     });

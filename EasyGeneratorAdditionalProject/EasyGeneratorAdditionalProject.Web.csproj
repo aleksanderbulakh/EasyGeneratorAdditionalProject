@@ -227,18 +227,20 @@
   <ItemGroup>
     <Compile Include="Configuration\BundleConfiguretion.cs" />
     <Compile Include="Configuration\ContainerConfiguration.cs" />
+    <Compile Include="Configuration\FilterConfiguration.cs" />
     <Compile Include="Configuration\MappingConfiguration.cs" />
     <Compile Include="Configuration\RouteConfig.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SectionController.cs" />
+    <Compile Include="Filters\CustomOnActionExecuted.cs" />
+    <Compile Include="Filters\CustomOnException.cs" />
     <Compile Include="JsonResults\JsonFailedResult.cs" />
     <Compile Include="JsonResults\JsonSuccessResult.cs" />
-    <Compile Include="ModelBinders\CourseModelBinder.cs" />
+    <Compile Include="ModelBinders\ModelBinder.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="ModelBinders\SectionModelBinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />
     <Compile Include="ViewModels\SectionViewModel.cs" />

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyGeneratorAdditionalProject.Models.Models.EntitisParentModels
+namespace EasyGeneratorAdditionalProject.Models.Entities
 {
     public class Answers : Identity
     {

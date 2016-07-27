@@ -13,6 +13,10 @@
             <span>Created on: </span>
             <span data-bind="dateToLocalFormat: sectionData().createdOn"></span>
         </div>
+        <div class="section-last-modified-by">
+            <span>Last modified by: </span>
+            <span data-bind="text: sectionData().modifiedBy"></span>
+        </div>
         <div class="section-last-modified-date">
             <span>Last modified</span>
             <span data-bind="dateToLocalFormat: sectionData().lastModifiedDate"></span>

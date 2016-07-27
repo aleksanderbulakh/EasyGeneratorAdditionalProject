@@ -5,6 +5,7 @@
         this.createdOn = spec.createdOn;
         this.lastModifiedDate = spec.lastModified;
         this.createdBy = spec.createdBy;
+        this.modifiedBy = spec.modifiedBy;
     }
 
     return Titled;

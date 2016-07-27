@@ -11,7 +11,7 @@
                 { route: 'course(/:id)', title: 'Course', moduleId: 'viewmodels/coursePage', nav: true },
                 { route: 'preview(/:id)', title: 'Prewiew', moduleId: 'viewmodels/coursePreviewPage', nav: true },
                 { route: 'login', title: 'Login', moduleId: 'viewmodels/loginPage', nav: true },
-                { route: 'registration', title: 'Registration', moduleId: 'viewmodels/userRegistrationPage', nav: true },
+                { route: 'registration', title: 'Registration', moduleId: 'viewmodels/userRegistrationPage', nav: true }
             ]).buildNavigationModel();
 
             return router.activate();

@@ -5,7 +5,7 @@ using System.Web.Mvc;
 
 namespace EasyGeneratorAdditionalProject.Web.ModelBinders
 {
-    public class ModelBinder : IModelBinder
+    public class CustomModelBinder : IModelBinder
     {
 
         public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
@@ -20,18 +20,26 @@ namespace EasyGeneratorAdditionalProject.Web.ModelBinders
             if (!tryGetId)
                 return new ArgumentException("Invalid parameter type.");
 
+            var _currentDependencyResolver = DependencyResolver.Current;
+
             switch (parameterType)
             {
                 case "courseId":
                     {
-                        var _courseRepository = DependencyResolver.Current.GetService<ICourseRepository>();
+                        var _courseRepository = _currentDependencyResolver.GetService<ICourseRepository>();
                         return _courseRepository.GetById(id);
                     }
 
                 case "sectionId":
                     {
-                        var _sectionRepository = DependencyResolver.Current.GetService<ISectionRepository>();
+                        var _sectionRepository = _currentDependencyResolver.GetService<ISectionRepository>();
                         return _sectionRepository.GetById(id);
+                    }
+
+                case "userId":
+                    {
+                        var _userRepository = _currentDependencyResolver.GetService<IUserRepository>();
+                        return _userRepository.GetById(id);
                     }
 
                 default: return new ArgumentException("Invalid parameter type.");

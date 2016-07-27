@@ -2,49 +2,54 @@
     function (mapper, http, courseContext) {
         return {
             getSectionByCourseId: function (courseId) {
-                return http.get('section/list', { courseId: courseId, parameterType: 'courseId' })
-                    .then(function (result) {
-                        if (typeof result !== 'object')
-                            alert(result);
+                var course = courseContext.courseList.find(function (course) {
+                    return course.id === courseId;
+                });
 
-                        if (result.Success) {
-                            var course = courseContext.courseList.find(function (course) {
-                                return course.id === courseId;
-                            });
-
-                            if (course === undefined)
-                                return "Course not found";
+                if (course === undefined) {
+                    return "Course not found";
+                }
+                if (course.sectionList != undefined) {
+                    return Q(true);
+                }
+                else {
+                    return http.get('section/list', { courseId: courseId, parameterType: 'courseId' })
+                        .then(function (result) {
+                            if (typeof result != 'object') {
+                                alert(result);
+                            }
 
                             var self = this;
+                            course.sectionList = [];
 
-                            result.RequestData.forEach(function (section) {
+                            result.forEach(function (section) {
                                 course.sectionList.push(mapper.mapSection(section));
                             });
-                        }
-                    })
-                .fail(function (result) {
-                    alert(result);
-                });
+                        })
+                    .fail(function (result) {
+                        alert(result);
+                    });
+                }
             },
 
             createSection: function (courseId) {
-                return http.post('section/create', { courseId: courseId, parameterType: 'courseId' })
+                return http.post('section/create', { courseId: courseId, userId: courseContext.user.id, parameterType: 'courseId' })
                     .then(function (result) {
-                        if (typeof result === 'object') {
-                            if (result.Success) {
-                                var course = courseContext.courseList.find(function (course) {
-                                    return course.id === courseId;
-                                });
-
-                                if (course === undefined)
-                                    return "Course not found";
-
-                                course.sectionList.push(mapper.mapSection(result.RequestData));
-
-                                return result;
-                            }
+                        if (typeof result != 'object') {
+                            return result;
                         }
-                        else alert(result.RequestData);
+
+                        var course = courseContext.courseList.find(function (course) {
+                            return course.id === courseId;
+                        });
+
+                        if (course === undefined) {
+                            return "Course not found";
+                        }
+
+                        course.sectionList.push(mapper.mapSection(result));
+
+                        return true;
                     })
                 .fail(function (result) {
                     alert(result);
@@ -52,29 +57,27 @@
             },
 
             editSectionTitle: function (sectionId, sectionTitle) {
-                return http.post('section/edit/title', { sectionId: sectionId, title: sectionTitle, parameterType: 'sectionId' })
+                return http.post('section/edit/title', { sectionId: sectionId, userId: courseContext.user.id, title: sectionTitle, parameterType: 'sectionId' })
                     .then(function (result) {
-                        if (typeof result !== "object")
+                        if (typeof result == "string") {
                             return alert(result);
+                        }
 
-                        if (result.Success) {
-                            var resultMessage = "Section is not found";
-                            courseContext.courseList.forEach(function (course) {
+                        courseContext.courseList.forEach(function (course) {
+                            if (course.sectionList != undefined) {
                                 var section = course.sectionList.find(function (section) {
                                     return section.id === sectionId;
                                 });
 
                                 if (section !== undefined) {
                                     section.title = sectionTitle;
-                                    section.lastModifiedDate = new Date(result.RequestData).toLocaleDateString();
-                                    result.RequestData = "Section title is changed.";
+                                    section.modifiedBy = courseContext.user.firstName + " " + courseContext.user.surname;
+                                    section.lastModifiedDate = new Date(result).toLocaleDateString();
                                 }
-                            });
+                            }
+                        });
 
-                            return result;
-                        }
-
-                        return "Title not changed.";
+                        return "Title changed.";
                     })
                     .fail(function (result) {
                         alert(result);
@@ -84,25 +87,31 @@
             deleteSection: function (sectionId) {
                 return http.post('section/delete', { sectionId: sectionId, parameterType: 'sectionId' })
                     .then(function (result) {
-                        if (typeof result !== "object")
+                        if (typeof result == "string") {
                             return alert(result);
+                        }
 
-                        if (result.Success) {
-                            courseContext.courseList.forEach(function (course) {
-                                var elementId = 0;
+                        courseContext.courseList.forEach(function (course) {
+                            var elementId = 0;
+                            var find = false;
+                            if (course.sectionList != undefined) {
                                 for (var i = 0; i < course.sectionList.length; i++) {
-                                    if (course.sectionList[i].id !== sectionId)
+                                    if (course.sectionList[i].id !== sectionId) {
                                         continue;
+                                    }
 
                                     elementId = i;
+                                    find = true;
                                     break;
                                 }
 
-                                course.sectionList.splice(elementId, 1);
-                            });
-                        }
+                                if (find) {
+                                    course.sectionList.splice(elementId, 1);
+                                }
+                            }
+                        });
 
-                        return result;
+                        return true;
                     })
                 .fail(function (result) {
                     alert(result);

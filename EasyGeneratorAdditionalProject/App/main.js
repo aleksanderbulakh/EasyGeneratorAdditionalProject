@@ -23,11 +23,13 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'durandal/com
 
         //composition.addBindingHandler();
 
-        app.start().then(function () {
-            viewLocator.useConvention();
+        app.start()
+            .then(function () {
+                viewLocator.useConvention();
 
-            courseContext.initialize().then(function () {
-                app.setRoot('viewmodels/shell', 'entrance')
+                courseContext.initialize()
+                    .then(function () {
+                        app.setRoot('viewmodels/shell', 'entrance')
+                    });
             });
-        });
     });

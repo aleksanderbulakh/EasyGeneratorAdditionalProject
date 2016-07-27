@@ -2,19 +2,38 @@
     function (mapper, http, courseContext) {
         return {
             getCourseList: function () {
-                return Q(courseContext.courseList);
+                if (courseContext.courseList != undefined)
+                    return Q.fcall(courseContext.courseList);
+
+                return http.get('course/list', { userId: courseContext.user.id, parameterType: "userId" })
+                    .then(function (result) {
+                        if (typeof result != "object") {
+                            return result;
+                        }
+
+                        courseContext.courseList = [];
+
+                        result.forEach(function (course) {
+                            courseContext.courseList.push(mapper.mapCourse(course));
+                        });
+
+                        return courseContext.courseList;
+                    })
+                .fail(function (result) {
+                    alert(result);
+                });
             },
 
             createCourse: function () {
-                return http.post('course/create')
+                return http.post('course/create', { userId: courseContext.user.id, parameterType: "userId" })
                     .then(function (result) {
-                        if (typeof result === 'object') {
-                            if (result.Success) {
-                                courseContext.courseList.push(mapper.mapCourse(result.RequestData));
-                                return result.RequestData.Id;
-                            }
+                        if (typeof result == 'object') {
+                            courseContext.courseList.push(mapper.mapCourse(result));
+                            return result.Id;
                         }
-                        else alert(result.RequestData);
+                        else {
+                            alert(result);
+                        }
                     })
                 .fail(function (result) {
                     alert(result);
@@ -26,33 +45,33 @@
                     return item.id === courseId;
                 });
 
-                if (course === undefined)
+                if (course === undefined) {
                     return "Course not found.";
+                }
 
                 return Q(course);
             },
 
             editCourseTitle: function (courseId, courseTitle) {
-                return http.post('course/edit/title', { courseId: courseId, title: courseTitle, parameterType: 'courseId' })
+                return http.post('course/edit/title', { courseId: courseId, userId: courseContext.user.id, title: courseTitle, parameterType: 'courseId' })
                     .then(function (result) {
-                        if (typeof result !== "object")
-                            return alert(result);
-
-                        if (result.Success) {
-                            var course = courseContext.courseList.find(function (item) {
-                                return item.id === courseId;
-                            });
-
-                            if (course === undefined)
-                                return "Course not found.";
-
-                            course.title = courseTitle;
-                            course.lastModified = new Date(result.RequestData).toLocaleDateString();
-
-                            return "Title changed.";
+                        if (typeof result == "string") {
+                            return result;
                         }
 
-                        return "Title not changed";
+                        var course = courseContext.courseList.find(function (item) {
+                            return item.id === courseId;
+                        });
+
+                        if (course === undefined) {
+                            return "Course not found.";
+                        }
+
+                        course.title = courseTitle;
+                        course.modifiedBy = courseContext.user.firstName + " " + courseContext.user.surname;
+                        course.lastModified = new Date(result);
+
+                        return "Title changed.";
                     })
                     .fail(function (result) {
                         alert(result);
@@ -60,22 +79,23 @@
             },
 
             editCourseDescription: function (courseId, courseDescription) {
-                return http.post('course/edit/description', { courseId: courseId, description: courseDescription, parameterType: 'courseId' })
+                return http.post('course/edit/description', { courseId: courseId, userId: courseContext.user.id, description: courseDescription, parameterType: 'courseId' })
                     .then(function (result) {
-                        if (typeof result !== "object")
-                            return alert(result);
-
-                        if (result.Success) {
-                            var course = courseContext.courseList.find(function (item) {
-                                return item.id === courseId;
-                            });
-
-                            if (course === undefined)
-                                return "Course not found.";
-
-                            course.description = courseDescription;
-                            course.lastModified = new Date(result.RequestData).toLocaleDateString();
+                        if (typeof result == "string") {
+                            return result;
                         }
+
+                        var course = courseContext.courseList.find(function (item) {
+                            return item.id === courseId;
+                        });
+
+                        if (course === undefined) {
+                            return "Course not found.";
+                        }
+
+                        course.description = courseDescription;
+                        course.modifiedBy = courseContext.user.firstName + " " + courseContext.user.surname;
+                        course.lastModified = new Date(result);
 
                         return "Description changed.";
                     })
@@ -87,15 +107,17 @@
             deleteCourse: function (courseId) {
                 return http.post('course/delete', { courseId: courseId, parameterType: 'courseId' })
                     .then(function (result) {
-                        if (typeof result !== "object")
-                            return alert(result);
+                        if (typeof result == "string") {
+                            return result;
+                        }
 
-                        if (result.Success) {
+                        if (result) {
                             var course = courseContext.courseList;
                             var elementId = 0;
                             for (var i = 0; i < course.length; i++) {
-                                if (course[i].id !== courseId)
+                                if (course[i].id !== courseId) {
                                     continue;
+                                }
 
                                 elementId = i;
                                 break;

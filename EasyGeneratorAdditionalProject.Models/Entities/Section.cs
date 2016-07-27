@@ -18,22 +18,26 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             ContentCollection = new List<Content>();
         }
 
-        public Section(string title, Course course)
+        public Section(string title, string userName, Course course)
             :this()
         {
             ThrowIfTileInvalid(title);
             ThrowIfCourseInvalid(course);
+            ThrowIfUserNameInvalid(userName);
 
             Title = title;
             Course = course;
             CreatedBy = course.CreatedBy;
+            ModifiedBy = userName;
         }
 
-        public void UpdateTitle(string title)
+        public void UpdateTitle(string title, string userName)
         {
             ThrowIfTileInvalid(title);
+            ThrowIfUserNameInvalid(userName);
 
             Title = title;
+            ModifiedBy = userName;
             MarkAsModified();
         }
 

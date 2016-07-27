@@ -1,6 +1,15 @@
-﻿define(['models/course', 'models/section'],
-    function (Course, Section) {
+﻿define(['models/user', 'models/course', 'models/section'],
+    function (User, Course, Section) {
         return {
+            mapUser: function (spec)
+            {
+                return new User({
+                    id: spec.Id,
+                    firstName: spec.FirstName,
+                    surname: spec.Surname
+                });
+            },
+
             mapCourse: function (spec) {
                 return new Course({
                     id: spec.Id,
@@ -8,8 +17,8 @@
                     description: spec.Description,
                     createdOn: new Date(spec.CreatedOn),
                     createdBy: spec.CreatedBy,
-                    lastModified: new Date(spec.LastModifiedDate),
-                    sectionList: []
+                    modifiedBy: spec.ModifiedBy,
+                    lastModified: new Date(spec.LastModifiedDate)
                 });
             },
 
@@ -18,9 +27,9 @@
                     id: spec.Id,
                     title: spec.Title,
                     createdBy: spec.CreatedBy,
+                    modifiedBy: spec.ModifiedBy,
                     createdOn: new Date(spec.CreatedOn),
-                    lastModified: new Date(spec.LastModifiedDate),
-                    contentList: []
+                    lastModified: new Date(spec.LastModifiedDate)
                 });
             }
         };

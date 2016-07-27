@@ -5,6 +5,7 @@ using EasyGeneratorAdditionalProject.DataAccess.Context;
 using EasyGeneratorAdditionalProject.DataAccess.Interfaces;
 using EasyGeneratorAdditionalProject.DataAccess.Repositories;
 using EasyGeneratorAdditionalProject.Models.Entities;
+using EasyGeneratorAdditionalProject.Web.Convertors;
 using System.Web.Mvc;
 
 namespace EasyGeneratorAdditionalProject.Web.Configuration
@@ -29,6 +30,8 @@ namespace EasyGeneratorAdditionalProject.Web.Configuration
             builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<CourseRepository>().As<ICourseRepository>();
             builder.RegisterType<SectionRepository>().As<ISectionRepository>();
+
+            builder.RegisterType<DateConvertor>().As<IDateConvertor>().InstancePerLifetimeScope();
 
             builder.Register(c => Mapper.Instance).As<IMapper>().InstancePerLifetimeScope();
 

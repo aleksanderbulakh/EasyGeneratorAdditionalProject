@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EasyGeneratorAdditionalProject.DataAccess.Interfaces;
 using EasyGeneratorAdditionalProject.Models.Entities;
+using EasyGeneratorAdditionalProject.Web.Convertors;
 using EasyGeneratorAdditionalProject.Web.JsonResults;
 using EasyGeneratorAdditionalProject.Web.ViewModels;
 using System;
@@ -9,45 +10,65 @@ using System.Web.Mvc;
 
 namespace EasyGeneratorAdditionalProject.Web.Controllers
 {
-    public class CoursesController : Controller
+    public class CoursesController : MainController
     {
         private readonly IUserRepository _userRepository;
         private readonly ICourseRepository _courseRepository;
         private readonly IMapper _mapper;
-        public CoursesController(IUserRepository userRepository, ICourseRepository courseRepository, IMapper mapper)
+        private readonly IDateConvertor _convertor;
+        public CoursesController(IUnitOfWork work, IUserRepository userRepository, ICourseRepository courseRepository, IMapper mapper, IDateConvertor convertor)
+            :base(work)
         {
             _userRepository = userRepository;
             _courseRepository = courseRepository;
             _mapper = mapper;
-        }
-
-        private User GetFirstUser()
-        {
-            return _userRepository.GetById(Guid.Parse("9f9338ba-55ab-4d12-a28a-fff7e8b3bda3"));
+            _convertor = convertor;
         }
 
         [HttpPost]
         [Route("course/edit/title", Name = "EditCourseTitle")]
-        public JsonResult EditCourseTitle(Course course, string title)
+        public JsonResult EditCourseTitle(Course course, string userId, string title)
         {
             if (course == null)
                 return new JsonFailedResult("Course not find.");
+            
+            var guidUserId = Guid.Empty;
+            var tryGetUserId = Guid.TryParse(userId, out guidUserId);
 
-            course.UpdateTitle(title);
+            if (!tryGetUserId)
+                return new JsonFailedResult("User is not found");
 
-            return new JsonSuccessResult(course.LastModifiedDate);
+            var user = _userRepository.GetById(guidUserId);
+
+            if (user == null)
+                return new JsonFailedResult("User is not found");
+
+            course.UpdateTitle(title, user.UserName);
+
+            return new JsonSuccessResult(_convertor.ConvertDateToMilliseconds(course.LastModifiedDate));
         }
 
         [HttpPost]
         [Route("course/edit/description", Name = "EditCourseDescription")]
-        public JsonResult EditCourseDescription(Course course, string description)
+        public JsonResult EditCourseDescription(Course course, string userId, string description)
         {
             if (course == null)
                 return new JsonFailedResult("Course not find.");
 
-            course.UpdateDescription(description);
+            var guidUserId = Guid.Empty;
+            var tryGetUserId = Guid.TryParse(userId, out guidUserId);
 
-            return new JsonSuccessResult(course.LastModifiedDate);
+            if (!tryGetUserId)
+                return new JsonFailedResult("User is not found");
+
+            var user = _userRepository.GetById(guidUserId);
+
+            if (user == null)
+                return new JsonFailedResult("User is not found");
+
+            course.UpdateDescription(description, user.UserName);
+
+            return new JsonSuccessResult(_convertor.ConvertDateToMilliseconds(course.LastModifiedDate));
         }
 
         [HttpPost]
@@ -58,14 +79,15 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             if (course != null)
                 _courseRepository.Delete(course);
 
-            return new JsonSuccessResult("Course deleted.");
+            return new JsonSuccessResult(true);
         }
 
         [HttpPost]
         [Route("course/create", Name = "CreateCourse")]
-        public JsonResult CreateCourse()
+        public JsonResult CreateCourse(User user)
         {
-            var user = GetFirstUser();
+            if (user == null)
+                return new JsonFailedResult("User is not found.");
 
             var newCourse = new Course("course title", "course description", user);
 
@@ -76,13 +98,15 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
         [HttpGet]
         [Route("course/list", Name = "CoursesList")]
-        public JsonResult CoursesList()
+        public JsonResult CoursesList(User user)
         {
-            var user = GetFirstUser();
+            if (user == null)
+                return new JsonFailedResult("User is not found.");
 
             var courses = new List<CourseViewModel>();
+            var courseCollection = user.CoursesCollection;
 
-            foreach (var course in _courseRepository.GetByUserId(user.Id))
+            foreach (var course in courseCollection)
             {
                 courses.Add(_mapper.Map<CourseViewModel>(course));
             }

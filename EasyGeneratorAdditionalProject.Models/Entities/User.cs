@@ -12,20 +12,31 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
         public Role Role { get; set; }
         public string FirstName { get; set; }
         public string Surname { get; set; }
-        public string UserName { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
 
-        public ICollection<Course> CoursesCollection { get; set; }
+        public virtual ICollection<Course> CoursesCollection { get; set; }
+
+        public string UserName
+        {
+            get
+            {
+                return String.Format("{0} {1}", FirstName, Surname);
+            }
+            set
+            {
+
+            }
+        }
 
         public User()
-            :base()
+            : base()
         {
             CoursesCollection = new List<Course>();
         }
 
         public User(Role role, string firstName, string surname, string email, string password)
-            :this()
+            : this()
         {
             Role = role;
             FirstName = firstName;

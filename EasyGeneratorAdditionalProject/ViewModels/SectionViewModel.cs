@@ -11,6 +11,7 @@ namespace EasyGeneratorAdditionalProject.Web.ViewModels
         public string Title { get; set; }
         public string CreatedBy { get; set; }
         public long CreatedOn { get; set; }
+        public string ModifiedBy { get; set; }
         public long LastModifiedDate { get; set; }
     }
 }

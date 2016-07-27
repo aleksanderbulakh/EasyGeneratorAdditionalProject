@@ -14,17 +14,18 @@
             },
             deleteCourse: function (id) {
                 var self = this;
-                if (confirm("Are you sure?"))
-                    courseRepository.deleteCourse(id).then(function (result) {
-                        if (typeof result === "object") {
-                            if (result.Success) {
+                if (confirm("Are you sure?")) {
+                    courseRepository.deleteCourse(id)
+                        .then(function (result) {
+                            if (typeof result == "boolean") {
                                 self.courseList.valueHasMutated();
+                                alert("Course was been deleted.");
                             }
-                            alert(result.RequestData);
-                        }
-                        else
-                            alert(result.RequestData);
-                    });
+                            else {
+                                alert(result);
+                            }
+                        });
+                }
             },
             createCourse: function () {
                 courseRepository.createCourse().then(function (courseId) {
@@ -32,16 +33,7 @@
                 });
             },
             toCourse: function (courseId) {
-                var course = courseRepository.getCourseById(courseId).then(function (course) {
-                    if(course.sectionList.length === 0)
-                        sectionRepository.getSectionByCourseId(courseId).then(function () {
-                            router.navigate('#course/' + courseId);
-                        });
-                    else
-                        router.navigate('#course/' + courseId);
-                });
-
-                
+                router.navigate('#course/' + courseId);
             }
         };
     });

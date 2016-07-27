@@ -28,23 +28,27 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             Title = title;
             Description = description;
             User = user;
-            CreatedBy = String.Format("{0} {1}", user.FirstName, user.Surname);
+            CreatedBy = ModifiedBy = user.UserName;            
         }
 
         #region Update
-        public void UpdateTitle(string title)
+        public void UpdateTitle(string title, string userName)
         {
             ThrowIfTileInvalid(title);
+            ThrowIfUserNameInvalid(userName);
 
             Title = title;
+            ModifiedBy = userName;
             MarkAsModified();
         }
 
-        public void UpdateDescription(string description)
+        public void UpdateDescription(string description, string userName)
         {
             ThrowIfDescriptionInvalid(description);
+            ThrowIfUserNameInvalid(userName);
 
             Description = description;
+            ModifiedBy = userName;
             MarkAsModified();
         }
         #endregion

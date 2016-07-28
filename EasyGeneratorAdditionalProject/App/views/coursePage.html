@@ -18,6 +18,6 @@
     </div>
     <!-- /ko -->
     <button class="add-section" data-bind="click: (function(){createSection(courseId)})">Add section</button>
-    <button data-bind="click: editTitle, disable: courseTitle.hasError && courseTitle() == course().title ">Save Title</button>
+    <button data-bind="click: editTitle, disable: courseTitle.hasError() === (courseTitle() !== course().title)">Save Title</button>
     <button data-bind="click: editDescription">Save Description</button>
 </div>

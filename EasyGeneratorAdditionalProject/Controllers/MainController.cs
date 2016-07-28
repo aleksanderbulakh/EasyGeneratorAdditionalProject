@@ -18,25 +18,11 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             _work = work;
             _userRepository = userRepository;
         }
-        // GET: Main
+        
         protected override void OnActionExecuted(ActionExecutedContext filterContext)
         {
             _work.Save();
             base.OnActionExecuted(filterContext);
-        }
-
-        protected override void OnException(ExceptionContext filterContext)
-        {
-            if (filterContext.ExceptionHandled)
-            {
-                return;
-            }
-
-            if (filterContext.Exception is ArgumentException)
-            {
-                filterContext.Result = new JsonFailedResult(filterContext.Exception.Message);
-                filterContext.ExceptionHandled = true;
-            }
         }
 
         protected User ThrowIfUserDataInvalid(string userId)

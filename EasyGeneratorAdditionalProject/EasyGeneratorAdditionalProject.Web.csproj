@@ -209,6 +209,7 @@
     <Content Include="App\views\shell.html" />
     <Content Include="App\views\userRegistrationPage.html" />
     <Content Include="Content\durandal.css" />
+    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\almond-custom.js" />
     <Content Include="Scripts\durandal\activator.js" />
@@ -263,7 +264,6 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Convertors\DateConvertor.cs" />
     <Compile Include="Convertors\IDateConvertor.cs" />
-    <Compile Include="Filters\CustomOnActionExecuted.cs" />
     <Compile Include="Filters\CustomOnException.cs" />
     <Compile Include="JsonResults\JsonFailedResult.cs" />
     <Compile Include="JsonResults\JsonSuccessResult.cs" />

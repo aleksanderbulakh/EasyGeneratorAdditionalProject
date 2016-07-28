@@ -1,5 +1,5 @@
-﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/courseRepository', 'data/sectionRepository'],
-    function (ko, router, app, courseRepository, sectionRepository) {
+﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/courseRepository', 'data/sectionRepository', 'customPlugins/customMessage'],
+    function (ko, router, app, courseRepository, sectionRepository, message) {
         return {
             courseId: ko.observable(),
             courseTitle: ko.observable().extend({
@@ -13,7 +13,10 @@
 
                 courseRepository.getCourseById(id)
                     .then(function (result) {
-                        if (typeof result == "object") {
+                        if (typeof result !== "object") {
+                            message.stateMessage(result, "Error");
+                        }
+                        else {
                             self.courseTitle(result.title);
                             self.courseDescription(result.description);
                             self.courseId(id);
@@ -22,9 +25,6 @@
                                 .then(function () {
                                     self.courseSection(result.sectionList);
                                 });
-                        }
-                        else {
-                            alert(result);
                         }
                     });
 
@@ -36,16 +36,20 @@
                 var self = this;
                 courseRepository.getCourseById(this.courseId())
                     .then(function (result) {
-                        if (typeof result == "object") {
+                        if (typeof result === "object") {
                             if (result.title !== self.courseTitle()) {
                                 courseRepository.editCourseTitle(self.courseId(), self.courseTitle())
                                     .then(function (result) {
-                                        alert(result);
+                                        if (result !== undefined) {
+                                            message.stateMessage(result, "Success");
+                                        }
                                     });
                             }
                         }
                         else {
-                            alert(result);
+                            if (result !== undefined) {
+                                message.stateMessage(result, "Error");
+                            }
                         }
                     });
             },
@@ -53,16 +57,20 @@
                 var self = this;
                 courseRepository.getCourseById(this.courseId())
                     .then(function (result) {
-                        if (typeof result == "object") {
+                        if (typeof result === "object") {
                             if (result.description !== self.courseDescription()) {
                                 courseRepository.editCourseDescription(self.courseId(), self.courseDescription())
                                     .then(function (result) {
-                                        alert(result);
+                                        if (result !== undefined) {
+                                            message.stateMessage(result, "Success");
+                                        }
                                     });
                             }
                         }
                         else {
-                            alert(result);
+                            if (result !== undefined) {
+                                message.stateMessage(result, "Error");
+                            }
                         }
                     });
             },
@@ -70,12 +78,14 @@
                 var self = this;
                 sectionRepository.createSection(courseId())
                     .then(function (result) {
-                        if (typeof result == 'boolean') {
+                        if (typeof result === 'boolean') {
                             app.trigger('data:changed');
-                            alert("Section was been created.");
+                            message.stateMessage("Section was been created.", "Success");
                         }
                         else {
-                            alert(result);
+                            if (result !== undefined) {
+                                message.stateMessage(result, "Error");
+                            }
                         }
                     });
             }

@@ -20,9 +20,7 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'durandal/com
             router: true,
             dialog: true
         });
-
-        //composition.addBindingHandler();
-
+        
         app.start()
             .then(function () {
                 viewLocator.useConvention();

@@ -11,12 +11,11 @@ using System.Web.Mvc;
 
 namespace EasyGeneratorAdditionalProject.Web.Controllers
 {
-    public class UserController : MainController
+    public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        public UserController(IUnitOfWork work, IUserRepository userRepository, IMapper mapper)
-            :base(work)
+        public UserController(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _mapper = mapper;

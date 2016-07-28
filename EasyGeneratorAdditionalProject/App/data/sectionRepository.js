@@ -1,5 +1,5 @@
-﻿define(['mapper/mapper', 'http/httpWrapper', 'data/courseContext'],
-    function (mapper, http, courseContext) {
+﻿define(['mapper/mapper', 'http/httpWrapper', 'data/courseContext', 'customPlugins/customMessage'],
+    function (mapper, http, courseContext, message) {
         return {
             getSectionByCourseId: function (courseId) {
                 var course = courseContext.courseList.find(function (course) {
@@ -9,14 +9,16 @@
                 if (course === undefined) {
                     return "Course not found";
                 }
+
                 if (course.sectionList != undefined) {
                     return Q(true);
                 }
+
                 else {
                     return http.get('section/list', { courseId: courseId, parameterType: 'courseId' })
                         .then(function (result) {
-                            if (typeof result != 'object') {
-                                alert(result);
+                            if (typeof result !== 'object') {
+                                message.stateMessage(result, "Error");
                             }
 
                             var self = this;
@@ -27,7 +29,7 @@
                             });
                         })
                     .fail(function (result) {
-                        alert(result);
+                        message.stateMessage(result, "Error");
                     });
                 }
             },
@@ -35,8 +37,8 @@
             createSection: function (courseId) {
                 return http.post('section/create', { courseId: courseId, userId: courseContext.user.id, parameterType: 'courseId' })
                     .then(function (result) {
-                        if (typeof result != 'object') {
-                            return result;
+                        if (typeof result !== 'object') {
+                            message.stateMessage(result, "Error");
                         }
 
                         var course = courseContext.courseList.find(function (course) {
@@ -52,19 +54,19 @@
                         return true;
                     })
                 .fail(function (result) {
-                    alert(result);
+                    message.stateMessage(result, "Error");
                 });
             },
 
             editSectionTitle: function (sectionId, sectionTitle) {
                 return http.post('section/edit/title', { sectionId: sectionId, userId: courseContext.user.id, title: sectionTitle, parameterType: 'sectionId' })
                     .then(function (result) {
-                        if (typeof result == "string") {
-                            return alert(result);
+                        if (typeof result === "string") {
+                            message.stateMessage(result, "Error");
                         }
 
                         courseContext.courseList.forEach(function (course) {
-                            if (course.sectionList != undefined) {
+                            if (course.sectionList !== undefined) {
                                 var section = course.sectionList.find(function (section) {
                                     return section.id === sectionId;
                                 });
@@ -80,21 +82,21 @@
                         return "Title changed.";
                     })
                     .fail(function (result) {
-                        alert(result);
+                        message.stateMessage(result, "Error");
                     });
             },
 
             deleteSection: function (sectionId) {
                 return http.post('section/delete', { sectionId: sectionId, parameterType: 'sectionId' })
                     .then(function (result) {
-                        if (typeof result == "string") {
-                            return alert(result);
+                        if (typeof result === "string") {
+                            message.stateMessage(result, "Error");
                         }
 
                         courseContext.courseList.forEach(function (course) {
                             var elementId = 0;
                             var find = false;
-                            if (course.sectionList != undefined) {
+                            if (course.sectionList !== undefined) {
                                 for (var i = 0; i < course.sectionList.length; i++) {
                                     if (course.sectionList[i].id !== sectionId) {
                                         continue;
@@ -114,7 +116,7 @@
                         return true;
                     })
                 .fail(function (result) {
-                    alert(result);
+                    message.stateMessage(result, "Error");
                 });
             }
         };

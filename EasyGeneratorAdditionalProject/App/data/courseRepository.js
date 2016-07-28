@@ -1,14 +1,14 @@
-﻿define(['mapper/mapper', 'http/httpWrapper', 'data/courseContext'],
-    function (mapper, http, courseContext) {
+﻿define(['mapper/mapper', 'http/httpWrapper', 'data/courseContext', 'customPlugins/customMessage'],
+    function (mapper, http, courseContext, message) {
         return {
             getCourseList: function () {
-                if (courseContext.courseList != undefined)
-                    return Q.fcall(courseContext.courseList);
+                if (courseContext.courseList !== undefined)
+                    return Q(courseContext.courseList);
 
                 return http.get('course/list', { userId: courseContext.user.id, parameterType: "userId" })
                     .then(function (result) {
-                        if (typeof result != "object") {
-                            return result;
+                        if (typeof result !== "object") {
+                            message.stateMessage(result, "Error");
                         }
 
                         courseContext.courseList = [];
@@ -20,23 +20,21 @@
                         return courseContext.courseList;
                     })
                 .fail(function (result) {
-                    alert(result);
+                    message.stateMessage(result, "Error");
                 });
             },
 
-            createCourse: function () {
-                return http.post('course/create', { userId: courseContext.user.id, parameterType: "userId" })
+            createCourse: function (courseTitle) {
+                return http.post('course/create', { userId: courseContext.user.id, courseTitle: courseTitle, parameterType: "userId" })
                     .then(function (result) {
-                        if (typeof result == 'object') {
+                        if (typeof result === 'object') {
                             courseContext.courseList.push(mapper.mapCourse(result));
                             return result.Id;
                         }
-                        else {
-                            alert(result);
-                        }
+                        message.stateMessage(result, "Error");
                     })
                 .fail(function (result) {
-                    alert(result);
+                    message.stateMessage(result, "Error");
                 });
             },
 
@@ -55,8 +53,8 @@
             editCourseTitle: function (courseId, courseTitle) {
                 return http.post('course/edit/title', { courseId: courseId, userId: courseContext.user.id, title: courseTitle, parameterType: 'courseId' })
                     .then(function (result) {
-                        if (typeof result == "string") {
-                            return result;
+                        if (typeof result === "string") {
+                            message.stateMessage(result, "Error");
                         }
 
                         var course = courseContext.courseList.find(function (item) {
@@ -74,15 +72,15 @@
                         return "Title changed.";
                     })
                     .fail(function (result) {
-                        alert(result);
+                        message.stateMessage(result, "Error");
                     });
             },
 
             editCourseDescription: function (courseId, courseDescription) {
                 return http.post('course/edit/description', { courseId: courseId, userId: courseContext.user.id, description: courseDescription, parameterType: 'courseId' })
                     .then(function (result) {
-                        if (typeof result == "string") {
-                            return result;
+                        if (typeof result === "string") {
+                            message.stateMessage(result, "Error");
                         }
 
                         var course = courseContext.courseList.find(function (item) {
@@ -100,15 +98,15 @@
                         return "Description changed.";
                     })
                 .fail(function (result) {
-                    alert(result);
+                    message.stateMessage(result, "Error");
                 });
             },
 
             deleteCourse: function (courseId) {
                 return http.post('course/delete', { courseId: courseId, parameterType: 'courseId' })
                     .then(function (result) {
-                        if (typeof result == "string") {
-                            return result;
+                        if (typeof result === "string") {
+                            message.stateMessage(result, "Error");
                         }
 
                         if (result) {
@@ -129,7 +127,7 @@
                         return result;
                     })
                 .fail(function (result) {
-                    alert(result);
+                    message.stateMessage(result, "Error");
                 });
             }
         };

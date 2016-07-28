@@ -16,15 +16,13 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
     {
         private readonly ICourseRepository _courseRepository;
         private readonly ISectionRepository _sectionRepository;
-        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IDateConvertor _convertor;
         public SectionController(IUnitOfWork work, ICourseRepository courseRepository, ISectionRepository sectionRepository, IUserRepository userRepository, IMapper mapper, IDateConvertor convertor)
-            :base(work)
+            :base(work, userRepository)
         {
             _courseRepository = courseRepository;
             _sectionRepository = sectionRepository;
-            _userRepository = userRepository;
             _mapper = mapper;
             _convertor = convertor;
         }
@@ -36,16 +34,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             if (section == null)
                 return new JsonFailedResult("section not find.");
 
-            var guidUserId = Guid.Empty;
-            var tryGetUserId = Guid.TryParse(userId, out guidUserId);
-
-            if (!tryGetUserId)
-                return new JsonFailedResult("User is not found");
-
-            var user = _userRepository.GetById(guidUserId);
-
-            if (user == null)
-                return new JsonFailedResult("User is not found");
+            var user = ThrowIfUserDataInvalid(userId);
 
             section.UpdateTitle(title, user.UserName);
 
@@ -69,16 +58,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             if (course == null)
                 return new JsonFailedResult("Section not find.");
 
-            var guidUserId = Guid.Empty;
-            var tryGetUserId = Guid.TryParse(userId, out guidUserId);
-
-            if (!tryGetUserId)
-                return new JsonFailedResult("User is not found");
-
-            var user = _userRepository.GetById(guidUserId);
-
-            if (user == null)
-                return new JsonFailedResult("User is not found");
+            var user = ThrowIfUserDataInvalid(userId);
 
             var newSection = new Section("section title", user.UserName, course);
 

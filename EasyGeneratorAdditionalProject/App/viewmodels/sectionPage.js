@@ -1,5 +1,5 @@
-﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/sectionRepository'],
-    function (ko, router, app, sectionRepository) {
+﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/sectionRepository', 'customPlugins/customMessage'],
+    function (ko, router, app, sectionRepository, message) {
 
         return function () {
 
@@ -24,21 +24,31 @@
                     if (this.sectionData().title !== this.sectionTitle()) {
                         sectionRepository.editSectionTitle(this.sectionId(), this.sectionTitle())
                             .then(function (result) {
-                                alert(result);
+                                if (result !== undefined) {
+                                    message.stateMessage(result, "Success");
+                                }
                             });
                     }
 
                 },
                 deleteSection: function () {
                     var self = this;
-                    sectionRepository.deleteSection(this.sectionId())
+                    message.confirmMessage()
                         .then(function (result) {
-                            if (typeof result == "boolean") {
-                                app.trigger('data:changed');
-                                alert("Section was been deleted.");
+                            if (result) {
+                                sectionRepository.deleteSection(self.sectionId())
+                                    .then(function (result) {
+                                        if (typeof result === "boolean") {
+                                            app.trigger('data:changed');
+                                            message.stateMessage("Section was been deleted.", "Success");
+                                        }
+                                        else {
+                                            if (result !== undefined) {
+                                                message.stateMessage(result, "Error");
+                                            }
+                                        }
+                                    });
                             }
-                            else
-                                alert(result);
                         });
                 }
             };

@@ -8,11 +8,14 @@
                 var self = this;
                 courseRepository.getCourseList().then(function (data) {
                     self.courseList(data);
-                });
+                })
+                .fail(function (result) {
+                    message.stateMessage(result, "Error");
+                });;
             },
 
-            coursePreview: function () {
-                router.navigate('#preview');
+            coursePreview: function (id) {
+                router.navigate('#preview/' + id);
             },
 
             deleteCourse: function (id) {
@@ -21,16 +24,12 @@
                     .then(function (result) {
                         if (result) {
                             courseRepository.deleteCourse(id)
-                                .then(function (result) {
-                                    if (typeof result === "boolean") {
+                                .then(function () {
                                         self.courseList.valueHasMutated();
-                                        message.stateMessage("Course was been deleted.", "Success");
-                                    }
-                                    else {
-                                        if (result !== undefined) {
-                                            message.stateMessage(result, "Error");
-                                        }
-                                    }
+                                        message.stateMessage("Course has been deleted.", "Success");
+                                })
+                                .fail(function (result) {
+                                    message.stateMessage(result, "Error");
                                 });
                         }
                     });
@@ -42,6 +41,9 @@
                         courseRepository.createCourse(response)
                             .then(function (courseId) {
                                 router.navigate('#course/' + courseId);
+                            })
+                            .fail(function (result) {
+                                message.stateMessage(result, "Error");
                             });
                     });
             },

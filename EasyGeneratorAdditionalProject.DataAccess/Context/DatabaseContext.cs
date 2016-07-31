@@ -15,11 +15,8 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Context
         public DbSet<User> Users { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Section> Sections { get; set; }
-        public DbSet<Content> Content { get; set; }
-        public DbSet<Material> Materials { get; set; }
-        public DbSet<SingleSelectAnswer> SingleSelectAnswers { get; set; }
-        public DbSet<MultipleSelectAnswer> MultipleSelectAnswers { get; set; }
-        public DbSet<SingleSelectImageAnswer> SingleSelectImageAnswers { get; set; }
+        public DbSet<Question> Question { get; set; }
+        public DbSet<QuestionAnswer> QuestionAnswers { get; set; }
 
         public IDbSet<T> GetSet<T>() where T : class
         {
@@ -58,48 +55,23 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Context
             modelBuilder.Entity<Section>().HasKey(t => t.Id);
             modelBuilder.Entity<Section>().Property(t => t.Title).IsRequired();
             modelBuilder.Entity<Section>().Property(t => t.Title).HasMaxLength(255);
-            modelBuilder.Entity<Section>().HasMany(t => t.ContentCollection).WithRequired(t => t.Section);
+            modelBuilder.Entity<Section>().HasMany(t => t.QuestionCollection).WithRequired(t => t.Section);
             #endregion
 
-            #region Content
-            modelBuilder.Entity<Content>().ToTable("Content");
-            modelBuilder.Entity<Content>().HasKey(t => t.Id);
-            modelBuilder.Entity<Content>().Property(t => t.Title).IsRequired();
-            modelBuilder.Entity<Content>().Property(t => t.Title).HasMaxLength(255);
-            modelBuilder.Entity<Content>().Property(t => t.Type).IsRequired();
-            modelBuilder.Entity<Content>().HasMany(t => t.MaterialsCollection).WithRequired(t => t.Content);
-            modelBuilder.Entity<Content>().HasMany(t => t.SingleSelectAnswerCollection);
-            modelBuilder.Entity<Content>().HasMany(t => t.MultipleSelectAnswerCollection);
-            modelBuilder.Entity<Content>().HasMany(t => t.SingleSelectImageAnswerCollection);
+            #region Question
+            modelBuilder.Entity<Question>().ToTable("Question");
+            modelBuilder.Entity<Question>().HasKey(t => t.Id);
+            modelBuilder.Entity<Question>().Property(t => t.Title).IsRequired();
+            modelBuilder.Entity<Question>().Property(t => t.Title).HasMaxLength(255);
+            modelBuilder.Entity<Question>().Property(t => t.Type).IsRequired();
+            modelBuilder.Entity<Question>().HasMany(t => t.AnswersCollection).WithRequired(t => t.Question);
             #endregion
 
-            #region Material
-            modelBuilder.Entity<Material>().ToTable("Materials");
-            modelBuilder.Entity<Material>().HasKey(t => t.Id);
-            modelBuilder.Entity<Material>().Property(t => t.Text).IsRequired();
-
-            #endregion
-
-            #region Single select answer
-            modelBuilder.Entity<SingleSelectAnswer>().ToTable("SingleSelectAnswers");
-            modelBuilder.Entity<SingleSelectAnswer>().HasKey(t => t.Id);
-            modelBuilder.Entity<SingleSelectAnswer>().Property(t => t.Text).IsRequired();
-            modelBuilder.Entity<SingleSelectAnswer>().Property(t => t.IsCorrect).IsRequired();
-            #endregion
-
-            #region Multiple select answer
-            modelBuilder.Entity<MultipleSelectAnswer>().ToTable("MultipleSelectAnswers");
-            modelBuilder.Entity<MultipleSelectAnswer>().HasKey(t => t.Id);
-            modelBuilder.Entity<MultipleSelectAnswer>().Property(t => t.Text).IsRequired();
-            modelBuilder.Entity<MultipleSelectAnswer>().Property(t => t.IsCorrect).IsRequired();
-            #endregion
-
-            #region Single Select Image Answer
-            modelBuilder.Entity<SingleSelectImageAnswer>().ToTable("SingleSelectImageAnswers");
-            modelBuilder.Entity<SingleSelectImageAnswer>().HasKey(t => t.Id);
-            modelBuilder.Entity<SingleSelectImageAnswer>().Property(t => t.Text).IsRequired();
-            modelBuilder.Entity<SingleSelectImageAnswer>().Property(t => t.IsCorrect).IsRequired();
-            modelBuilder.Entity<SingleSelectImageAnswer>().Property(t => t.Photo).IsRequired();
+            #region Answers
+            modelBuilder.Entity<QuestionAnswer>().ToTable("Answers");
+            modelBuilder.Entity<QuestionAnswer>().HasKey(t => t.Id);
+            modelBuilder.Entity<QuestionAnswer>().Property(t => t.Text).IsRequired();
+            modelBuilder.Entity<QuestionAnswer>().Property(t => t.IsCorrect).IsRequired();
             #endregion
         }
 

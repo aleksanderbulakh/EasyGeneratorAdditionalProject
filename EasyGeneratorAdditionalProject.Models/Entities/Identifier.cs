@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Models.Entities
 {
-    public class MultipleSelectAnswer : Answers
+    public class Identifier
     {
-        public MultipleSelectAnswer()
+        public Guid Id { get; set; }
+
+        public Identifier()
         {
             Id = Guid.NewGuid();
         }

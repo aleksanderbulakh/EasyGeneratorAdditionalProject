@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Models.Entities
 {
-    public class User : Identity, IUser<Guid>
+    public class User : Identifier, IUser<Guid>
     {
         public Role Role { get; set; }
         public string FirstName { get; set; }

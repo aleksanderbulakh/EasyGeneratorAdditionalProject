@@ -2,7 +2,7 @@
     function Section(spec) {
         Titled.apply(this, arguments);
 
-        this.contentList = spec.contentList;
+        this.questionList = spec.questionList;
     }
 
     return Section;

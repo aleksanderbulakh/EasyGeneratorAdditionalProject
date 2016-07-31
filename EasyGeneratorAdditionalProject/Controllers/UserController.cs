@@ -11,11 +11,12 @@ using System.Web.Mvc;
 
 namespace EasyGeneratorAdditionalProject.Web.Controllers
 {
-    public class UserController : Controller
+    public class UserController : MainController
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        public UserController(IUserRepository userRepository, IMapper mapper)
+        public UserController(IUserRepository userRepository, IUnitOfWork work, IMapper mapper)
+            : base(work)
         {
             _userRepository = userRepository;
             _mapper = mapper;
@@ -32,7 +33,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         {
             var user = GetFirstUser();
 
-            return new JsonSuccessResult(_mapper.Map<UserViewModel>(user));
+            return SuccessResult(_mapper.Map<UserViewModel>(user));
         }
     }
 }

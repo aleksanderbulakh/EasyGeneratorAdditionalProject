@@ -1,28 +1,30 @@
-﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/courseRepository'],
-    function (ko, router, app, courseRepository) {
+﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/courseRepository', 'data/sectionRepository', 'customPlugins/customMessage'],
+    function (ko, router, app, courseRepository, sectionRepository, message) {
         return {
-            courseTitle: ko.observable(),
-            courseDescription: ko.observable(),
-            createdBy: ko.observable(),
-            sectionList: ko.observableArray(),
+            courseTitle: '',
+            courseDescription: '',
+            createdBy: '',
+            sectionList: [],
             activate: function (id) {
                 var self = this;
-
-                courseRepository.getCourseById(id)
-                    .then(function (result) {
-                        if (typeof result != "object") {
-                            alert(result);
-                        }
-                        else {
-                            self.courseTitle(result.title);
-                            self.courseDescription(result.description);
-                            self.createdBy(result.createdBy);
-                            sectionRepository.getSectionByCourseId(id)
+                if (id == undefined) {
+                    message.stateMessage("Invalid id", "Error");
+                }
+                else {
+                    courseRepository.getCourseById(id)
+                        .then(function (result) {
+                            self.courseTitle = result.title;
+                            self.courseDescription = result.description;
+                            self.createdBy = result.createdBy;
+                            sectionRepository.getSectionsByCourseId(id)
                                 .then(function () {
-                                    self.sectionList(result.sectionList);
+                                    self.sectionList = result.sectionList;
                                 });
-                        }
-                    });
+                        })
+                        .fail(function (result) {
+                            message.stateMessage(result, "Error");
+                        });;
+                }
             }
         };
     });

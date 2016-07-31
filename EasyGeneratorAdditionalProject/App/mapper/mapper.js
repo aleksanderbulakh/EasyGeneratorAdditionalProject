@@ -31,6 +31,18 @@
                     createdOn: new Date(spec.CreatedOn),
                     lastModified: new Date(spec.LastModifiedDate)
                 });
-            }
+            },
+
+            mapQuestion: function (spec) {
+            return new Section({
+                id: spec.Id,
+                title: spec.Title,
+                createdBy: spec.CreatedBy,
+                modifiedBy: spec.ModifiedBy,
+                createdOn: new Date(spec.CreatedOn),
+                lastModified: new Date(spec.LastModifiedDate),
+                type: spec.Type
+            });
+        }
         };
     });

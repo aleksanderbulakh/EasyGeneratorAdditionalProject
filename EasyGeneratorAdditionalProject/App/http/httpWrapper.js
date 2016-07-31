@@ -7,8 +7,10 @@
         http.post(url, data)
             .then(function (result) {
 
-                if (result.Success) {
-                    return defer.resolve(result.RequestData);
+                if (result.Success && result.RequestData !== null) {
+                    var dataType = typeof result.RequestData;
+                    if ((dataType === 'boolean' && result.RequestData) || dataType === 'object' || dataType === 'number')
+                        return defer.resolve(result.RequestData);
                 }
 
                 defer.reject(onError(result.RequestData));
@@ -24,8 +26,10 @@
 
         http.get(url, data)
             .then(function (result) {
-                if (result.Success) {
-                    return defer.resolve(result.RequestData);
+                if (result.Success && result.RequestData !== null) {
+                    var dataType = typeof result.RequestData;
+                    if (dataType === 'boolean' || dataType === 'object' || dataType === 'number')
+                        return defer.resolve(result.RequestData);
                 }
                 defer.reject(onError(result.RequestData));
             })

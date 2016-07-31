@@ -11,39 +11,29 @@ namespace EasyGeneratorAdditionalProject.Web.ModelBinders
         public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
             var valueProvider = bindingContext.ValueProvider;
+            
 
-            var parameterType = (String)valueProvider.GetValue("parameterType").ConvertTo(typeof(String));
-
-            Guid id = Guid.Empty;
-            var tryGetId = Guid.TryParse((String)valueProvider.GetValue(parameterType).ConvertTo(typeof(String)), out id);
-
-            if (!tryGetId)
-                return new ArgumentException("Invalid parameter type.");
-
-            var _currentDependencyResolver = DependencyResolver.Current;
-
-            switch (parameterType)
+            if (bindingContext.ModelType == typeof(User))
             {
-                case "courseId":
-                    {
-                        var _courseRepository = _currentDependencyResolver.GetService<ICourseRepository>();
-                        return _courseRepository.GetById(id);
-                    }
-
-                case "sectionId":
-                    {
-                        var _sectionRepository = _currentDependencyResolver.GetService<ISectionRepository>();
-                        return _sectionRepository.GetById(id);
-                    }
-
-                case "userId":
-                    {
-                        var _userRepository = _currentDependencyResolver.GetService<IUserRepository>();
-                        return _userRepository.GetById(id);
-                    }
-
-                default: return new ArgumentException("Invalid parameter type.");
+                return DependencyResolver.Current.GetService<IModelCreator<User>>().TryCreateModel(valueProvider);
             }
+
+            if (bindingContext.ModelType == typeof(Course))
+            {
+                return DependencyResolver.Current.GetService<IModelCreator<Course>>().TryCreateModel(valueProvider);
+            }
+
+            if (bindingContext.ModelType == typeof(Section))
+            {
+                return DependencyResolver.Current.GetService<IModelCreator<Section>>().TryCreateModel(valueProvider);
+            }
+
+            if (bindingContext.ModelType == typeof(Question))
+            {
+                return DependencyResolver.Current.GetService<IModelCreator<Question>>().TryCreateModel(valueProvider);
+            }
+
+            return new ArgumentException("Invalid parameter.");
         }
     }
 }

@@ -12,11 +12,9 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
     public class MainController : Controller
     {
         private readonly IUnitOfWork _work;
-        private readonly IUserRepository _userRepository;
-        public MainController(IUnitOfWork work, IUserRepository userRepository)
+        public MainController(IUnitOfWork work)
         {
             _work = work;
-            _userRepository = userRepository;
         }
         
         protected override void OnActionExecuted(ActionExecutedContext filterContext)
@@ -25,20 +23,14 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             base.OnActionExecuted(filterContext);
         }
 
-        protected User ThrowIfUserDataInvalid(string userId)
+        protected JsonSuccessResult SuccessResult(object data)
         {
-            var guidUserId = Guid.Empty;
-            var tryGetUserId = Guid.TryParse(userId, out guidUserId);
+            return new JsonSuccessResult(data);
+        }
 
-            if (!tryGetUserId)
-                throw new ArgumentException("User is not found");
-
-            var user = _userRepository.GetById(guidUserId);
-
-            if (user == null)
-                throw new ArgumentException("User is not found");
-
-            return user;
+        protected JsonFailedResult FailResult(string data)
+        {
+            return new JsonFailedResult(data);
         }
     }
 }

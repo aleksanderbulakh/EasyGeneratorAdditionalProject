@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Models.Entities
 {
-    public class Titled : Identity
+    public class Titled : Identifier
     {
         public Titled()
             : base()
@@ -32,7 +32,7 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
                 throw new ArgumentException("Invalid user name.");
         }
 
-        protected void MarkAsModified()
+        public void MarkAsModified()
         {
             LastModifiedDate = DateTime.UtcNow;
         }

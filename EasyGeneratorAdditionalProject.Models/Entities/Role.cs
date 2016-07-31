@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Models.Entities
 {
-    public class Role : Identity
+    public class Role : Identifier
     {
         public string Name { get; set; }
 

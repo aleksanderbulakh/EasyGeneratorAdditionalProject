@@ -6,6 +6,7 @@ using EasyGeneratorAdditionalProject.DataAccess.Interfaces;
 using EasyGeneratorAdditionalProject.DataAccess.Repositories;
 using EasyGeneratorAdditionalProject.Models.Entities;
 using EasyGeneratorAdditionalProject.Web.Convertors;
+using EasyGeneratorAdditionalProject.Web.ModelBinders;
 using System.Web.Mvc;
 
 namespace EasyGeneratorAdditionalProject.Web.Configuration
@@ -25,6 +26,7 @@ namespace EasyGeneratorAdditionalProject.Web.Configuration
                 .InstancePerLifetimeScope();
             
             builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
+            builder.RegisterGeneric(typeof(ModelCreator<>)).As(typeof(IModelCreator<>));
 
             builder.RegisterType<RoleRepository>().As<IRoleRepository>();
             builder.RegisterType<UserRepository>().As<IUserRepository>();

@@ -18,8 +18,9 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         private readonly ISectionRepository _sectionRepository;
         private readonly IMapper _mapper;
         private readonly IDateConvertor _convertor;
-        public SectionController(IUnitOfWork work, ICourseRepository courseRepository, ISectionRepository sectionRepository, IUserRepository userRepository, IMapper mapper, IDateConvertor convertor)
-            :base(work, userRepository)
+        public SectionController(IUnitOfWork work, ICourseRepository courseRepository, 
+            ISectionRepository sectionRepository, IMapper mapper, IDateConvertor convertor)
+            : base(work)
         {
             _courseRepository = courseRepository;
             _sectionRepository = sectionRepository;
@@ -29,16 +30,17 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
         [HttpPost]
         [Route("section/edit/title", Name = "EditSectionTitle")]
-        public JsonResult EditSectionTitle(Section section, string userId, string title)
+        public JsonResult EditSectionTitle(Section section, User user, string title)
         {
             if (section == null)
-                return new JsonFailedResult("section not find.");
+                return FailResult("section not find.");
 
-            var user = ThrowIfUserDataInvalid(userId);
+            if (user == null)
+                return FailResult("user not find.");
 
             section.UpdateTitle(title, user.UserName);
 
-            return new JsonSuccessResult(_convertor.ConvertDateToMilliseconds(section.LastModifiedDate));
+            return SuccessResult(_convertor.ConvertDateToMilliseconds(section.LastModifiedDate));
         }
 
         [HttpPost]
@@ -48,23 +50,24 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             if (section != null)
                 _sectionRepository.Delete(section);
 
-            return new JsonSuccessResult(true);
+            return SuccessResult(true);
         }
 
         [HttpPost]
         [Route("section/create", Name = "CreateSection")]
-        public JsonResult CreateSection(Course course, string userId)
+        public JsonResult CreateSection(Course course, User user)
         {
             if (course == null)
-                return new JsonFailedResult("Section not find.");
+                return FailResult("Section not find.");
 
-            var user = ThrowIfUserDataInvalid(userId);
+            if (user == null)
+                return FailResult("user not find.");
 
             var newSection = new Section("section title", user.UserName, course);
 
             _sectionRepository.Create(newSection);
 
-            return new JsonSuccessResult(_mapper.Map<SectionViewModel>(newSection));
+            return SuccessResult(_mapper.Map<SectionViewModel>(newSection));
         }
 
         [HttpGet]
@@ -72,7 +75,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         public JsonResult SectionsList(Course course)
         {
             if (course == null)
-                return new JsonFailedResult("Course is not found.");
+                return FailResult("Course is not found.");
 
             var sections = new List<SectionViewModel>();
 
@@ -81,7 +84,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
                 sections.Add(_mapper.Map<SectionViewModel>(section));
             }
 
-            return new JsonSuccessResult(sections);
+            return SuccessResult(sections);
         }
     }
 }

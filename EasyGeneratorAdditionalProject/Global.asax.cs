@@ -26,6 +26,7 @@ namespace EasyGeneratorAdditionalProject
             ModelBinders.Binders.Add(typeof(Course), new CustomModelBinder());
             ModelBinders.Binders.Add(typeof(Section), new CustomModelBinder());
             ModelBinders.Binders.Add(typeof(User), new CustomModelBinder());
+            ModelBinders.Binders.Add(typeof(Question), new CustomModelBinder());
         }
     }
 }

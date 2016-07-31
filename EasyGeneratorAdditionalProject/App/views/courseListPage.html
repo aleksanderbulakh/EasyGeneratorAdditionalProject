@@ -10,7 +10,7 @@
                     <div class="position-top-title" data-bind="text: title"></div>
                 </div>
                 <div class="course-data-navigation">
-                    <a class="navigation-preview" data-bind="click: $root.coursePreview">Preview</a>
+                    <a class="navigation-preview" data-bind="click: (function(){$root.coursePreview(id)})">Preview</a>
                     <a class="navigation-delete" data-bind="click: (function(){ $root.deleteCourse(id)})">Delete</a>
                 </div>
                 <div class="course-data-position-bottom">

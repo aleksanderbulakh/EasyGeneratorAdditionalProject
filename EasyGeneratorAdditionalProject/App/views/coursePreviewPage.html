@@ -1,1 +1,14 @@
-﻿<div>course preview page</div>
+﻿<div class="container">
+    <div class="course">
+        <div class="title" data-bind="text: courseTitle"></div>
+        <div class="description" data-bind="text: courseDescription"></div>
+        <div class="creeated-by">Created by: <span data-bind="text: createdBy"></span></div>
+        <!-- ko if: sectionList !== undefined -->
+        <div>Sections</div>
+        <hr />
+        <div class="section" data-bind="foreach: sectionList">
+            <div data-bind="compose: { model: 'viewmodels/previewSection', activate: true, activationData: $data }"></div>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>

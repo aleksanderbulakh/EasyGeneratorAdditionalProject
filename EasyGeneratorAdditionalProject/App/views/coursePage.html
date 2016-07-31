@@ -12,12 +12,12 @@
         </div>
     </div>
     <hr />
-    <!-- ko if: courseSection !== undefined -->
+    <!-- ko if: courseSection().length !== 0 -->
     <div class="course-section-list" data-bind="foreach: courseSection">
         <div data-bind="compose: { model: 'viewmodels/sectionPage', activate: true, activationData: $data }"></div>
     </div>
     <!-- /ko -->
     <button class="add-section" data-bind="click: (function(){createSection(courseId)})">Add section</button>
-    <button data-bind="click: editTitle, disable: courseTitle.hasError() === (courseTitle() !== course().title)">Save Title</button>
+    <button data-bind="click: editTitle, disable: isChangeable">Save Title</button>
     <button data-bind="click: editDescription">Save Description</button>
 </div>

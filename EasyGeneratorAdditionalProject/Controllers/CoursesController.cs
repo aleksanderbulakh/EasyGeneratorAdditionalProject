@@ -15,8 +15,9 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         private readonly ICourseRepository _courseRepository;
         private readonly IMapper _mapper;
         private readonly IDateConvertor _convertor;
-        public CoursesController(IUnitOfWork work, IUserRepository userRepository, ICourseRepository courseRepository, IMapper mapper, IDateConvertor convertor)
-            :base(work, userRepository)
+        public CoursesController(IUnitOfWork work, ICourseRepository courseRepository, IMapper mapper,
+            IDateConvertor convertor)
+            :base(work)
         {
             _courseRepository = courseRepository;
             _mapper = mapper;
@@ -25,30 +26,32 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
         [HttpPost]
         [Route("course/edit/title", Name = "EditCourseTitle")]
-        public JsonResult EditCourseTitle(Course course, string userId, string title)
+        public JsonResult EditCourseTitle(Course course, User user, string title)
         {
             if (course == null)
-                return new JsonFailedResult("Course not find.");
+                return FailResult("Course not find.");
 
-            var user = ThrowIfUserDataInvalid(userId);
+            if (user == null)
+                return FailResult("user not find.");
 
             course.UpdateTitle(title, user.UserName);
 
-            return new JsonSuccessResult(_convertor.ConvertDateToMilliseconds(course.LastModifiedDate));
+            return SuccessResult(_convertor.ConvertDateToMilliseconds(course.LastModifiedDate));
         }
 
         [HttpPost]
         [Route("course/edit/description", Name = "EditCourseDescription")]
-        public JsonResult EditCourseDescription(Course course, string userId, string description)
+        public JsonResult EditCourseDescription(Course course, User user, string description)
         {
             if (course == null)
-                return new JsonFailedResult("Course not find.");
+                return FailResult("Course not find.");
 
-            var user = ThrowIfUserDataInvalid(userId);
+            if (user == null)
+                return FailResult("user not find.");
 
             course.UpdateDescription(description, user.UserName);
 
-            return new JsonSuccessResult(_convertor.ConvertDateToMilliseconds(course.LastModifiedDate));
+            return SuccessResult(_convertor.ConvertDateToMilliseconds(course.LastModifiedDate));
         }
 
         [HttpPost]
@@ -59,7 +62,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             if (course != null)
                 _courseRepository.Delete(course);
 
-            return new JsonSuccessResult(true);
+            return SuccessResult(true);
         }
 
         [HttpPost]
@@ -67,13 +70,13 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         public JsonResult CreateCourse(User user, string courseTitle)
         {
             if (user == null)
-                return new JsonFailedResult("User is not found.");
+                return FailResult("User is not found.");
 
             var newCourse = new Course(courseTitle, "course description", user);
 
             _courseRepository.Create(newCourse);
 
-            return new JsonSuccessResult(_mapper.Map<CourseViewModel>(newCourse));
+            return SuccessResult(_mapper.Map<CourseViewModel>(newCourse));
         }
 
         [HttpGet]
@@ -81,7 +84,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         public JsonResult CoursesList(User user)
         {
             if (user == null)
-                return new JsonFailedResult("User is not found.");
+                return FailResult("User is not found.");
 
             var courses = new List<CourseViewModel>();
             var courseCollection = user.CoursesCollection;
@@ -91,7 +94,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
                 courses.Add(_mapper.Map<CourseViewModel>(course));
             }
 
-            return new JsonSuccessResult(courses);
+            return SuccessResult(courses);
         }
     }
 }

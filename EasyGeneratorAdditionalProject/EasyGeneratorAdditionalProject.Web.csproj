@@ -161,35 +161,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\customPlugins\createQuestionDialog.html" />
+    <Content Include="App\customPlugins\createQuestionDialog.js" />
     <Content Include="App\data\courseContext.js" />
+    <Content Include="App\data\questionRepository.js" />
     <Content Include="App\data\sectionRepository.js" />
     <Content Include="App\customPlugins\customMessage.js" />
     <Content Include="App\customPlugins\createDialog.js" />
-    <Content Include="App\durandal\amd\almond-custom.js" />
-    <Content Include="App\durandal\amd\optimizer.exe" />
-    <Content Include="App\durandal\amd\r.js" />
-    <Content Include="App\durandal\amd\require.js" />
-    <Content Include="App\durandal\amd\text.js" />
-    <Content Include="App\durandal\app.js" />
-    <Content Include="App\durandal\composition.js" />
-    <Content Include="App\durandal\events.js" />
-    <Content Include="App\durandal\http.js" />
-    <Content Include="App\durandal\messageBox.html" />
-    <Content Include="App\durandal\messageBox.js" />
-    <Content Include="App\durandal\modalDialog.js" />
-    <Content Include="App\durandal\system.js" />
-    <Content Include="App\durandal\transitions\entrance.js" />
-    <Content Include="App\durandal\viewEngine.js" />
-    <Content Include="App\durandal\viewLocator.js" />
-    <Content Include="App\durandal\viewModel.js" />
-    <Content Include="App\durandal\viewModelBinder.js" />
-    <Content Include="App\durandal\widget.js" />
     <Content Include="App\http\httpWrapper.js" />
     <Content Include="App\main.js" />
     <Content Include="App\mapper\mapper.js" />
     <Content Include="App\models\course.js" />
+    <Content Include="App\models\question.js" />
     <Content Include="App\models\section.js" />
     <Content Include="App\data\courseRepository.js" />
+    <Content Include="App\models\singleSelectAnswer.js" />
     <Content Include="App\models\titled.js" />
     <Content Include="App\models\user.js" />
     <Content Include="App\viewmodels\coursePage.js" />
@@ -205,6 +191,7 @@
     <Content Include="App\views\coursePreviewPage.html" />
     <Content Include="App\customPlugins\createDialog.html" />
     <Content Include="App\views\loginPage.html" />
+    <Content Include="App\views\previewSection.html" />
     <Content Include="App\views\sectionPage.html" />
     <Content Include="App\views\shell.html" />
     <Content Include="App\views\userRegistrationPage.html" />
@@ -257,9 +244,11 @@
     <Compile Include="Configuration\FilterConfiguration.cs" />
     <Compile Include="Configuration\MappingConfiguration.cs" />
     <Compile Include="Configuration\RouteConfig.cs" />
+    <Compile Include="Controllers\AnswerController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Controllers\SectionController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Convertors\DateConvertor.cs" />
@@ -271,8 +260,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="ModelBinders\IModelCreator.cs" />
+    <Compile Include="ModelBinders\ModelCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\AnswerViewModel.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />
+    <Compile Include="ViewModels\QuestionViewModel.cs" />
     <Compile Include="ViewModels\SectionViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
   </ItemGroup>
@@ -292,7 +285,10 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Answer\" />
+    <Folder Include="Views\Question\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyGeneratorAdditionalProject.DataAccess\EasyGeneratorAdditionalProject.DataAccess.csproj">
       <Project>{2d39c2b7-e29e-4484-adc5-6ca5797ad23b}</Project>

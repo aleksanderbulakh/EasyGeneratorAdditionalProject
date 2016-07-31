@@ -10,12 +10,12 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
     {
         public Course Course { get; set; }
 
-        public virtual ICollection<Content> ContentCollection { get; set; }
+        public virtual ICollection<Question> QuestionCollection { get; set; }
 
         public Section()
             : base()
         {
-            ContentCollection = new List<Content>();
+            QuestionCollection = new List<Question>();
         }
 
         public Section(string title, string userName, Course course)

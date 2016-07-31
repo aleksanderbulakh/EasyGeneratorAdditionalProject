@@ -1,5 +1,5 @@
-﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/sectionRepository', 'customPlugins/customMessage'],
-    function (ko, router, app, sectionRepository, message) {
+﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/sectionRepository', 'customPlugins/customMessage', 'customPlugins/createQuestionDialog'],
+    function (ko, router, app, sectionRepository, message, createQuestionDialog) {
 
         return function () {
 
@@ -10,46 +10,59 @@
                 sectionTitle: ko.observable().extend({
                     validName: 'Please, enter section title! Maximum number of characters - 255.'
                 }),
-                contentList: ko.observable(),
+                questionList: ko.observable(),
+                isChangeable: true,
 
                 activate: function (sectionData) {
-                    this.sectionData(sectionData);
-                    this.sectionId(sectionData.id);
-                    this.sectionTitle(sectionData.title);
-                    this.contentList(sectionData.contentList);
+                    if (sectionData !== undefined) {
+                        this.sectionData(sectionData);
+                        this.sectionId(sectionData.id);
+                        this.sectionTitle(sectionData.title);
+                        this.questionList(sectionData.questionList);
+
+                        var self = this;
+                        this.isChangeable = ko.computed(function () {
+                            return self.sectionTitle.hasError() === (self.sectionTitle() !== self.sectionData().title);
+                        });
+                    }
+                    else {
+                        message.stateMessage("Section is not found.");
+                    }
                 },
                 editSectionTitle: function () {
                     var self = this;
 
-                    if (this.sectionData().title !== this.sectionTitle()) {
-                        sectionRepository.editSectionTitle(this.sectionId(), this.sectionTitle())
-                            .then(function (result) {
-                                if (result !== undefined) {
-                                    message.stateMessage(result, "Success");
-                                }
-                            });
-                    }
-
+                    sectionRepository.editSectionTitle(this.sectionId(), this.sectionTitle())
+                        .then(function () {
+                            self.sectionData().title = self.sectionTitle();
+                            message.stateMessage("Title has been changed.", "Success");
+                        })
+                        .fail(function (result) {
+                            message.stateMessage(result, "Error");
+                        });
                 },
                 deleteSection: function () {
                     var self = this;
+
                     message.confirmMessage()
                         .then(function (result) {
-                            if (result) {
-                                sectionRepository.deleteSection(self.sectionId())
-                                    .then(function (result) {
-                                        if (typeof result === "boolean") {
-                                            app.trigger('data:changed');
-                                            message.stateMessage("Section was been deleted.", "Success");
-                                        }
-                                        else {
-                                            if (result !== undefined) {
-                                                message.stateMessage(result, "Error");
-                                            }
-                                        }
-                                    });
+                            if (result) { 
+                            sectionRepository.deleteSection(self.sectionId())
+                                .then(function () {
+                                    app.trigger('data:changed');
+                                    message.stateMessage("Section has been deleted.", "Success");
+                                })
+                                .fail(function (result) {
+                                    message.stateMessage(result, "Error");
+                                });
                             }
                         });
+                },
+
+                createQuestion: function () {
+                    createQuestionDialog.show().then(function (type) {
+                        alert(type);
+                    });
                 }
             };
         };

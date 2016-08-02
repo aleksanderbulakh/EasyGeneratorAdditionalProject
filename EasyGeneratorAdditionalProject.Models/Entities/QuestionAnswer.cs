@@ -12,7 +12,7 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             : base()
         { }
 
-        public QuestionAnswer(string text, string userName, Question question)
+        public QuestionAnswer(string text, string userName, Question question, bool isCorrect)
             : this()
         {
             ThrowIfTextInvalid(text);
@@ -21,7 +21,8 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
 
             Text = text;
             Question = question;
-            MarkAsModified(userName);
+            IsCorrect = isCorrect;
+            //MarkAsModified(userName);
         }
 
         public void UpdateText(string text, string userName)
@@ -30,7 +31,7 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             ThrowIfUserNameInvalid(userName);
 
             Text = text;
-            MarkAsModified(userName);
+            //MarkAsModified(userName);
         }
 
         public void UpdateState(bool isCorrect, string userName)
@@ -38,7 +39,7 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             ThrowIfUserNameInvalid(userName);
 
             IsCorrect = isCorrect;
-            MarkAsModified(userName);
+            //MarkAsModified(userName);
         }
     }
 }

@@ -19,11 +19,12 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             AnswersCollection = new List<QuestionAnswer>();
         }
 
-        public Question(string title, string type, Section section):
+        public Question(string title, string userName, Section section, string type):
             this()
         {
             ThrowIfTileInvalid(title);
             ThrowIfTypeInvalid(type);
+            ThrowIfUserNameInvalid(userName);
 
             Title = title;
             Type = type;
@@ -44,7 +45,7 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
 
         private void ThrowIfTypeInvalid(string type)
         {
-            if (type != "material" || type != "single" || type != "multiple" || type != "single_image")
+            if (type != "material" && type != "single" && type != "multiple" && type != "single_image")
                 throw new ArgumentException("Type is not valid.");
         }
     }

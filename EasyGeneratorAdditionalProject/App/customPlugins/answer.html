@@ -1,0 +1,12 @@
+﻿<div class="answer">
+    <!-- ko if: questionType == 'checkbox' -->
+    <input name="answer" data-bind="attr: { 'type' : questionType }, checked: isCorrect" />
+    <!-- /ko -->
+    <!-- ko if: questionType == 'radio' -->
+    <input name="answer" data-bind="attr: { 'type' : questionType, value: isCorrect }" />
+    <!-- /ko -->
+    <span data-bind="contentEditable: true, htmlLazy: text"></span>
+    <span class="title-validate-message" data-bind="visible: text.hasError, text: text.validationMessage"></span>
+    <button data-bind="click: editText, disable: isChangeable">Save</button>
+    <button data-bind="click: deleteAnswer">delete</button>
+</div>

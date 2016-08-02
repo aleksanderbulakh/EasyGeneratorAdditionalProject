@@ -3,7 +3,7 @@
         <div class="title" data-bind="text: courseTitle"></div>
         <div class="description" data-bind="text: courseDescription"></div>
         <div class="creeated-by">Created by: <span data-bind="text: createdBy"></span></div>
-        <!-- ko if: sectionList !== undefined -->
+        <!-- ko if: sectionList().length !== 0 -->
         <div>Sections</div>
         <hr />
         <div class="section" data-bind="foreach: sectionList">

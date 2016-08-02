@@ -32,6 +32,8 @@ namespace EasyGeneratorAdditionalProject.Web.Configuration
             builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<CourseRepository>().As<ICourseRepository>();
             builder.RegisterType<SectionRepository>().As<ISectionRepository>();
+            builder.RegisterType<QuestionRepository>().As<IQuestionRepository>();
+            builder.RegisterType<AnswerRepository>().As<IAnswerRepository>();
 
             builder.RegisterType<DateConvertor>().As<IDateConvertor>().InstancePerLifetimeScope();
 

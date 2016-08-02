@@ -14,10 +14,10 @@
     <hr />
     <!-- ko if: courseSection().length !== 0 -->
     <div class="course-section-list" data-bind="foreach: courseSection">
-        <div data-bind="compose: { model: 'viewmodels/sectionPage', activate: true, activationData: $data }"></div>
+        <div data-bind="compose: { model: 'viewmodels/section', activate: true, activationData: { courseId: $root.courseId, sectionData: $data } }"></div>
     </div>
     <!-- /ko -->
-    <button class="add-section" data-bind="click: (function(){createSection(courseId)})">Add section</button>
+    <button class="add-section" data-bind="click: createSection">Add section</button>
     <button data-bind="click: editTitle, disable: isChangeable">Save Title</button>
     <button data-bind="click: editDescription">Save Description</button>
 </div>

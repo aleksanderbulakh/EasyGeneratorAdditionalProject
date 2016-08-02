@@ -27,7 +27,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
         [HttpPost]
         [Route("question/edit/title", Name = "EditQuestionTitle")]
-        public JsonResult EditSectionTitle(Question question, User user, string title)
+        public JsonResult EditQuestionTitle(Question question, User user, string title)
         {
             if (question == null)
                 return FailResult("question not find.");
@@ -42,7 +42,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
         [HttpPost]
         [Route("question/delete", Name = "DeleteQuestion")]
-        public JsonResult DeleteSection(Question question)
+        public JsonResult DeleteQuestion(Question question)
         {
             if (question != null)
                 _questionRepository.Delete(question);
@@ -52,7 +52,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
         [HttpPost]
         [Route("question/create", Name = "CreateQuestion")]
-        public JsonResult CreateSection(Section section, User user)
+        public JsonResult CreateQuestion(Section section, User user, string type)
         {
             if (section == null)
                 return FailResult("Section not find.");
@@ -60,16 +60,18 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             if (user == null)
                 return FailResult("User not find.");
 
-            var newQuestion = new Question("section title", user.UserName, section);
+            var newQuestion = new Question("question title", user.UserName, section, type);
 
             _questionRepository.Create(newQuestion);
+
+            _questionRepository.CreateSomeStandartAnswers(newQuestion);
 
             return SuccessResult(_mapper.Map<QuestionViewModel>(newQuestion));
         }
 
         [HttpGet]
         [Route("question/list", Name = "QuestionList")]
-        public JsonResult SectionsList(Section section)
+        public JsonResult QuestionList(Section section)
         {
             if (section == null)
                 return FailResult("Section is not found.");

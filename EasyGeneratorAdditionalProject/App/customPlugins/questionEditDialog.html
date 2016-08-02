@@ -1,0 +1,8 @@
+﻿<div>
+    <div class="answer-list" data-bind="foreach: answers">
+        <div data-bind="compose: { model: 'customPlugins/answer', activate: true, activationData: { courseId: $parent.courseId, sectionId: $parent.sectionId, questionId: $parent.questionId, questionType: $parent.questionType, answerData: $data } }"></div>
+        
+    </div>
+    <button class="add-answer" data-bind="click: addAnswer">Add answer</button>
+    <button class="ok" data-bind="click: ok">Close</button>
+</div>

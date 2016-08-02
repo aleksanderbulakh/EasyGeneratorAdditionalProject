@@ -10,12 +10,27 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Repositories
 {
     public class QuestionRepository : Repository<Question>, IQuestionRepository
     {
-        public QuestionRepository(IDatabaseContext context)
-            : base(context) { }
+        private readonly IAnswerRepository _answerRepository;
+        public QuestionRepository(IDatabaseContext context, IAnswerRepository answerRepository)
+            : base(context)
+        {
+            _answerRepository = answerRepository;
+        }
 
         public List<Question> GetBySectionId(Guid id)
         {
             return Entity().Where(t => t.Section.Id == id).ToList();
+        }
+
+        public void CreateSomeStandartAnswers(Question question)
+        {
+            var answer = new QuestionAnswer("Question answer", question.CreatedBy, question, true);
+
+            _answerRepository.Create(answer);
+
+            answer = new QuestionAnswer("Question answer", question.CreatedBy, question, false);
+
+            _answerRepository.Create(answer);
         }
     }
 }

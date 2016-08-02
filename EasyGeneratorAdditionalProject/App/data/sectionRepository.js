@@ -1,14 +1,11 @@
-﻿define(['mapper/mapper', 'http/httpWrapper', 'data/courseContext', 'customPlugins/customMessage'],
-    function (mapper, http, courseContext, message) {
+﻿define(['mapper/mapper', 'http/httpWrapper', 'data/courseContext', 'customPlugins/customMessage',
+    'services/findService', 'services/validateService'],
+    function (mapper, http, courseContext, message, findService, validateService) {
         return {
             getSectionsByCourseId: function (courseId) {
-                var course = courseContext.courseList.find(function (course) {
-                    return course.id === courseId;
-                });
+                var course = findService.findCourse(courseId);
 
-                if (course === undefined) {
-                    throw "Course not found";
-                }
+                validateService.throwIfCourseUndefined(course);
 
                 if (course.sectionList != undefined) {
                     return Q(true);
@@ -32,13 +29,9 @@
                 return http.post('section/create', { courseId: courseId, userId: courseContext.user.id })
                     .then(function (result) {
 
-                        var course = courseContext.courseList.find(function (course) {
-                            return course.id === courseId;
-                        });
+                        var course = findService.findCourse(courseId);
 
-                        if (course === undefined) {
-                            throw "Course not found";
-                        }
+                        validateService.throwIfCourseUndefined(course);
 
                         course.sectionList.push(mapper.mapSection(result));
 
@@ -46,43 +39,37 @@
                     });
             },
 
-            editSectionTitle: function (sectionId, sectionTitle) {
+            editSectionTitle: function (courseId, sectionId, sectionTitle) {
                 return http.post('section/edit/title', { sectionId: sectionId, userId: courseContext.user.id, title: sectionTitle })
                     .then(function (result) {
 
-                        courseContext.courseList.forEach(function (course) {
-                            if (course.sectionList !== undefined) {
-                                var section = course.sectionList.find(function (section) {
-                                    return section.id === sectionId;
-                                });
+                        var section = findService.findSection(courseId, sectionId);
 
-                                if (section !== undefined) {
-                                    section.title = sectionTitle;
-                                    section.modifiedBy = courseContext.user.firstName + " " + courseContext.user.surname;
-                                    section.lastModifiedDate = new Date(result);
-                                }
-                            }
-                        });
+                        validateService.throwIfSectionUndefined(section);
+
+                        section.title = sectionTitle;
+                        section.modifiedBy = courseContext.user.firstName + " " + courseContext.user.surname;
+                        section.lastModifiedDate = new Date(result);
 
                         return true;
                     });
             },
 
-            deleteSection: function (sectionId) {
-                return http.post('section/delete', { sectionId: sectionId})
+            deleteSection: function (courseId, sectionId) {
+                return http.post('section/delete', { sectionId: sectionId })
                     .then(function (result) {
 
-                        courseContext.courseList.forEach(function (course) {
-                            if (course.sectionList !== undefined) {
-                                var sectionIndex = course.sectionList.findIndex(function (section) {
-                                    return sectionId === section.id;
-                                });
+                        var course = findService.findCourse(courseId);
 
-                                if (sectionIndex >= 0) {
-                                    course.sectionList.splice(sectionIndex, 1);
-                                }
-                            }
+                        validateService.throwIfCourseUndefined(course);
+
+                        var sectionIndex = course.sectionList.findIndex(function (section) {
+                            return sectionId === section.id;
                         });
+
+                        if (sectionIndex >= 0) {
+                            course.sectionList.splice(sectionIndex, 1);
+                        }
 
                         return true;
                     });

@@ -21,6 +21,8 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'durandal/com
             dialog: true
         });
         
+        composition.addBindingHandler('checked');
+
         app.start()
             .then(function () {
                 viewLocator.useConvention();

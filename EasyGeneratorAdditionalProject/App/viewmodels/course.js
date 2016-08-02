@@ -1,11 +1,11 @@
 ﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/courseRepository', 'data/sectionRepository', 'customPlugins/customMessage'],
     function (ko, router, app, courseRepository, sectionRepository, message) {
         return {
-            courseId: ko.observable(),
+            courseId: '',
             courseTitle: ko.observable().extend({
                 validName: 'Please, enter course title! Maximum number of characters - 255.'
             }),
-            courseSection: ko.observable(),
+            courseSection: ko.observableArray([]),
             courseDescription: ko.observable(),
             course: ko.observable(),
             isChangeable: true,
@@ -14,9 +14,9 @@
 
                 courseRepository.getCourseById(id)
                     .then(function (result) {
+                        self.courseId = id;
                         self.courseTitle(result.title);
                         self.courseDescription(result.description);
-                        self.courseId(id);
                         self.course(result);
                         sectionRepository.getSectionsByCourseId(id)
                             .then(function () {
@@ -38,10 +38,10 @@
             editTitle: function () {
                 var self = this;
 
-                courseRepository.getCourseById(this.courseId())
+                courseRepository.getCourseById(this.courseId)
                     .then(function (result) {
 
-                        courseRepository.editCourseTitle(self.courseId(), self.courseTitle())
+                        courseRepository.editCourseTitle(self.courseId, self.courseTitle())
                             .then(function () {
                                 self.course().title = self.courseTitle();
                                 message.stateMessage("Title has been changed.", "Success");
@@ -54,10 +54,10 @@
             editDescription: function () {
                 var self = this;
 
-                courseRepository.getCourseById(this.courseId())
+                courseRepository.getCourseById(this.courseId)
                     .then(function (result) {
 
-                        courseRepository.editCourseDescription(self.courseId(), self.courseDescription())
+                        courseRepository.editCourseDescription(self.courseId, self.courseDescription())
                             .then(function () {
                                 message.stateMessage("Description has been changed.", "Success");
                             });
@@ -67,9 +67,9 @@
                         message.stateMessage(result, "Error");
                     });
             },
-            createSection: function (courseId) {
+            createSection: function () {
                 var self = this;
-                sectionRepository.createSection(courseId())
+                sectionRepository.createSection(self.courseId)
                     .then(function () {
                         app.trigger('data:changed');
                         message.stateMessage("Section hes been created.", "Success");

@@ -23,13 +23,7 @@
         </div>
         <!-- ko: if questionList().length !== 0 -->
         <div class="question-list" data-bind="foreach: questionList">
-            <a data-bind="click: (function(){ $root.modified(id)})">
-                <div data-bind="text: title"></div>
-                <div data-bind="dateToLocalFormat: createdOn"></div>
-                <div data-bind="dateToLocalFormat: lastModifiedDate"></div>
-                <div data-bind="text: createdBy"></div>
-                <div data-bind="dateToLocalFormat: modifiedBy"></div>
-            </a>
+            <div data-bind="compose: { model: 'viewmodels/question', activate: true, activationData: { courseId: $root.courseId, sectionId: $root.sectionId, questionData: $data } }"></div>
         </div>
         <!-- \ko -->
     </div>

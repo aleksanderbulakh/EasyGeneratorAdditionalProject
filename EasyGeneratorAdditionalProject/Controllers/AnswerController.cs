@@ -42,7 +42,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
         [HttpPost]
         [Route("answer/edit/state", Name = "EditAnswerState")]
-        public JsonResult EditSectionState(QuestionAnswer answer, User user, bool isCorrect)
+        public JsonResult EditSectionState(QuestionAnswer answer, User user, bool state)
         {
             if (answer == null)
                 return FailResult("question not find.");
@@ -50,7 +50,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             if (user == null)
                 return FailResult("user not find.");
 
-            answer.UpdateState(isCorrect, user.UserName);
+            answer.UpdateState(state, user.UserName);
 
             return SuccessResult(_convertor.ConvertDateToMilliseconds(answer.Question.LastModifiedDate));
         }
@@ -75,7 +75,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             if (user == null)
                 return FailResult("User not find.");
 
-            var newAnswer = new QuestionAnswer("answer text", user.UserName, question);
+            var newAnswer = new QuestionAnswer("answer text", user.UserName, question, false);
 
             _answerRepository.Create(newAnswer);
 

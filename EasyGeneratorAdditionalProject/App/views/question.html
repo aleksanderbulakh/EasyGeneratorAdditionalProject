@@ -1,0 +1,27 @@
+﻿<hr /><hr />
+<div>
+    <div>
+        Question title:
+        <span data-bind="contentEditable: true, htmlLazy: title"></span>
+        <span class="title-validate-message" data-bind="visible: title.hasError, text: title.validationMessage"></span>
+        <button data-bind="click: editTitle, disable: isChangeable">save</button>
+    </div>
+    <div>
+        Created on:
+        <span data-bind="dateToLocalFormat: createdOn"></span>
+    </div>
+    <div>
+        Last modified date:
+        <span data-bind="dateToLocalFormat: lastModifiedDate"></span>
+    </div>
+    <div>
+        Created by:
+        <span data-bind="text: createdBy"></span>
+    </div>
+    <div>
+        Modified by:
+        <span data-bind="text: modifiedBy"></span>
+    </div>
+    <button data-bind="click: deleteQuestion">delete</button>
+    <button data-bind="click: openAnswerDialog">edit</button>
+</div>

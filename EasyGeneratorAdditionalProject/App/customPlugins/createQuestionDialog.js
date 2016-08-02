@@ -1,4 +1,4 @@
-﻿define(['plugins/dialog', 'knockout', 'models/question', 'models/singleSelectAnswer'],
+﻿define(['plugins/dialog', 'knockout', 'models/question'],
     function (dialog, ko, Question, SingleSelectAnswer) {
 
         var createQuestionDialog = function () { };

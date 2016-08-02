@@ -18,6 +18,8 @@ namespace EasyGeneratorAdditionalProject.Web.ModelBinders
                 propertyName = "sectionId";
             if (typeof(T) == typeof(Question))
                 propertyName = "questionId";
+            if (typeof(T) == typeof(QuestionAnswer))
+                propertyName = "answerId";
         }
         public T TryCreateModel(IValueProvider valueProvider)
         {

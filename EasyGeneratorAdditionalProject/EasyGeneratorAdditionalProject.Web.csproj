@@ -161,8 +161,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\customPlugins\answer.html" />
+    <Content Include="App\customPlugins\answer.js" />
+    <Content Include="App\customPlugins\questionEditDialog.html" />
+    <Content Include="App\customPlugins\questionEditDialog.js" />
     <Content Include="App\customPlugins\createQuestionDialog.html" />
     <Content Include="App\customPlugins\createQuestionDialog.js" />
+    <Content Include="App\data\answerRepository.js" />
+    <Content Include="App\data\constants.js" />
     <Content Include="App\data\courseContext.js" />
     <Content Include="App\data\questionRepository.js" />
     <Content Include="App\data\sectionRepository.js" />
@@ -175,26 +181,26 @@
     <Content Include="App\models\question.js" />
     <Content Include="App\models\section.js" />
     <Content Include="App\data\courseRepository.js" />
-    <Content Include="App\models\singleSelectAnswer.js" />
+    <Content Include="App\models\answer.js" />
     <Content Include="App\models\titled.js" />
     <Content Include="App\models\user.js" />
-    <Content Include="App\viewmodels\coursePage.js" />
-    <Content Include="App\viewmodels\courseListPage.js" />
-    <Content Include="App\viewmodels\coursePreviewPage.js" />
-    <Content Include="App\viewmodels\loginPage.js" />
+    <Content Include="App\services\findService.js" />
+    <Content Include="App\services\validateService.js" />
+    <Content Include="App\viewmodels\course.js" />
+    <Content Include="App\viewmodels\courseList.js" />
+    <Content Include="App\viewmodels\previewCourse.js" />
     <Content Include="App\viewmodels\previewSection.js" />
-    <Content Include="App\viewmodels\sectionPage.js" />
+    <Content Include="App\viewmodels\question.js" />
+    <Content Include="App\viewmodels\section.js" />
     <Content Include="App\viewmodels\shell.js" />
-    <Content Include="App\viewmodels\userRegistrationPage.js" />
-    <Content Include="App\views\coursePage.html" />
-    <Content Include="App\views\courseListPage.html" />
-    <Content Include="App\views\coursePreviewPage.html" />
+    <Content Include="App\views\course.html" />
+    <Content Include="App\views\courseList.html" />
+    <Content Include="App\views\previewCourse.html" />
     <Content Include="App\customPlugins\createDialog.html" />
-    <Content Include="App\views\loginPage.html" />
     <Content Include="App\views\previewSection.html" />
-    <Content Include="App\views\sectionPage.html" />
+    <Content Include="App\views\question.html" />
+    <Content Include="App\views\section.html" />
     <Content Include="App\views\shell.html" />
-    <Content Include="App\views\userRegistrationPage.html" />
     <Content Include="Content\durandal.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />

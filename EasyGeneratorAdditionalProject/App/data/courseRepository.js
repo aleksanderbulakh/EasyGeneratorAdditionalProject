@@ -1,5 +1,6 @@
-﻿define(['mapper/mapper', 'http/httpWrapper', 'data/courseContext', 'customPlugins/customMessage'],
-    function (mapper, http, courseContext, message) {
+﻿define(['mapper/mapper', 'http/httpWrapper', 'data/courseContext', 'customPlugins/customMessage',
+    'services/findService', 'services/validateService'],
+    function (mapper, http, courseContext, message, findService, validateService) {
         return {
             getCourseList: function () {
                 if (courseContext.courseList !== undefined)
@@ -27,13 +28,9 @@
             },
 
             getCourseById: function (courseId) {
-                var course = courseContext.courseList.find(function (item) {
-                    return item.id === courseId;
-                });
+                var course = findService.findCourse(courseId);
 
-                if (course === undefined) {
-                    throw 'Course not found.';
-                }
+                validateService.throwIfCourseUndefined(course);
 
                 return Q(course);
             },
@@ -42,13 +39,9 @@
                 return http.post('course/edit/title', { courseId: courseId, userId: courseContext.user.id, title: courseTitle })
                     .then(function (result) {
 
-                        var course = courseContext.courseList.find(function (item) {
-                            return item.id === courseId;
-                        });
+                        var course = findService.findCourse(courseId);
 
-                        if (course === undefined) {
-                            throw 'Course not found.';
-                        }
+                        validateService.throwIfCourseUndefined(course);
 
                         course.title = courseTitle;
                         course.modifiedBy = courseContext.user.firstName + " " + courseContext.user.surname;
@@ -62,13 +55,9 @@
                 return http.post('course/edit/description', { courseId: courseId, userId: courseContext.user.id, description: courseDescription })
                     .then(function (result) {
 
-                        var course = courseContext.courseList.find(function (item) {
-                            return item.id === courseId;
-                        });
+                        var course = findService.findCourse(courseId);
 
-                        if (course === undefined) {
-                            throw 'Course not found.';
-                        }
+                        validateService.throwIfCourseUndefined(course);
 
                         course.description = courseDescription;
                         course.modifiedBy = courseContext.user.firstName + " " + courseContext.user.surname;
@@ -79,17 +68,15 @@
             },
 
             deleteCourse: function (courseId) {
-                return http.post('course/delete', { courseId: courseId})
+                return http.post('course/delete', { courseId: courseId })
                     .then(function (result) {
 
                         var courseIndex = courseContext.courseList.findIndex(function (course) {
                             return courseId === course.id;
                         });
 
-                        if (courseIndex === undefined)
-                            throw "Course not found.";
-
-                        courseContext.courseList.splice(courseIndex, 1);
+                        if (courseIndex >= 0)
+                            courseContext.courseList.splice(courseIndex, 1);
 
                         return true;
                     });

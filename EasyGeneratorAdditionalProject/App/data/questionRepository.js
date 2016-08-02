@@ -1,24 +1,14 @@
-﻿define(['mapper/mapper', 'http/httpWrapper', 'data/courseContext', 'customPlugins/customMessage'],
-    function (mapper, http, courseContext, message) {
+﻿define(['mapper/mapper', 'http/httpWrapper', 'data/courseContext', 'customPlugins/customMessage',
+    'services/findService', 'services/validateService'],
+    function (mapper, http, courseContext, message, findService, validateService) {
         return {
             getQuestionsBySectionId: function (courseId, sectionId) {
-                var course = courseContext.courseList.find(function (course) {
-                    return course.id === courseId;
-                });
+                
+                var section = findService.findSection(courseId, sectionId);
 
-                if (course === undefined) {
-                    throw "Course not found";
-                }
+                validateService.throwIfSectionUndefined(section);
 
-                var section = course.sectionList.find(function (section) {
-                    return section.id === sectionId;
-                });
-
-                if (section === undefined) {
-                    throw "Section not found";
-                }
-
-                if (section.questionList != undefined) {
+                if (section.questionList !== undefined) {
                     return Q(true);
                 }
 
@@ -36,25 +26,14 @@
                     });
             },
 
-            createQuestion: function (courseId, sectionId) {
-                return http.post('question/create', { sectionId: sectionId, userId: courseContext.user.id })
+            createQuestion: function (courseId, sectionId, questionType) {
+
+                return http.post('question/create', { sectionId: sectionId, type: questionType, userId: courseContext.user.id })
                     .then(function (result) {
 
-                        var course = courseContext.courseList.find(function (course) {
-                            return course.id === courseId;
-                        });
+                        var section = findService.findSection(courseId, sectionId);
 
-                        if (course === undefined) {
-                            throw "Course not found";
-                        }
-
-                        var section = course.sectionList.find(function (section) {
-                            return section.id === sectionId;
-                        });
-
-                        if (section === undefined) {
-                            throw "Section not found";
-                        }
+                        validateService.throwIfSectionUndefined(section);
 
                         section.questionList.push(mapper.mapQuestion(result));
 
@@ -63,32 +42,13 @@
             },
 
             editQuestionTitle: function (courseId, sectionId, questionId, questionTitle) {
+
                 return http.post('question/edit/title', { questionId: questionId, userId: courseContext.user.id, title: questionTitle })
                     .then(function (result) {
 
-                        var course = courseContext.courseList.find(function (course) {
-                            return course.id === courseId;
-                        });
+                        var question = findService.findQuestion(courseId, sectionId, questionId);
 
-                        if (course === undefined) {
-                            throw "Course not found";
-                        }
-
-                        var section = course.sectionList.find(function (section) {
-                            return section.id === sectionId;
-                        });
-
-                        if (section === undefined) {
-                            throw "Section not found";
-                        }
-
-                        var question = section.questionList.find(function (question) {
-                            return question.id === questionId;
-                        });
-
-                        if (section === undefined) {
-                            throw "Question not found";
-                        }
+                        validateService.throwIfQuestionUndefined(question);
 
                         question.title = questionTitle;
                         question.modifiedBy = courseContext.user.firstName + " " + courseContext.user.surname;
@@ -98,32 +58,20 @@
                     });
             },
 
-            deleteSection: function (courseId, sectionId, questionId) {
+            deleteQuestion: function (courseId, sectionId, questionId) {
                 return http.post('question/delete', { questionId: questionId })
                     .then(function (result) {
+                        
+                        var section = findService.findSection(courseId, sectionId);
 
-                        var course = courseContext.courseList.find(function (course) {
-                            return course.id === courseId;
-                        });
-
-                        if (course === undefined) {
-                            throw "Course not found";
-                        }
-
-                        var section = course.sectionList.find(function (section) {
-                            return section.id === sectionId;
-                        });
-
-                        if (section === undefined) {
-                            throw "Section not found";
-                        }
+                        validateService.throwIfSectionUndefined(section);
 
                         var questionIndex = section.questionList.findIndex(function (question) {
                             return question.id === questionId;
                         });
 
-                        if (sectionIndex >= 0) {
-                            course.sectionList.splice(sectionIndex, 1);
+                        if (questionIndex >= 0) {
+                            section.questionList.splice(questionIndex, 1);
                         }
 
                         return true;

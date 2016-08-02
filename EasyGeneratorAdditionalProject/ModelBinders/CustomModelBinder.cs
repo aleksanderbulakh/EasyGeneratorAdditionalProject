@@ -33,6 +33,11 @@ namespace EasyGeneratorAdditionalProject.Web.ModelBinders
                 return DependencyResolver.Current.GetService<IModelCreator<Question>>().TryCreateModel(valueProvider);
             }
 
+            if (bindingContext.ModelType == typeof(QuestionAnswer))
+            {
+                return DependencyResolver.Current.GetService<IModelCreator<QuestionAnswer>>().TryCreateModel(valueProvider);
+            }
+
             return new ArgumentException("Invalid parameter.");
         }
     }

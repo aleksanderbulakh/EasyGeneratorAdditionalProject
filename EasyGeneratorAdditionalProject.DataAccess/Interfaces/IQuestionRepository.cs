@@ -10,5 +10,7 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Interfaces
     public interface IQuestionRepository : IRepository<Question>
     {
         List<Question> GetBySectionId(Guid id);
+
+        void CreateSomeStandartAnswers(Question question);
     }
 }

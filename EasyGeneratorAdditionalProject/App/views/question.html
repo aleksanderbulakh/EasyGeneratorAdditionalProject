@@ -2,7 +2,7 @@
 <div>
     <div>
         Question title:
-        <span data-bind="contentEditable: true, htmlLazy: title"></span>
+        <span data-bind="attr: { contenteditable: true }, editableHTML: title"></span>
         <span class="title-validate-message" data-bind="visible: title.hasError, text: title.validationMessage"></span>
         <button data-bind="click: editTitle, disable: isChangeable">save</button>
     </div>

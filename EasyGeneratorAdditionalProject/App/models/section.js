@@ -1,6 +1,6 @@
-﻿define(['models/titled'], function (Titled) {
+﻿define(['models/entity'], function (Entity) {
     function Section(spec) {
-        Titled.apply(this, arguments);
+        Entity.apply(this, arguments);
 
         this.questionList = spec.questionList;
     }

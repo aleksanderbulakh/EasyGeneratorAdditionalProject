@@ -14,15 +14,17 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
     public class QuestionController : MainController
     {
         private readonly IQuestionRepository _questionRepository;
+        private readonly IAnswerRepository _answerRepository;
         private readonly IMapper _mapper;
         private readonly IDateConvertor _convertor;
         public QuestionController(IUnitOfWork work, IQuestionRepository questionRepository, 
-            IMapper mapper, IDateConvertor convertor) 
+            IMapper mapper, IDateConvertor convertor, IAnswerRepository answerRepository) 
             : base(work)
         {
             _questionRepository = questionRepository;
             _mapper = mapper;
             _convertor = convertor;
+            _answerRepository = answerRepository;
         }
 
         [HttpPost]
@@ -63,8 +65,14 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             var newQuestion = new Question("question title", user.UserName, section, type);
 
             _questionRepository.Add(newQuestion);
+            
+            var answer = new QuestionAnswer("Question answer", newQuestion.CreatedBy, newQuestion, true);
 
-            _questionRepository.CreateSomeStandartAnswers(newQuestion);
+            _answerRepository.Add(answer);
+
+            answer = new QuestionAnswer("Question answer", newQuestion.CreatedBy, newQuestion, false);
+
+            _answerRepository.Add(answer);
 
             return SuccessResult(_mapper.Map<QuestionViewModel>(newQuestion));
         }

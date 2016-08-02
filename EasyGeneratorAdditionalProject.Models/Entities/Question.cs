@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Models.Entities
 {
-    public class Question : Titled
+    public class Question : Entity
     {
-        public Section Section { get; set; }
+        public virtual Section Section { get; set; }
         public string Type { get; set; }
         
         public virtual ICollection<QuestionAnswer> AnswersCollection { get; set; }
@@ -30,17 +30,6 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             Type = type;
             Section = section;
             CreatedBy = ModifiedBy = section.CreatedBy;
-        }
-
-        public void UpdateTitle(string title, string userName)
-        {
-            ThrowIfTileInvalid(title);
-            ThrowIfUserNameInvalid(userName);
-
-            Title = title;
-            ModifiedBy = userName;
-            MarkAsModified();
-
         }
 
         private void ThrowIfTypeInvalid(string type)

@@ -1,5 +1,5 @@
 ﻿define(function () {
-    function Titled(spec) {
+    function Entity(spec) {
         this.id = spec.id;
         this.title = spec.title;
         this.createdOn = spec.createdOn;
@@ -8,5 +8,5 @@
         this.modifiedBy = spec.modifiedBy;
     }
 
-    return Titled;
+    return Entity;
 });

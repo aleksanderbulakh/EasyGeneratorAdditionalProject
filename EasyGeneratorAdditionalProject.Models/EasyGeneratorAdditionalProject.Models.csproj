@@ -66,7 +66,7 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Answers.cs" />
     <Compile Include="Entities\Identifier.cs" />
-    <Compile Include="Entities\Titled.cs" />
+    <Compile Include="Entities\Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

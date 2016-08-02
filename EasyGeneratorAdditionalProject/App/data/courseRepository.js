@@ -32,7 +32,7 @@
             getCourseById: function (courseId) {
                 var course = findService.findCourse(courseId);
 
-                validateService.throwIfCourseUndefined(course);
+                validateService.throwIfObjectUndefined(course, 'Course');
 
                 return Q(course);
             },
@@ -43,7 +43,7 @@
 
                         var course = findService.findCourse(courseId);
 
-                        validateService.throwIfCourseUndefined(course);
+                        validateService.throwIfObjectUndefined(course, 'Course');
 
                         course.title = courseTitle;
                         course.modifiedBy = courseContext.user.firstName + " " + courseContext.user.surname;
@@ -59,7 +59,7 @@
 
                         var course = findService.findCourse(courseId);
 
-                        validateService.throwIfCourseUndefined(course);
+                        validateService.throwIfObjectUndefined(course, 'Course');
 
                         course.description = courseDescription;
                         course.modifiedBy = courseContext.user.firstName + " " + courseContext.user.surname;

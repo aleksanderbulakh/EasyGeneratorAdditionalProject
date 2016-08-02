@@ -5,7 +5,7 @@
             getAnswersByQuestionId: function (courseId, sectionId, questionId) {
                 var question = findService.findQuestion(courseId, sectionId, questionId);
 
-                validateService.throwIfQuestionUndefined(question);
+                validateService.throwIfObjectUndefined(question, 'Question');
 
                 if (question.answersList != undefined) {
                     return Q(question.answersList);
@@ -14,7 +14,6 @@
                 return http.get('answer/list', { questionId: questionId })
                     .then(function (result) {
 
-                        var self = this;
                         question.answersList = [];
 
                         result.forEach(function (answer) {
@@ -31,7 +30,7 @@
 
                         var question = findService.findQuestion(courseId, sectionId, questionId);
 
-                        validateService.throwIfQuestionUndefined(question);
+                        validateService.throwIfObjectUndefined(question, 'Question');
 
                         question.answersList.push(mapper.mapAnswer(result));
 
@@ -45,11 +44,11 @@
 
                         var question = findService.fintQuestion(courseId, sectionId, questionId);
 
-                        validateService.throwIfQuestionUndefined(question);
+                        validateService.throwIfObjectUndefined(question, 'Question');
 
                         var answer = findService.findAnswer(courseId, sectionId, questionId, answerId);
 
-                        validateService.throwIfAnswerUndefined(answer);
+                        validateService.throwIfObjectUndefined(answer, 'Answer');
 
                         answer.text = answerText;
                         question.modifiedBy = courseContext.user.firstName + " " + courseContext.user.surname;
@@ -65,11 +64,11 @@
 
                         var question = findService.fintQuestion(courseId, sectionId, questionId);
 
-                        validateService.throwIfQuestionUndefined(question);
+                        validateService.throwIfObjectUndefined(question, 'Question');
 
                         var answer = findService.findAnswer(courseId, sectionId, questionId, answerId);
 
-                        validateService.throwIfAnswerUndefined(answer);
+                        validateService.throwIfObjectUndefined(answer, 'Answer');
 
                         answer.isCorrect = answerState;
                         question.modifiedBy = courseContext.user.firstName + " " + courseContext.user.surname;
@@ -85,7 +84,7 @@
 
                         var question = findService.findQuestion(courseId, sectionId, questionId);
 
-                        validateService.throwIfQuestionUndefined(question);
+                        validateService.throwIfObjectUndefined(question, 'Question');
 
                         var answerIndex = question.answersList.findIndex(function (answer) {
                             return answer.id === answerId;

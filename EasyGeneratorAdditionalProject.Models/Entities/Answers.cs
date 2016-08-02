@@ -9,12 +9,29 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
 {
     public class Answers : Identifier
     {
-        public Question Question { get; set; }
+        public virtual Question Question { get; set; }
         public string Text { get; set; }
         public bool IsCorrect { get; set; }
 
         public Answers() 
             : base() { }
+
+        public void UpdateText(string text, string userName)
+        {
+            ThrowIfTextInvalid(text);
+            ThrowIfUserNameInvalid(userName);
+
+            Text = text;
+            MarkAsModified(userName);
+        }
+
+        public void UpdateState(bool isCorrect, string userName)
+        {
+            ThrowIfUserNameInvalid(userName);
+
+            IsCorrect = isCorrect;
+            MarkAsModified(userName);
+        }
 
         protected void ThrowIfTextInvalid(string text)
         {

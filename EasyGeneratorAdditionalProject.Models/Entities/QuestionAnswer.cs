@@ -22,24 +22,7 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             Text = text;
             Question = question;
             IsCorrect = isCorrect;
-            //MarkAsModified(userName);
-        }
-
-        public void UpdateText(string text, string userName)
-        {
-            ThrowIfTextInvalid(text);
-            ThrowIfUserNameInvalid(userName);
-
-            Text = text;
-            //MarkAsModified(userName);
-        }
-
-        public void UpdateState(bool isCorrect, string userName)
-        {
-            ThrowIfUserNameInvalid(userName);
-
-            IsCorrect = isCorrect;
-            //MarkAsModified(userName);
+            MarkAsModified(userName);
         }
     }
 }

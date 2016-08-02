@@ -2,13 +2,13 @@
     <a href="#">To course list</a>
     <div class="course-title">
         <span>Course title: </span>
-        <span name="course-title" data-bind="contentEditable: true, htmlLazy: courseTitle"></span>
+        <span data-bind="attr: { contenteditable: true }, editableHTML: courseTitle"></span>
         <span class="course-title-validate-message" data-bind="visible: courseTitle.hasError, text: courseTitle.validationMessage"></span>
     </div>
     <div class="course-description">
         <div>
             <span>Description: </span>
-            <span name="course-description" data-bind="contentEditable: true, htmlLazy: courseDescription"></span>
+            <span data-bind="attr: { contenteditable: true }, editableHTML: courseDescription"></span>
         </div>
     </div>
     <hr />

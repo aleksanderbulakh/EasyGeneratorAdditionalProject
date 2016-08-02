@@ -2,7 +2,7 @@
     <div class="section-info">
         <div class="section-title">
             <span>Section title: </span>
-            <span data-bind="contentEditable: true, htmlLazy: sectionTitle"></span>
+            <span data-bind="attr: { contenteditable: true }, editableHTML: sectionTitle"></span>
             <span class="course-title-validate-message" data-bind="visible: sectionTitle.hasError, text: sectionTitle.validationMessage"></span>
         </div>
         <div class="section-created-by">

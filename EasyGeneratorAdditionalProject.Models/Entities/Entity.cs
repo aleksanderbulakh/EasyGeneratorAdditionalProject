@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Models.Entities
 {
-    public class Titled : Identifier
+    public class Entity : Identifier
     {
-        public Titled()
+        public Entity()
             : base()
         {
             CreatedOn = LastModifiedDate = DateTime.UtcNow;
@@ -24,6 +24,16 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
         {
             if (title == null || title.Length == 0 || title.Length > 225)
                 throw new ArgumentException("Invalid title");
+        }
+
+        public void UpdateTitle(string title, string userName)
+        {
+            ThrowIfTileInvalid(title);
+            ThrowIfUserNameInvalid(userName);
+
+            Title = title;
+            ModifiedBy = userName;
+            MarkAsModified();
         }
 
         protected void ThrowIfUserNameInvalid(string userName)

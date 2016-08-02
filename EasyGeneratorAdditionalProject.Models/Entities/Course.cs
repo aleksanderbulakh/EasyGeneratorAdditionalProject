@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Models.Entities
 {
-    public class Course : Titled
+    public class Course : Entity
     {
-        public User User { get; set; }
+        public virtual User User { get; set; }
         public string Description { get; set; }
 
         public virtual ICollection<Section> SectionsList { get; set; }
@@ -32,16 +32,6 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
         }
 
         #region Update
-        public void UpdateTitle(string title, string userName)
-        {
-            ThrowIfTileInvalid(title);
-            ThrowIfUserNameInvalid(userName);
-
-            Title = title;
-            ModifiedBy = userName;
-            MarkAsModified();
-        }
-
         public void UpdateDescription(string description, string userName)
         {
             ThrowIfDescriptionInvalid(description);

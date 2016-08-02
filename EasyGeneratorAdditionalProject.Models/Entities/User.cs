@@ -9,7 +9,7 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
 {
     public class User : Identifier, IUser<Guid>
     {
-        public Role Role { get; set; }
+        public virtual Role Role { get; set; }
         public string FirstName { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }

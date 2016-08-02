@@ -5,7 +5,7 @@
             getSectionsByCourseId: function (courseId) {
                 var course = findService.findCourse(courseId);
 
-                validateService.throwIfCourseUndefined(course);
+                validateService.throwIfObjectUndefined(course, 'Course');
 
                 if (course.sectionList != undefined) {
                     return Q(true);
@@ -14,7 +14,6 @@
                 return http.get('section/list', { courseId: courseId })
                     .then(function (result) {
 
-                        var self = this;
                         course.sectionList = [];
 
                         result.forEach(function (section) {
@@ -31,7 +30,7 @@
 
                         var course = findService.findCourse(courseId);
 
-                        validateService.throwIfCourseUndefined(course);
+                        validateService.throwIfObjectUndefined(course, 'Course');
 
                         course.sectionList.push(mapper.mapSection(result));
 
@@ -45,7 +44,7 @@
 
                         var section = findService.findSection(courseId, sectionId);
 
-                        validateService.throwIfSectionUndefined(section);
+                        validateService.throwIfObjectUndefined(section, 'Section');
 
                         section.title = sectionTitle;
                         section.modifiedBy = courseContext.user.firstName + " " + courseContext.user.surname;
@@ -61,7 +60,7 @@
 
                         var course = findService.findCourse(courseId);
 
-                        validateService.throwIfCourseUndefined(course);
+                        validateService.throwIfObjectUndefined(course, 'Course');
 
                         var sectionIndex = course.sectionList.findIndex(function (section) {
                             return sectionId === section.id;

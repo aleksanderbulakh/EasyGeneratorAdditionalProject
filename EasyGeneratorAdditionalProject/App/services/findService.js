@@ -10,7 +10,7 @@
             findSection: function (courseId, sectionId) {
                 var course = this.findCourse(courseId);
 
-                validateService.throwIfCourseUndefined(course);
+                validateService.throwIfObjectUndefined(course, 'Course');
 
                 return course.sectionList.find(function (section) {
                     return section.id === sectionId;
@@ -20,7 +20,7 @@
             findQuestion: function (courseId, sectionId, questionId) {
                 var section = this.findSection(courseId, sectionId);
 
-                validateService.throwIfSectionUndefined(section);
+                validateService.throwIfObjectUndefined(section, 'Section');
                 
                 return section.questionList.find(function (question) {
                     return question.id === questionId;
@@ -30,7 +30,7 @@
             findAnswer: function (courseId, sectionId, questionId, answerId) {
                 var question = this.findQuestion(courseId, sectionId, questionId);
 
-                validateService.throwIfQuestionUndefined(question);
+                validateService.throwIfObjectUndefined(question, 'Question');
 
                 return question.answersList.find(function (answer) {
                     return answer.id === answerId;

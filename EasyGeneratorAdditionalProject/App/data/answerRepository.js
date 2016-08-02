@@ -43,6 +43,10 @@
                 return http.post('answer/edit/text', { answerId: answerId, userId: courseContext.user.id, text: answerText })
                     .then(function (result) {
 
+                        var question = findService.fintQuestion(courseId, sectionId, questionId);
+
+                        validateService.throwIfQuestionUndefined(question);
+
                         var answer = findService.findAnswer(courseId, sectionId, questionId, answerId);
 
                         validateService.throwIfAnswerUndefined(answer);
@@ -58,6 +62,10 @@
             editAnswerState: function (courseId, sectionId, questionId, answerId, answerState) {
                 return http.post('answer/edit/state', { answerId: answerId, userId: courseContext.user.id, state: answerState })
                     .then(function (result) {
+
+                        var question = findService.fintQuestion(courseId, sectionId, questionId);
+
+                        validateService.throwIfQuestionUndefined(question);
 
                         var answer = findService.findAnswer(courseId, sectionId, questionId, answerId);
 

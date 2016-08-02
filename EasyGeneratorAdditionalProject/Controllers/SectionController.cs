@@ -65,7 +65,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
             var newSection = new Section("section title", user.UserName, course);
 
-            _sectionRepository.Create(newSection);
+            _sectionRepository.Add(newSection);
 
             return SuccessResult(_mapper.Map<SectionViewModel>(newSection));
         }

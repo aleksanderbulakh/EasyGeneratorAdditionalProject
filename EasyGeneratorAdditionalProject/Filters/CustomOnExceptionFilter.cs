@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace EasyGeneratorAdditionalProject.Web.Filters
 {
-    public class CustomOnException : FilterAttribute, IExceptionFilter
+    public class CustomOnExceptionFilter : FilterAttribute, IExceptionFilter
     {
         public void OnException(ExceptionContext filterContext)
         {

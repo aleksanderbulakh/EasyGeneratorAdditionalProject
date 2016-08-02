@@ -11,7 +11,7 @@
                 sectionTitle: ko.observable().extend({
                     validName: 'Please, enter section title! Maximum number of characters - 255.'
                 }),
-                questionList: ko.observable(),
+                questionList: ko.observableArray([]),
                 isChangeable: true,
 
                 activate: function (data) {

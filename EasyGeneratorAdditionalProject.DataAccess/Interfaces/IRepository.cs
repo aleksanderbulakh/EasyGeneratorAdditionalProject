@@ -8,7 +8,7 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Interfaces
 {
     public interface IRepository<T> where T : class
     {
-        void Create(T modelObj);
+        void Add(T modelObj);
         T GetById(Guid id);
         void Delete(T modelObj);
     }

@@ -62,7 +62,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
             var newQuestion = new Question("question title", user.UserName, section, type);
 
-            _questionRepository.Create(newQuestion);
+            _questionRepository.Add(newQuestion);
 
             _questionRepository.CreateSomeStandartAnswers(newQuestion);
 

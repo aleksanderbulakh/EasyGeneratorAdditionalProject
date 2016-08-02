@@ -21,7 +21,7 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Repositories
             return _context.GetSet<T>();
         }
 
-        public void Create(T modelObj)
+        public void Add(T modelObj)
         {
             Entity().Add(modelObj);
         }

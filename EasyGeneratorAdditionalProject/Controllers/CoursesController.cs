@@ -74,7 +74,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
             var newCourse = new Course(courseTitle, "course description", user);
 
-            _courseRepository.Create(newCourse);
+            _courseRepository.Add(newCourse);
 
             return SuccessResult(_mapper.Map<CourseViewModel>(newCourse));
         }

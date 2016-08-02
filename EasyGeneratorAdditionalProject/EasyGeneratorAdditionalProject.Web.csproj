@@ -259,7 +259,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Convertors\DateConvertor.cs" />
     <Compile Include="Convertors\IDateConvertor.cs" />
-    <Compile Include="Filters\CustomOnException.cs" />
+    <Compile Include="Filters\CustomOnExceptionFilter.cs" />
     <Compile Include="JsonResults\JsonFailedResult.cs" />
     <Compile Include="JsonResults\JsonSuccessResult.cs" />
     <Compile Include="ModelBinders\CustomModelBinder.cs" />

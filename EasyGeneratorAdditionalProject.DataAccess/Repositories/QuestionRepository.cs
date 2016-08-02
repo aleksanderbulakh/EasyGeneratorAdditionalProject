@@ -26,11 +26,11 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Repositories
         {
             var answer = new QuestionAnswer("Question answer", question.CreatedBy, question, true);
 
-            _answerRepository.Create(answer);
+            _answerRepository.Add(answer);
 
             answer = new QuestionAnswer("Question answer", question.CreatedBy, question, false);
 
-            _answerRepository.Create(answer);
+            _answerRepository.Add(answer);
         }
     }
 }

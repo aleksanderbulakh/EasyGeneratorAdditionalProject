@@ -3,7 +3,7 @@
     <input name="answer" data-bind="attr: { 'type' : questionType }, checked: isCorrect" />
     <!-- /ko -->
     <!-- ko if: questionType == 'radio' -->
-    <input name="answer" data-bind="attr: { 'type' : questionType, value: isCorrect }" />
+    <input name="answer" data-bind="attr: { 'type' : questionType }, value: isCorrect" />
     <!-- /ko -->
     <span data-bind="contentEditable: true, htmlLazy: text"></span>
     <span class="title-validate-message" data-bind="visible: text.hasError, text: text.validationMessage"></span>

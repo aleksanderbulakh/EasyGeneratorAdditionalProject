@@ -2,7 +2,7 @@
     function (ko, router, app, courseRepository, sectionRepository, createDialog, message) {
         return {
             router: router,
-            courseList: ko.observableArray(),
+            courseList: ko.observableArray([]),
 
             activate: function () {
                 var self = this;

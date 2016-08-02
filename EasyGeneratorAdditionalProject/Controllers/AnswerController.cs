@@ -77,7 +77,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
             var newAnswer = new QuestionAnswer("answer text", user.UserName, question, false);
 
-            _answerRepository.Create(newAnswer);
+            _answerRepository.Add(newAnswer);
 
             return SuccessResult(_mapper.Map<AnswerViewModel>(newAnswer));
         }

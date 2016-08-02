@@ -3,8 +3,10 @@
     function (mapper, http, courseContext, message, findService, validateService) {
         return {
             getCourseList: function () {
-                if (courseContext.courseList !== undefined)
+                
+                if (courseContext.courseList !== undefined) { 
                     return Q(courseContext.courseList);
+                }
 
                 return http.get('course/list', { userId: courseContext.user.id })
                     .then(function (result) {

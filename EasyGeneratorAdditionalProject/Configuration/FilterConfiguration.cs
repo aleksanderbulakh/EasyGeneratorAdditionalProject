@@ -13,7 +13,7 @@ namespace EasyGeneratorAdditionalProject.Web.Configuration
         {
             filters.Add(new HandleErrorAttribute());
             
-            filters.Add(new CustomOnException());
+            filters.Add(new CustomOnExceptionFilter());
         }
     }
 }

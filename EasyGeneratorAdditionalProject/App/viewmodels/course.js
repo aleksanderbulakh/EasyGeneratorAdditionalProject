@@ -7,24 +7,25 @@
             }),
             courseSection: ko.observableArray([]),
             courseDescription: ko.observable(),
-            course: ko.observable(),
+            currentCourseTitle: '',
             isChangeable: true,
             activate: function (id) {
                 var self = this;
 
                 courseRepository.getCourseById(id)
                     .then(function (result) {
-                        self.courseId = id;
+
+                        self.courseId = result.id;
                         self.courseTitle(result.title);
                         self.courseDescription(result.description);
-                        self.course(result);
+                        self.currentCourseTitle = result.title;
                         sectionRepository.getSectionsByCourseId(id)
-                            .then(function () {
-                                self.courseSection(result.sectionList);
+                            .then(function (sectionList) {
+                                self.courseSection(sectionList);
                             });
 
                         self.isChangeable = ko.computed(function () {
-                            return self.courseTitle.hasError() === (self.courseTitle() !== self.course().title);
+                            return self.courseTitle.hasError() === (self.courseTitle() !== self.currentCourseTitle);
                         });
                     })
                     .fail(function (result) {
@@ -32,7 +33,10 @@
                     });
 
                 app.on('data:changed').then(function () {
-                    self.courseSection.valueHasMutated();
+                    sectionRepository.getSectionsByCourseId(self.courseId)
+                            .then(function (sectionList) {
+                                self.courseSection(sectionList);
+                            });
                 });
             },
             editTitle: function () {
@@ -43,7 +47,7 @@
 
                         courseRepository.editCourseTitle(self.courseId, self.courseTitle())
                             .then(function () {
-                                self.course().title = self.courseTitle();
+                                self.currentCourseTitle = self.courseTitle();
                                 message.stateMessage("Title has been changed.", "Success");
                             });
                     })

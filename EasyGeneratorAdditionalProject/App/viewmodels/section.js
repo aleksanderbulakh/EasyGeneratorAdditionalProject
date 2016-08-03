@@ -6,28 +6,39 @@
             return {
                 viewUrl: 'views/section',
                 courseId: '',
-                sectionData: ko.observable(),
+                sectionData: '',
                 sectionId: '',
                 sectionTitle: ko.observable().extend({
-                    validName: 'Please, enter section title! Maximum number of characters - 255.'
+                    validName: 'Please, enter course title! Maximum number of characters - 255.'
                 }),
+                createdBy: '',
+                createdOn: '',
+                modifiedBy: '',
+                lastModifiedDate: '',
+                currentSectionTitle: '',
                 questionList: ko.observableArray([]),
                 isChangeable: true,
 
                 activate: function (data) {
+
                     if (data.sectionData !== undefined && data.courseId !== undefined) {
                         this.courseId = data.courseId;
                         this.sectionId = data.sectionData.id;
-                        this.sectionData(data.sectionData);
                         this.sectionTitle(data.sectionData.title);
+                        this.createdBy = data.sectionData.createdBy;
+                        this.createdOn = data.sectionData.createdOn;
+                        this.modifiedBy = data.sectionData.modifiedBy;
+                        this.lastModifiedDate = data.sectionData.lastModifiedDate;
+                        this.currentSectionTitle = data.sectionData.title;
 
                         var self = this;
-                        questionRepository.getQuestionsBySectionId(this.courseId, this.sectionId).then(function () {
-                            self.questionList(data.sectionData.questionList);
-                        });
+                        questionRepository.getQuestionsBySectionId(this.courseId, this.sectionId)
+                            .then(function (questionList) {
+                                self.questionList(questionList);
+                            });
 
                         this.isChangeable = ko.computed(function () {
-                            return self.sectionTitle.hasError() === (self.sectionTitle() !== self.sectionData().title);
+                            return self.sectionTitle.hasError() === (self.sectionTitle() !== self.currentSectionTitle);
                         });
                     }
                     else {
@@ -39,7 +50,7 @@
 
                     sectionRepository.editSectionTitle(this.courseId, this.sectionId, this.sectionTitle())
                         .then(function () {
-                            self.sectionData().title = self.sectionTitle();
+                            self.currentSectionTitle = self.sectionTitle();
                             message.stateMessage("Title has been changed.", "Success");
                         })
                         .fail(function (result) {
@@ -54,7 +65,7 @@
                             if (result) {
                                 sectionRepository.deleteSection(self.courseId, self.sectionId)
                                     .then(function () {
-                                        debugger;
+
                                         app.trigger('data:changed');
                                         message.stateMessage("Section has been deleted.", "Success");
                                     })

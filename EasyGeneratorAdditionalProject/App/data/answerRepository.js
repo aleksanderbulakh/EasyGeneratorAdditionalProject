@@ -8,7 +8,12 @@
                 validateService.throwIfObjectUndefined(question, 'Question');
 
                 if (question.answersList != undefined) {
-                    return Q(question.answersList);
+
+                    var answersList = question.answersList.map(function (answer) {
+                        return mapper.mapAnswerToView(answer);
+                    });
+
+                    return Q(answersList);
                 }
 
                 return http.get('answer/list', { questionId: questionId })
@@ -20,7 +25,11 @@
                             question.answersList.push(mapper.mapAnswer(answer));
                         });
 
-                        return question.answersList;
+                        var answersList = question.answersList.map(function (answer) {
+                            return mapper.mapAnswerToView(answer);
+                        });
+
+                        return Q(answersList);
                     });
             },
 

@@ -1,5 +1,5 @@
 ﻿define(['plugins/dialog', 'durandal/app', 'knockout', 'data/answerRepository', 'data/constants'],
-    function (dialog, app, ko, asnwerRepository, constants) {
+    function (dialog, app, ko, answerRepository, constants) {
 
         var answerEdit = function (dataObj) {
 
@@ -11,7 +11,7 @@
             this.answers = ko.observableArray([]);
 
             var self = this;
-            asnwerRepository.getAnswersByQuestionId(this.courseId, this.sectionId, this.questionId)
+            answerRepository.getAnswersByQuestionId(this.courseId, this.sectionId, this.questionId)
                 .then(function (result) {
                     self.answers(result);
                 });
@@ -23,7 +23,8 @@
         };
 
         answerEdit.prototype.addAnswer = function () {
-            asnwerRepository.createAnswer(this.courseId, this.sectionId, this.questionId)
+            debugger;
+            answerRepository.createAnswer(this.courseId, this.sectionId, this.questionId)
                 .then(function () {
                     app.trigger('data:changed');
                 });
@@ -37,5 +38,36 @@
             return dialog.show(new answerEdit(arguments));
         };
 
+        answerEdit.prototype.editText = function (answerId, text) {
+            var self = this;
+            debugger;
+            var editebleText = $('#' + answerId).text();
+            answerRepository.editAnswerText(this.courseId, this.sectionId, this.questionId, answerId, text)
+                .then(function () {
+                    self.currentText = text;
+                    message.stateMessage("Text has been changed.", "Success");
+                })
+                .fail(function (result) {
+                    message.stateMessage(result, "Error");
+                });
+        },
+        answerEdit.prototype.deleteAnswer = function () {
+            var self = this;
+            debugger;
+            message.confirmMessage(answerId)
+                .then(function (result) {
+                    if (result) {
+                        answerRepository.deleteAnswer(self.courseId, self.sectionId, self.questionId, answerId)
+                            .then(function () {
+
+                                app.trigger('data:changed');
+                                message.stateMessage("Question has been deleted.", "Success");
+                            })
+                            .fail(function (result) {
+                                message.stateMessage(result, "Error");
+                            });
+                    }
+                });
+        }
         return answerEdit;
     });

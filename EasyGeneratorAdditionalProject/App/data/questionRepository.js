@@ -9,7 +9,11 @@
                 validateService.throwIfObjectUndefined(section, 'Section');
 
                 if (section.questionList !== undefined) {
-                    return Q(true);
+                    var questionsList = section.questionList.map(function (question) {
+                        return mapper.mapQuestionToView(question);
+                    });
+
+                    return Q(questionsList);
                 }
 
                 return http.get('question/list', { sectionId: sectionId })
@@ -21,7 +25,11 @@
                             section.questionList.push(mapper.mapQuestion(question));
                         });
 
-                        return true;
+                        var questionsList = section.questionList.map(function (question) {
+                            return mapper.mapQuestionToView(question);
+                        });
+
+                        return questionsList;
                     });
             },
 

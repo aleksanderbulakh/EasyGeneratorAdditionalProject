@@ -161,8 +161,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App\customPlugins\answer.html" />
-    <Content Include="App\customPlugins\answer.js" />
     <Content Include="App\customPlugins\questionEditDialog.html" />
     <Content Include="App\customPlugins\questionEditDialog.js" />
     <Content Include="App\customPlugins\createQuestionDialog.html" />

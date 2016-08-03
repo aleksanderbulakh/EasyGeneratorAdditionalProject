@@ -12,7 +12,7 @@
                 
                 id: '',
                 title: ko.observable().extend({
-                    validName: 'Please, enter question title! Maximum number of characters - 255.'
+                    validName: 'Please, enter course title! Maximum number of characters - 255.'
                 }),
                 createdOn: '',
                 createdBy: '',

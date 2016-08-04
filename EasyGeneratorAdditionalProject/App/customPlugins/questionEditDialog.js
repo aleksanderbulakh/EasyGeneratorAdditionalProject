@@ -69,5 +69,32 @@
                     }
                 });
         }
+
+        answerEdit.prototype.computecorrectAnswer = function (answerId) {
+
+            if (this.questionType === 'radio') {
+                this.answers().forEach(function (answer) {
+                    if (answer.id === answerId) {
+                        answer.isCorrect = true;
+                    }
+                    else {
+                        answer.isCorrect = false;
+                    }
+                });
+            }
+            if (this.questionType === 'checkbox') {
+                var answer = this.answers().find(function (answer) {
+                    return answer.id === answerId;
+                });
+
+                if (answer.isCorrect === true) {
+                    answer.isCorrect = false;
+                }
+                else {
+                    answer.isCorrect = true;
+                }
+            }
+        }
+
         return answerEdit;
     });

@@ -89,7 +89,7 @@
                     text: ko.observable(spec.text).extend({
                         validName: 'Please, enter course title! Maximum number of characters - 255.'
                     }),
-                    isCorrect: spec.isCorrect
+                    isCorrect: ko.observable(spec.isCorrect)
                 }
             }
         };

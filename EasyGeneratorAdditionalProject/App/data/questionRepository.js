@@ -42,9 +42,11 @@
 
                         validateService.throwIfObjectUndefined(section, 'Section');
 
-                        section.questionList.push(mapper.mapQuestion(result));
+                        var question = mapper.mapQuestion(result);
 
-                        return true;
+                        section.questionList.push(question);
+
+                        return mapper.mapQuestionToView(question);
                     });
             },
 

@@ -39,9 +39,11 @@
 
                         validateService.throwIfObjectUndefined(course, 'Course');
 
-                        course.sectionList.push(mapper.mapSection(result));
+                        var section = mapper.mapSection(result);
 
-                        return true;
+                        course.sectionList.push(section);
+
+                        return mapper.mapSectionToView(section);
                     });
             },
 

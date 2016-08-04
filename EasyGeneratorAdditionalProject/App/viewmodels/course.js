@@ -74,8 +74,12 @@
             createSection: function () {
                 var self = this;
                 sectionRepository.createSection(self.courseId)
-                    .then(function () {
-                        app.trigger('data:changed');
+                    .then(function (result) {
+
+                        self.courseSection().push(result);
+                        self.courseSection.valueHasMutated();
+                        //app.trigger('data:changed');
+
                         message.stateMessage("Section hes been created.", "Success");
                     })
                     .fail(function (result) {

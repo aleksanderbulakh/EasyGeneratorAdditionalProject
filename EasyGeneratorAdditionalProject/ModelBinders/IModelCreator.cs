@@ -4,6 +4,6 @@ namespace EasyGeneratorAdditionalProject.Web.ModelBinders
 {
     interface IModelCreator <T> where T : class
     {
-        T TryCreateModel(IValueProvider valueProvider);
+        T TryCreateModel(ModelBindingContext valueProvider);
     }
 }

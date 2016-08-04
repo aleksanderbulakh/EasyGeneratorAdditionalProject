@@ -82,8 +82,12 @@
                         .then(function (type) {
 
                             questionRepository.createQuestion(self.courseId, self.sectionId, type)
-                                .then(function () {
-                                    app.trigger('data:changed');
+                                .then(function (result) {
+
+                                    self.questionList().push(result);
+                                    self.questionList.valueHasMutated();
+                                    //app.trigger('data:changed');
+                                    
                                     message.stateMessage('Section has been created.', 'Success');
                                 })
                                 .fail(function (result) {

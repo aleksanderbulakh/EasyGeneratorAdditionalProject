@@ -41,9 +41,11 @@
 
                         validateService.throwIfObjectUndefined(question, 'Question');
 
-                        question.answersList.push(mapper.mapAnswer(result));
+                        var answer = mapper.mapAnswer(result);
 
-                        return true;
+                        question.answersList.push(answer);
+
+                        return mapper.mapAnswerToView(answer);
                     });
             },
 

@@ -1,4 +1,4 @@
-﻿define(['knockout', 'plugins/router', 'durandal/app', 'customPlugins/customMessage'],
+﻿define(['knockout', 'plugins/router', 'durandal/app', 'customPlugins/customMessages/customMessage'],
     function (ko, router, app, message) {
         return function () {
             return {

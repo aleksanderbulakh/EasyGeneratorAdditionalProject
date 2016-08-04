@@ -1,4 +1,4 @@
-﻿define(['mapper/mapper', 'http/httpWrapper', 'data/courseContext', 'customPlugins/customMessage',
+﻿define(['mapper/mapper', 'http/httpWrapper', 'data/courseContext', 'customPlugins/customMessages/customMessage',
     'services/findService', 'services/validateService', 'knockout'],
     function (mapper, http, courseContext, message, findService, validateService, ko) {
         return {
@@ -33,8 +33,6 @@
                 var course = findService.findCourse(courseId);
 
                 validateService.throwIfObjectUndefined(course, 'Course');
-
-                var course = mapper.mapCourseToView(course);
 
                 return Q(course);
             },

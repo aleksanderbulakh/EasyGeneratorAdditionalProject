@@ -5,37 +5,22 @@ using System.Web.Mvc;
 
 namespace EasyGeneratorAdditionalProject.Web.ModelBinders
 {
-    public class CustomModelBinder : IModelBinder
+    public class CustomModelBinder<T> : IModelBinder where T : class
     {
-
         public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
-            if (bindingContext.ModelType == typeof(User))
-            {
-                return DependencyResolver.Current.GetService<IModelCreator<User>>().TryCreateModel(bindingContext);
-            }
+            var _repository = DependencyResolver.Current.GetService<IRepository<T>>();
 
-            if (bindingContext.ModelType == typeof(Course))
-            {
-                return DependencyResolver.Current.GetService<IModelCreator<Course>>().TryCreateModel(bindingContext);
-            }
+            var valueProvider = bindingContext.ValueProvider;
 
-            if (bindingContext.ModelType == typeof(Section))
-            {
-                return DependencyResolver.Current.GetService<IModelCreator<Section>>().TryCreateModel(bindingContext);
-            }
+            Guid id = Guid.Empty;
+            var tryGetId = Guid.TryParse((String)valueProvider.GetValue(bindingContext.ModelName + "Id")
+                .ConvertTo(typeof(String)), out id);
 
-            if (bindingContext.ModelType == typeof(Question))
-            {
-                return DependencyResolver.Current.GetService<IModelCreator<Question>>().TryCreateModel(bindingContext);
-            }
+            if (!tryGetId)
+                throw new ArgumentException("Invalid parameter type.");
 
-            if (bindingContext.ModelType == typeof(QuestionAnswer))
-            {
-                return DependencyResolver.Current.GetService<IModelCreator<QuestionAnswer>>().TryCreateModel(bindingContext);
-            }
-
-            return new ArgumentException("Invalid parameter.");
+            return _repository.GetById(id);
         }
     }
 }

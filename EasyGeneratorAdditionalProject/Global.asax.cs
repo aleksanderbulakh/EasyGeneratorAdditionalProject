@@ -23,11 +23,7 @@ namespace EasyGeneratorAdditionalProject
 
             AreaRegistration.RegisterAllAreas();
 
-            ModelBinders.Binders.Add(typeof(Course), new CustomModelBinder());
-            ModelBinders.Binders.Add(typeof(Section), new CustomModelBinder());
-            ModelBinders.Binders.Add(typeof(User), new CustomModelBinder());
-            ModelBinders.Binders.Add(typeof(Question), new CustomModelBinder());
-            ModelBinders.Binders.Add(typeof(QuestionAnswer), new CustomModelBinder());
+            ModelBinderProviders.BinderProviders.Add(new CustomModelBinderProvider());
         }
     }
 }

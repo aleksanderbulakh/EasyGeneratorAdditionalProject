@@ -26,7 +26,6 @@ namespace EasyGeneratorAdditionalProject.Web.Configuration
                 .InstancePerLifetimeScope();
             
             builder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>));
-            builder.RegisterGeneric(typeof(ModelCreator<>)).As(typeof(IModelCreator<>));
 
             builder.RegisterType<RoleRepository>().As<IRoleRepository>();
             builder.RegisterType<UserRepository>().As<IUserRepository>();

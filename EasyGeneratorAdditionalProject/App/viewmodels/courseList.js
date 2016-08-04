@@ -1,4 +1,5 @@
-﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/courseRepository', 'data/sectionRepository', 'customPlugins/createDialog', 'customPlugins/customMessage'],
+﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/courseRepository', 'data/sectionRepository',
+    'customPlugins/createDialog/createDialog', 'customPlugins/customMessages/customMessage'],
     function (ko, router, app, courseRepository, sectionRepository, createDialog, message) {
         return {
             router: router,

@@ -1,5 +1,6 @@
 ﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/questionRepository', 'data/answerRepository',
-    'customPlugins/customMessage', 'customPlugins/createQuestionDialog', 'customPlugins/questionEditDialog'],
+    'customPlugins/customMessages/customMessage', 'customPlugins/createQuestionDialog/createQuestionDialog',
+    'customPlugins/answersEditDialog/answersEditDialog'],
     function (ko, router, app, questionRepository, answerRepository, message, createQuestionDialog, questionEditDialog) {
 
         return function () {
@@ -67,8 +68,7 @@
                             if (result) {
                                 questionRepository.deleteQuestion(self.courseId, self.sectionId, self.id)
                                     .then(function () {
-
-                                        app.trigger('data:changed');
+                                        app.trigger('question:deleted', self.id);
                                         message.stateMessage("Question has been deleted.", "Success");
                                     })
                                     .fail(function (result) {
@@ -79,7 +79,6 @@
                 },
 
                 openAnswerDialog: function () {
-
                     questionEditDialog.show(this.courseId, this.sectionId, this.id, this.type);
                 }
             };

@@ -161,17 +161,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App\customPlugins\questionEditDialog.html" />
-    <Content Include="App\customPlugins\questionEditDialog.js" />
-    <Content Include="App\customPlugins\createQuestionDialog.html" />
-    <Content Include="App\customPlugins\createQuestionDialog.js" />
+    <Content Include="App\customPlugins\answersEditDialog\answersEditDialog.html" />
+    <Content Include="App\customPlugins\answersEditDialog\answersEditDialog.js" />
+    <Content Include="App\customPlugins\createQuestionDialog\createQuestionDialog.html" />
+    <Content Include="App\customPlugins\createQuestionDialog\createQuestionDialog.js" />
     <Content Include="App\data\answerRepository.js" />
     <Content Include="App\data\constants.js" />
     <Content Include="App\data\courseContext.js" />
     <Content Include="App\data\questionRepository.js" />
     <Content Include="App\data\sectionRepository.js" />
-    <Content Include="App\customPlugins\customMessage.js" />
-    <Content Include="App\customPlugins\createDialog.js" />
+    <Content Include="App\customPlugins\customMessages\customMessage.js" />
+    <Content Include="App\customPlugins\createDialog\createDialog.js" />
     <Content Include="App\http\httpWrapper.js" />
     <Content Include="App\main.js" />
     <Content Include="App\mapper\mapper.js" />
@@ -194,7 +194,7 @@
     <Content Include="App\views\course.html" />
     <Content Include="App\views\courseList.html" />
     <Content Include="App\views\previewCourse.html" />
-    <Content Include="App\customPlugins\createDialog.html" />
+    <Content Include="App\customPlugins\createDialog\createDialog.html" />
     <Content Include="App\views\previewSection.html" />
     <Content Include="App\views\question.html" />
     <Content Include="App\views\section.html" />
@@ -263,8 +263,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="ModelBinders\IModelCreator.cs" />
-    <Compile Include="ModelBinders\ModelCreator.cs" />
+    <Compile Include="ModelBinders\CustomModelBinderProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AnswerViewModel.cs" />
     <Compile Include="ViewModels\CourseViewModel.cs" />

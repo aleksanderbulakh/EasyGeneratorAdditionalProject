@@ -1,4 +1,5 @@
-﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/courseRepository', 'data/sectionRepository', 'customPlugins/customMessage'],
+﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/courseRepository', 'data/sectionRepository',
+    'customPlugins/customMessages/customMessage'],
     function (ko, router, app, courseRepository, sectionRepository, message) {
         return {
             courseTitle: '',

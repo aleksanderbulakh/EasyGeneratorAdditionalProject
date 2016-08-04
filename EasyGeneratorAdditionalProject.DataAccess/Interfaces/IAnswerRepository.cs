@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.DataAccess.Interfaces
 {
-    public interface IAnswerRepository : IRepository<QuestionAnswer>
+    public interface IAnswerRepository : IRepository<SimpleSelectAnswers>
     {
-        List<QuestionAnswer> GetByQuestionId(Guid id);
+        List<SimpleSelectAnswers> GetByQuestionId(Guid id);
     }
 }

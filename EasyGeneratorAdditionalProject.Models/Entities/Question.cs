@@ -11,12 +11,12 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
         public virtual Section Section { get; set; }
         public string Type { get; set; }
         
-        public virtual ICollection<QuestionAnswer> AnswersCollection { get; set; }
+        public virtual ICollection<Answers> AnswersCollection { get; set; }
 
         public Question()
             : base()
         {
-            AnswersCollection = new List<QuestionAnswer>();
+            AnswersCollection = new List<Answers>();
         }
 
         public Question(string title, string userName, Section section, string type):

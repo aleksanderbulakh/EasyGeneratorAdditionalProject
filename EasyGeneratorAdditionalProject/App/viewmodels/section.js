@@ -1,4 +1,5 @@
-﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/sectionRepository', 'data/questionRepository', 'customPlugins/customMessage', 'customPlugins/createQuestionDialog'],
+﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/sectionRepository', 'data/questionRepository',
+    'customPlugins/customMessages/customMessage', 'customPlugins/createQuestionDialog/createQuestionDialog'],
     function (ko, router, app, sectionRepository, questionRepository, message, createQuestionDialog) {
 
         return function () {
@@ -34,7 +35,9 @@
                         var self = this;
                         questionRepository.getQuestionsBySectionId(this.courseId, this.sectionId)
                             .then(function (questionList) {
-                                self.questionList(questionList);
+                                self.questionList(questionList.map(function (question) {
+                                    return question;
+                                }));
                             });
 
                         this.isChangeable = ko.computed(function () {
@@ -44,6 +47,17 @@
                     else {
                         message.stateMessage("Data is not found.");
                     }
+
+                    app.on('question:deleted').then(function (questionId) {
+                        var questionIndex = self.questionList().findIndex(function (question) {
+                            return question.id === questionId;
+                        });
+
+                        if (questionIndex >= 0) { 
+                            self.questionList().splice(questionIndex, 1);
+                            self.questionList.valueHasMutated();
+                        }
+                    });
                 },
                 editSectionTitle: function () {
                     var self = this;
@@ -65,8 +79,7 @@
                             if (result) {
                                 sectionRepository.deleteSection(self.courseId, self.sectionId)
                                     .then(function () {
-
-                                        app.trigger('data:changed');
+                                        app.trigger('section:deleted', self.sectionId);
                                         message.stateMessage("Section has been deleted.", "Success");
                                     })
                                     .fail(function (result) {
@@ -86,8 +99,6 @@
 
                                     self.questionList().push(result);
                                     self.questionList.valueHasMutated();
-                                    //app.trigger('data:changed');
-                                    
                                     message.stateMessage('Section has been created.', 'Success');
                                 })
                                 .fail(function (result) {

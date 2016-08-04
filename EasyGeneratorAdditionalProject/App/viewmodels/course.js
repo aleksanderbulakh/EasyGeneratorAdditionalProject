@@ -1,4 +1,5 @@
-﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/courseRepository', 'data/sectionRepository', 'customPlugins/customMessage'],
+﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/courseRepository', 'data/sectionRepository',
+    'customPlugins/customMessages/customMessage'],
     function (ko, router, app, courseRepository, sectionRepository, message) {
         return {
             courseId: '',
@@ -21,7 +22,9 @@
                         self.currentCourseTitle = result.title;
                         sectionRepository.getSectionsByCourseId(id)
                             .then(function (sectionList) {
-                                self.courseSection(sectionList);
+                                self.courseSection(sectionList.map(function (section) {
+                                    return section;
+                                }));
                             });
 
                         self.isChangeable = ko.computed(function () {
@@ -32,11 +35,15 @@
                         message.stateMessage(result, "Error");
                     });
 
-                app.on('data:changed').then(function () {
-                    sectionRepository.getSectionsByCourseId(self.courseId)
-                            .then(function (sectionList) {
-                                self.courseSection(sectionList);
-                            });
+                app.on('section:deleted').then(function (sectionId) {
+                    var sectionIndex = self.courseSection().findIndex(function (section) {
+                        return section.id === sectionId;
+                    });
+
+                    if (sectionIndex >= 0) { 
+                        self.courseSection().splice(sectionIndex, 1);
+                        self.answers.valueHasMutated();
+                    }
                 });
             },
             editTitle: function () {
@@ -75,11 +82,8 @@
                 var self = this;
                 sectionRepository.createSection(self.courseId)
                     .then(function (result) {
-
                         self.courseSection().push(result);
                         self.courseSection.valueHasMutated();
-                        //app.trigger('data:changed');
-
                         message.stateMessage("Section hes been created.", "Success");
                     })
                     .fail(function (result) {

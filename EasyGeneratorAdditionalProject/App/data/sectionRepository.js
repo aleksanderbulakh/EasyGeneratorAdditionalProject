@@ -1,4 +1,4 @@
-﻿define(['mapper/mapper', 'http/httpWrapper', 'data/courseContext', 'customPlugins/customMessage',
+﻿define(['mapper/mapper', 'http/httpWrapper', 'data/courseContext', 'customPlugins/customMessages/customMessage',
     'services/findService', 'services/validateService', 'knockout'],
     function (mapper, http, courseContext, message, findService, validateService, ko) {
         return {
@@ -8,10 +8,7 @@
                 validateService.throwIfObjectUndefined(course, 'Course');
 
                 if (course.sectionList != undefined) {
-                    var sectionsList = course.sectionList.map(function (section) {
-                        return mapper.mapSectionToView(section);
-                    });
-                    return Q(sectionsList);
+                    return Q(course.sectionList);
                 }
 
                 return http.get('section/list', { courseId: courseId })
@@ -23,11 +20,7 @@
                             course.sectionList.push(mapper.mapSection(section));
                         });
 
-                        var sectionsList = course.sectionList.map(function (section) {
-                            return mapper.mapSectionToView(section);
-                        });
-
-                        return sectionsList;
+                        return course.sectionList;
                     });
             },
 
@@ -43,7 +36,7 @@
 
                         course.sectionList.push(section);
 
-                        return mapper.mapSectionToView(section);
+                        return section;
                     });
             },
 

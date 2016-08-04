@@ -16,7 +16,7 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Context
         public DbSet<Course> Courses { get; set; }
         public DbSet<Section> Sections { get; set; }
         public DbSet<Question> Question { get; set; }
-        public DbSet<QuestionAnswer> QuestionAnswers { get; set; }
+        public DbSet<Answers> Answers { get; set; }
 
         public IDbSet<T> GetSet<T>() where T : class
         {
@@ -68,10 +68,14 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Context
             #endregion
 
             #region Answers
-            modelBuilder.Entity<QuestionAnswer>().ToTable("Answers");
-            modelBuilder.Entity<QuestionAnswer>().HasKey(t => t.Id);
-            modelBuilder.Entity<QuestionAnswer>().Property(t => t.Text).IsRequired();
-            modelBuilder.Entity<QuestionAnswer>().Property(t => t.IsCorrect).IsRequired();
+            modelBuilder.Entity<Answers>().ToTable("Answers");
+            modelBuilder.Entity<Answers>().HasKey(t => t.Id);
+            modelBuilder.Entity<Answers>().Property(t => t.Text).IsRequired();
+            modelBuilder.Entity<Answers>().Property(t => t.IsCorrect).IsRequired();
+            modelBuilder.Entity<Answers>()
+                .Map<SimpleSelectAnswers>(t => t.Requires("AnswerType").HasValue("simple"))
+                .Map<SingleSelectImage>(t=>t.Requires("AnswerType").HasValue("image"));
+
             #endregion
         }
 

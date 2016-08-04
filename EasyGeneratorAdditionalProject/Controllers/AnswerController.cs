@@ -26,8 +26,8 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         }
 
         [HttpPost]
-        [Route("answer/edit/text", Name = "EditAnswerText")]
-        public JsonResult EditSectionTitle(QuestionAnswer answer, User user, string text)
+        [Route("answer/simple/edit/text", Name = "EditAnswerText")]
+        public JsonResult EditAnswerText(SimpleSelectAnswers answer, User user, string text)
         {
             if (answer == null)
                 return FailResult("question not find.");
@@ -41,8 +41,8 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         }
 
         [HttpPost]
-        [Route("answer/edit/state", Name = "EditAnswerState")]
-        public JsonResult EditSectionState(QuestionAnswer answer, User user, bool state)
+        [Route("answer/simple/edit/state", Name = "EditAnswerState")]
+        public JsonResult EditAnswerState(SimpleSelectAnswers answer, User user, bool state)
         {
             if (answer == null)
                 return FailResult("question not find.");
@@ -56,8 +56,8 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         }
 
         [HttpPost]
-        [Route("answer/delete", Name = "DeleteAnswer")]
-        public JsonResult DeleteSection(QuestionAnswer answer)
+        [Route("answer/simple/delete", Name = "DeleteAnswer")]
+        public JsonResult DeleteAnswer(SimpleSelectAnswers answer)
         {
             if (answer != null)
                 _answerRepository.Delete(answer);
@@ -66,8 +66,8 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         }
 
         [HttpPost]
-        [Route("answer/create", Name = "CreateAnswer")]
-        public JsonResult CreateSection(Question question, User user)
+        [Route("answer/simple/create", Name = "CreateAnswer")]
+        public JsonResult CreateAnswer(Question question, User user)
         {
             if (question == null)
                 return FailResult("Question not find.");
@@ -75,7 +75,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             if (user == null)
                 return FailResult("User not find.");
 
-            var newAnswer = new QuestionAnswer("answer text", user.UserName, question, false);
+            var newAnswer = new SimpleSelectAnswers("answer text", user.UserName, question, false);
 
             _answerRepository.Add(newAnswer);
 
@@ -84,7 +84,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
         [HttpGet]
         [Route("answer/list", Name = "AnswerList")]
-        public JsonResult SectionsList(Question question)
+        public JsonResult AnswersList(Question question)
         {
             if (question == null)
                 return FailResult("Section is not found.");

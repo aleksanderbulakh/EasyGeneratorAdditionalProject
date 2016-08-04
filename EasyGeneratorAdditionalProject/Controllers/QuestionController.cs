@@ -66,11 +66,11 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
             _questionRepository.Add(newQuestion);
             
-            var answer = new QuestionAnswer("Question answer", newQuestion.CreatedBy, newQuestion, true);
+            var answer = new SimpleSelectAnswers("Question answer", newQuestion.CreatedBy, newQuestion, true);
 
             _answerRepository.Add(answer);
 
-            answer = new QuestionAnswer("Question answer", newQuestion.CreatedBy, newQuestion, false);
+            answer = new SimpleSelectAnswers("Question answer", newQuestion.CreatedBy, newQuestion, false);
 
             _answerRepository.Add(answer);
 

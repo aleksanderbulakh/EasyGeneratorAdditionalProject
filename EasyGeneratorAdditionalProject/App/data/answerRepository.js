@@ -1,4 +1,4 @@
-﻿define(['mapper/mapper', 'http/httpWrapper', 'data/courseContext', 'customPlugins/customMessage',
+﻿define(['mapper/mapper', 'http/httpWrapper', 'data/courseContext', 'customPlugins/customMessages/customMessage',
     'services/findService', 'services/validateService'],
     function (mapper, http, courseContext, message, findService, validateService) {
         return {
@@ -8,12 +8,7 @@
                 validateService.throwIfObjectUndefined(question, 'Question');
 
                 if (question.answersList != undefined) {
-
-                    var answersList = question.answersList.map(function (answer) {
-                        return mapper.mapAnswerToView(answer);
-                    });
-
-                    return Q(answersList);
+                    return Q(question.answersList);
                 }
 
                 return http.get('answer/list', { questionId: questionId })
@@ -25,16 +20,12 @@
                             question.answersList.push(mapper.mapAnswer(answer));
                         });
 
-                        var answersList = question.answersList.map(function (answer) {
-                            return mapper.mapAnswerToView(answer);
-                        });
-
-                        return Q(answersList);
+                        return Q(question.answersList);
                     });
             },
 
             createAnswer: function (courseId, sectionId, questionId) {
-                return http.post('answer/create', { questionId: questionId, userId: courseContext.user.id })
+                return http.post('answer/simple/create', { questionId: questionId, userId: courseContext.user.id })
                     .then(function (result) {
 
                         var question = findService.findQuestion(courseId, sectionId, questionId);
@@ -45,15 +36,15 @@
 
                         question.answersList.push(answer);
 
-                        return mapper.mapAnswerToView(answer);
+                        return answer;
                     });
             },
 
             editAnswerText: function (courseId, sectionId, questionId, answerId, answerText) {
-                return http.post('answer/edit/text', { answerId: answerId, userId: courseContext.user.id, text: answerText })
+                return http.post('answer/simple/edit/text', { answerId: answerId, userId: courseContext.user.id, text: answerText })
                     .then(function (result) {
 
-                        var question = findService.fintQuestion(courseId, sectionId, questionId);
+                        var question = findService.findQuestion(courseId, sectionId, questionId);
 
                         validateService.throwIfObjectUndefined(question, 'Question');
 
@@ -70,10 +61,10 @@
             },
 
             editAnswerState: function (courseId, sectionId, questionId, answerId, answerState) {
-                return http.post('answer/edit/state', { answerId: answerId, userId: courseContext.user.id, state: answerState })
+                return http.post('answer/simple/edit/state', { answerId: answerId, userId: courseContext.user.id, state: answerState })
                     .then(function (result) {
 
-                        var question = findService.fintQuestion(courseId, sectionId, questionId);
+                        var question = findService.findQuestion(courseId, sectionId, questionId);
 
                         validateService.throwIfObjectUndefined(question, 'Question');
 
@@ -90,7 +81,7 @@
             },
 
             deleteAnswer: function (courseId, sectionId, questionId, answerId) {
-                return http.post('question/delete', { questionId: questionId })
+                return http.post('answer/simple/delete', { answerId: answerId })
                     .then(function (result) {
 
                         var question = findService.findQuestion(courseId, sectionId, questionId);

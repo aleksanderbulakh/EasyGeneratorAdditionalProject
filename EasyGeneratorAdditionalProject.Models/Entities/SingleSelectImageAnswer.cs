@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Models.Entities
 {
-    public class SingleSelectImage : Answers
+    public class SingleSelectImageAnswer : Answer
     {
-        public string Photo { get; set; }
+        public virtual SingleSelectImagePhoto Photo { get; protected internal set; }
     }
 }

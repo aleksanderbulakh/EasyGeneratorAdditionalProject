@@ -17,9 +17,9 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         private readonly IAnswerRepository _answerRepository;
         private readonly IMapper _mapper;
         private readonly IDateConvertor _convertor;
-        public QuestionController(IUnitOfWork work, IQuestionRepository questionRepository, 
+        public QuestionController(IUnitOfWork work, IUserRepository userRepository, IQuestionRepository questionRepository, 
             IMapper mapper, IDateConvertor convertor, IAnswerRepository answerRepository) 
-            : base(work)
+            : base(work, userRepository)
         {
             _questionRepository = questionRepository;
             _mapper = mapper;
@@ -29,8 +29,10 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
         [HttpPost]
         [Route("question/edit/title", Name = "EditQuestionTitle")]
-        public JsonResult EditQuestionTitle(Question question, User user, string title)
+        public JsonResult EditQuestionTitle(Question question, string title)
         {
+            var user = GetFirstUser();
+
             if (question == null)
                 return FailResult("question not find.");
 
@@ -54,8 +56,10 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
         [HttpPost]
         [Route("question/create", Name = "CreateQuestion")]
-        public JsonResult CreateQuestion(Section section, User user, string type)
+        public JsonResult CreateQuestion(Section section, string type)
         {
+            var user = GetFirstUser();
+
             if (section == null)
                 return FailResult("Section not find.");
 
@@ -82,7 +86,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         public JsonResult QuestionList(Section section)
         {
             if (section == null)
-                return FailResult("Section is not found.");
+                throw new ArgumentException("Invalid data");
 
             var sections = new List<QuestionViewModel>();
 

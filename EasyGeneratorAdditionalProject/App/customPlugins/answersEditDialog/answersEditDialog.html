@@ -1,7 +1,7 @@
 ﻿<div>
     <div class="answer-list" data-bind="foreach: answers">
         <div class="answer">
-            <div data-bind="click: (function(){ $parent.computecorrectAnswer(id) }), css: { 'single-select-answer': $parent.questionType == 'radio', 'multiple-select-answer': $parent.questionType == 'checkbox' }">
+            <div data-bind="click: (function(){ $parent.computeCorrectAnswer(id) }), css: { 'single-select-answer': $parent.questionType == 'radio', 'multiple-select-answer': $parent.questionType == 'checkbox' }">
                 <span class="checked" data-bind="visible: isCorrect"></span>
             </div>
             <span data-bind="attr: { contenteditable: true }, editableHTML: text"></span>
@@ -12,5 +12,5 @@
         </div>
     </div>
     <button class="add-answer" data-bind="click: addAnswer">Add answer</button>
-    <button class="ok" data-bind="click: ok">Close</button>
+    <button class="ok" data-bind="click: close">Close</button>
 </div>

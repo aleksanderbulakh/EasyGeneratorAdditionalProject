@@ -8,9 +8,9 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
 {
     public class Section : Entity
     {
-        public virtual Course Course { get; set; }
+        public virtual Course Course { get; protected internal set; }
 
-        public virtual ICollection<Question> QuestionCollection { get; set; }
+        public virtual ICollection<Question> QuestionCollection { get; protected internal set; }
 
         public Section()
             : base()

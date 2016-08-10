@@ -9,7 +9,7 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(EasyGeneratorAdditionalProject.DataAccess.Context.DatabaseContext context)

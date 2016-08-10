@@ -8,18 +8,18 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
 {
     public class Question : Entity
     {
-        public virtual Section Section { get; set; }
-        public string Type { get; set; }
-        
-        public virtual ICollection<Answers> AnswersCollection { get; set; }
+        public virtual Section Section { get; protected internal set; }
+        public string Type { get; protected internal set; }
+
+        public virtual ICollection<Answer> AnswersCollection { get; protected internal set; }
 
         public Question()
             : base()
         {
-            AnswersCollection = new List<Answers>();
+            AnswersCollection = new List<Answer>();
         }
 
-        public Question(string title, string userName, Section section, string type):
+        public Question(string title, string userName, Section section, string type) :
             this()
         {
             ThrowIfTileInvalid(title);
@@ -29,13 +29,45 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             Title = title;
             Type = type;
             Section = section;
-            CreatedBy = ModifiedBy = section.CreatedBy;
+            CreatedBy = ModifiedBy = userName;
         }
+
+        #region Answers state modify
+
+        public void ModifySingleSelectAnswersState(string answerId, string userName)
+        {
+            var parsedAnswerId = ThrowIfAnswerIdIsParseFaild(answerId);
+            ThrowIfUserNameInvalid(userName);
+
+            var currentTrueAnswer = AnswersCollection.First(m => m.IsCorrect == true);
+            var newTrueAnswer = AnswersCollection.First(m => m.Id == parsedAnswerId);
+
+            currentTrueAnswer.UpdateState(false);
+            newTrueAnswer.UpdateState(true);
+
+            MarkAsModified(userName);
+        }
+
+        #endregion
+
+        #region Validation
 
         private void ThrowIfTypeInvalid(string type)
         {
             if (type != "material" && type != "single" && type != "multiple" && type != "single_image")
                 throw new ArgumentException("Type is not valid.");
         }
+
+        private Guid ThrowIfAnswerIdIsParseFaild(string answerId)
+        {
+            var correctAnswerId = Guid.Empty;
+            var tryParseId = Guid.TryParse(answerId, out correctAnswerId);
+
+            if (!tryParseId)
+                throw new ArgumentException("Invalid data");
+
+            return correctAnswerId;
+        }
+        #endregion
     }
 }

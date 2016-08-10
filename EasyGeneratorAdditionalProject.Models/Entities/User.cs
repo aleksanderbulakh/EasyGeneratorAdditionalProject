@@ -9,13 +9,13 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
 {
     public class User : Identifier, IUser<Guid>
     {
-        public virtual Role Role { get; set; }
-        public string FirstName { get; set; }
-        public string Surname { get; set; }
-        public string Email { get; set; }
-        public string PasswordHash { get; set; }
+        public virtual Role Role { get; protected internal set; }
+        public string FirstName { get; protected internal set; }
+        public string Surname { get; protected internal set; }
+        public string Email { get; protected internal set; }
+        public string PasswordHash { get; protected internal set; }
 
-        public virtual ICollection<Course> CoursesCollection { get; set; }
+        public virtual ICollection<Course> CoursesCollection { get; protected internal set; }
 
         public string UserName
         {

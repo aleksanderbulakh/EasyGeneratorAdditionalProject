@@ -73,6 +73,10 @@
     <Compile Include="Interfaces\ISectionRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
+    <Compile Include="Migrations\201608100841226_Single select image answer tablel.cs" />
+    <Compile Include="Migrations\201608100841226_Single select image answer tablel.Designer.cs">
+      <DependentUpon>201608100841226_Single select image answer tablel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AnswerRepository.cs" />
@@ -87,12 +91,16 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\EasyGeneratorAdditionalProject.Models\EasyGeneratorAdditionalProject.Models.csproj">
       <Project>{5f4536ab-1ad1-4418-8de3-5590253b8ce7}</Project>
       <Name>EasyGeneratorAdditionalProject.Models</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201608100841226_Single select image answer tablel.resx">
+      <DependentUpon>201608100841226_Single select image answer tablel.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

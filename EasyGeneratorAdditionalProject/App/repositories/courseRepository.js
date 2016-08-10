@@ -1,17 +1,21 @@
-﻿define(['mapper/mapper', 'http/httpWrapper', 'data/courseContext', 'customPlugins/customMessages/customMessage',
-    'services/findService', 'services/validateService', 'knockout'],
-    function (mapper, http, courseContext, message, findService, validateService, ko) {
+﻿define(['mapper/mapper', 'http/httpWrapper', 'context/courseContext', 'errorHandler/errorHandler',
+    'services/validateService'],
+    function (mapper, http, courseContext, errorHandler, validateService) {
         return {
             getCourseList: function () {
 
                 if (courseContext.courseList !== undefined) {
-                    return Q(courseContext.courseList);
+                    return Q.fcall(function () {
+                        return courseContext.courseList;
+                    });
                 }
 
-                return http.get('course/list', { userId: courseContext.user.id })
+                return http.get('course/list')
                     .then(function (result) {
 
-                        courseContext.courseList = [];
+                        if (courseContext.courseList === undefined) { 
+                            courseContext.courseList = [];
+                        }
 
                         result.forEach(function (course) {
                             courseContext.courseList.push(mapper.mapCourse(course));
@@ -22,7 +26,7 @@
             },
 
             createCourse: function (courseTitle) {
-                return http.post('course/create', { userId: courseContext.user.id, courseTitle: courseTitle })
+                return http.post('course/create', { courseTitle: courseTitle })
                     .then(function (result) {
                         courseContext.courseList.push(mapper.mapCourse(result));
                         return result.Id;
@@ -30,23 +34,28 @@
             },
 
             getCourseById: function (courseId) {
-                var course = findService.findCourse(courseId);
+                var course = courseContext.courseList.find(function (course) {
+                    return course.id === courseId;
+                });
 
-                validateService.throwIfObjectUndefined(course, 'Course');
+                validateService.throwIfObjectIsUndefined(course, 'Course');
 
-                return Q(course);
+                return Q.fcall(function () {
+                    return course;
+                });
             },
 
             editCourseTitle: function (courseId, courseTitle) {
-                return http.post('course/edit/title', { courseId: courseId, userId: courseContext.user.id, title: courseTitle })
+                return http.post('course/edit/title', { courseId: courseId, title: courseTitle })
                     .then(function (result) {
 
-                        var course = findService.findCourse(courseId);
+                        var course = courseContext.courseList.find(function (course) {
+                            return course.id === courseId;
+                        });
 
-                        validateService.throwIfObjectUndefined(course, 'Course');
+                        validateService.throwIfObjectIsUndefined(course, 'Course');
 
                         course.title = courseTitle;
-                        course.modifiedBy = courseContext.user.firstName + " " + courseContext.user.surname;
                         course.lastModified = new Date(result);
 
                         return true;
@@ -54,15 +63,16 @@
             },
 
             editCourseDescription: function (courseId, courseDescription) {
-                return http.post('course/edit/description', { courseId: courseId, userId: courseContext.user.id, description: courseDescription })
+                return http.post('course/edit/description', { courseId: courseId, description: courseDescription })
                     .then(function (result) {
 
-                        var course = findService.findCourse(courseId);
+                        var course = courseContext.courseList.find(function (course) {
+                            return course.id === courseId;
+                        });;
 
-                        validateService.throwIfObjectUndefined(course, 'Course');
+                        validateService.throwIfObjectIsUndefined(course, 'Course');
 
                         course.description = courseDescription;
-                        course.modifiedBy = courseContext.user.firstName + " " + courseContext.user.surname;
                         course.lastModified = new Date(result);
 
                         return true;

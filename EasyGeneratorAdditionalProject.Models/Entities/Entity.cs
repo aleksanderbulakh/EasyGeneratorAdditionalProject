@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+
 namespace EasyGeneratorAdditionalProject.Models.Entities
 {
     public class Entity : Identifier
@@ -14,7 +16,7 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             CreatedOn = LastModifiedDate = DateTime.UtcNow;
         }
 
-        public string Title { get; set; }
+        public string Title { get; protected internal set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
         public string ModifiedBy { get; set; }
@@ -32,8 +34,7 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             ThrowIfUserNameInvalid(userName);
 
             Title = title;
-            ModifiedBy = userName;
-            MarkAsModified();
+            MarkAsModified(userName);
         }
 
         protected void ThrowIfUserNameInvalid(string userName)
@@ -42,8 +43,9 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
                 throw new ArgumentException("Invalid user name.");
         }
 
-        public void MarkAsModified()
+        public void MarkAsModified(string userName)
         {
+            ModifiedBy = userName;
             LastModifiedDate = DateTime.UtcNow;
         }
     }

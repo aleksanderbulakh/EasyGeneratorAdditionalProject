@@ -11,12 +11,13 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Context
 {
     public class DatabaseContext : DbContext, IUnitOfWork, IDatabaseContext
     {
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<Course> Courses { get; set; }
-        public DbSet<Section> Sections { get; set; }
-        public DbSet<Question> Question { get; set; }
-        public DbSet<Answers> Answers { get; set; }
+        public DbSet<Role> Roles { get; protected internal set; }
+        public DbSet<User> Users { get; protected internal set; }
+        public DbSet<Course> Courses { get; protected internal set; }
+        public DbSet<Section> Sections { get; protected internal set; }
+        public DbSet<Question> Question { get; protected internal set; }
+        public DbSet<Answer> Answers { get; protected internal set; }
+        public DbSet<SingleSelectImagePhoto> Photos { get; protected internal set; }
 
         public IDbSet<T> GetSet<T>() where T : class
         {
@@ -68,14 +69,19 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Context
             #endregion
 
             #region Answers
-            modelBuilder.Entity<Answers>().ToTable("Answers");
-            modelBuilder.Entity<Answers>().HasKey(t => t.Id);
-            modelBuilder.Entity<Answers>().Property(t => t.Text).IsRequired();
-            modelBuilder.Entity<Answers>().Property(t => t.IsCorrect).IsRequired();
-            modelBuilder.Entity<Answers>()
+            modelBuilder.Entity<Answer>().ToTable("Answers");
+            modelBuilder.Entity<Answer>().HasKey(t => t.Id);
+            modelBuilder.Entity<Answer>().Property(t => t.Text).IsRequired();
+            modelBuilder.Entity<Answer>().Property(t => t.IsCorrect).IsRequired();
+            modelBuilder.Entity<Answer>()
                 .Map<SimpleSelectAnswers>(t => t.Requires("AnswerType").HasValue("simple"))
-                .Map<SingleSelectImage>(t=>t.Requires("AnswerType").HasValue("image"));
+                .Map<SingleSelectImageAnswer>(t => t.Requires("AnswerType").HasValue("image"));
+            #endregion
 
+            #region Photos
+            modelBuilder.Entity<SingleSelectImagePhoto>().ToTable("Photos");
+            modelBuilder.Entity<SingleSelectImagePhoto>().HasKey(t => t.Id);
+            modelBuilder.Entity<SingleSelectImagePhoto>().Property(t => t.Photo).IsRequired();
             #endregion
         }
 

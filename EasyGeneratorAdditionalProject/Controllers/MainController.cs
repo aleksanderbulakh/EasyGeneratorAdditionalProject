@@ -12,9 +12,11 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
     public class MainController : Controller
     {
         private readonly IUnitOfWork _work;
-        public MainController(IUnitOfWork work)
+        private readonly IUserRepository _userRepository;
+        public MainController(IUnitOfWork work, IUserRepository userRepository)
         {
             _work = work;
+            _userRepository = userRepository;
         }
         
         protected override void OnActionExecuted(ActionExecutedContext filterContext)
@@ -31,6 +33,11 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         protected JsonFailedResult FailResult(string data)
         {
             return new JsonFailedResult(data);
+        }
+
+        protected User GetFirstUser()
+        {
+            return _userRepository.GetById(Guid.Parse("9f9338ba-55ab-4d12-a28a-fff7e8b3bda3"));
         }
     }
 }

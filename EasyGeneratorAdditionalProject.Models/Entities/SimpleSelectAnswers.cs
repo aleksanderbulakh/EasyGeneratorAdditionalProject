@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Models.Entities
 {
-    public class SimpleSelectAnswers : Answers
+    public class SimpleSelectAnswers : Answer
     {
         public SimpleSelectAnswers()
             : base()

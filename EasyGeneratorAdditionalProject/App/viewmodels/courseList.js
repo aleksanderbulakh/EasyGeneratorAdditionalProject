@@ -1,22 +1,20 @@
-﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/courseRepository', 'data/sectionRepository',
-    'customPlugins/createDialog/createDialog', 'customPlugins/customMessages/customMessage'],
-    function (ko, router, app, courseRepository, sectionRepository, createDialog, message) {
+﻿define(['knockout', 'plugins/router', 'repositories/courseRepository', 'customPlugins/createDialog/createDialog',
+    'customPlugins/customMessages/customMessage', 'errorHandler/errorHandler'],
+    function (ko, router, courseRepository, createDialog, message, errorHandler) {
+
         return {
-            router: router,
             courseList: ko.observableArray([]),
 
             activate: function () {
+
                 var self = this;
-                courseRepository.getCourseList().then(function (data) {
+                return courseRepository.getCourseList().then(function (data) {
                     self.courseList(data);
-                })
-                .fail(function (result) {
-                    message.stateMessage(result, "Error");
-                });;
+                });
             },
 
-            coursePreview: function (id) {
-                router.navigate('#preview/' + id);
+            routToCoursePreview: function (id) {
+                return '#preview/' + id;
             },
 
             deleteCourse: function (id) {
@@ -26,11 +24,8 @@
                         if (result) {
                             courseRepository.deleteCourse(id)
                                 .then(function () {
-                                        self.courseList.valueHasMutated();
-                                        message.stateMessage("Course has been deleted.", "Success");
-                                })
-                                .fail(function (result) {
-                                    message.stateMessage(result, "Error");
+                                    self.courseList.valueHasMutated();
+                                    message.stateMessage("Course has been deleted.", "Success");
                                 });
                         }
                     });
@@ -42,14 +37,11 @@
                         courseRepository.createCourse(response)
                             .then(function (courseId) {
                                 router.navigate('#course/' + courseId);
-                            })
-                            .fail(function (result) {
-                                message.stateMessage(result, "Error");
                             });
                     });
             },
 
-            toCourse: function (courseId) {
+            navigateToCourse: function (courseId) {
                 router.navigate('#course/' + courseId);
             }
         };

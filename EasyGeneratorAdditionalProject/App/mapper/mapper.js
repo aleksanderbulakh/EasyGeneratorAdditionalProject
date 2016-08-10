@@ -1,13 +1,6 @@
-﻿define(['knockout', 'models/user', 'models/course', 'models/section', 'models/question', 'models/answer'],
-    function (ko, User, Course, Section, Question, Answer) {
+﻿define(['models/course', 'models/section', 'models/question', 'models/answer', 'models/result'],
+    function (Course, Section, Question, Answer, Result) {
         return {
-            mapUser: function (spec) {
-                return new User({
-                    id: spec.Id,
-                    firstName: spec.FirstName,
-                    surname: spec.Surname
-                });
-            },
 
             mapCourse: function (spec) {
                 return new Course({
@@ -21,9 +14,10 @@
                 });
             },
 
-            mapSection: function (spec) {
+            mapSection: function (spec, courseId) {
                 return new Section({
                     id: spec.Id,
+                    courseId: courseId,
                     title: spec.Title,
                     createdBy: spec.CreatedBy,
                     modifiedBy: spec.ModifiedBy,
@@ -32,9 +26,10 @@
                 });
             },
 
-            mapQuestion: function (spec) {
+            mapQuestion: function (spec, sectionId) {
                 return new Question({
                     id: spec.Id,
+                    sectionId: sectionId,
                     title: spec.Title,
                     createdBy: spec.CreatedBy,
                     modifiedBy: spec.ModifiedBy,
@@ -44,11 +39,20 @@
                 });
             },
 
-            mapAnswer: function (spec) {
+            mapAnswer: function (spec, questionId) {
                 return new Answer({
                     id: spec.Id,
+                    questionId: questionId,
                     text: spec.Text,
                     isCorrect: spec.IsCorrect
+                });
+            },
+
+            mapResult: function (sectionId, questionId, result) {
+                return new Result({
+                    sectionId: sectionId,
+                    questionId: questionId,
+                    result: result
                 });
             }
         };

@@ -10,7 +10,7 @@
 define('jquery', function () { return jQuery; });
 define('knockout', ko);
 
-define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'durandal/composition', 'data/courseContext'],
+define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'durandal/composition', 'context/courseContext'],
     function (system, app, viewLocator, composition, courseContext) {
         system.debug(true);
 

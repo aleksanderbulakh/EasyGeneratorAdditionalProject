@@ -18,9 +18,9 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         private readonly ISectionRepository _sectionRepository;
         private readonly IMapper _mapper;
         private readonly IDateConvertor _convertor;
-        public SectionController(IUnitOfWork work, ICourseRepository courseRepository, 
+        public SectionController(IUnitOfWork work, IUserRepository userRepository, ICourseRepository courseRepository, 
             ISectionRepository sectionRepository, IMapper mapper, IDateConvertor convertor)
-            : base(work)
+            : base(work, userRepository)
         {
             _courseRepository = courseRepository;
             _sectionRepository = sectionRepository;
@@ -30,8 +30,10 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
         [HttpPost]
         [Route("section/edit/title", Name = "EditSectionTitle")]
-        public JsonResult EditSectionTitle(Section section, User user, string title)
+        public JsonResult EditSectionTitle(Section section, string title)
         {
+            var user = GetFirstUser();
+
             if (section == null)
                 return FailResult("section not find.");
 
@@ -55,8 +57,10 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
         [HttpPost]
         [Route("section/create", Name = "CreateSection")]
-        public JsonResult CreateSection(Course course, User user)
+        public JsonResult CreateSection(Course course)
         {
+            var user = GetFirstUser();
+
             if (course == null)
                 return FailResult("Section not find.");
 

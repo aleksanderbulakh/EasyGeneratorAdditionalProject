@@ -1,16 +1,14 @@
-﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/questionRepository', 'data/answerRepository',
-    'customPlugins/customMessages/customMessage', 'customPlugins/createQuestionDialog/createQuestionDialog',
-    'customPlugins/answersEditDialog/answersEditDialog'],
-    function (ko, router, app, questionRepository, answerRepository, message, createQuestionDialog, questionEditDialog) {
+﻿define(['knockout', 'durandal/app', 'repositories/questionRepository', 'customPlugins/customMessages/customMessage',
+    'customPlugins/answersEditDialog/answersEditDialog', 'errorHandler/errorHandler'],
+    function (ko, app, questionRepository, message, answersEditDialog, errorHandler) {
 
         return function () {
 
             return {
                 viewUrl: 'views/question',
-                courseId: '',
                 sectionId: '',
                 currentTitle: '',
-                
+
                 id: '',
                 title: ko.observable().extend({
                     validName: 'Please, enter course title! Maximum number of characters - 255.'
@@ -25,8 +23,8 @@
 
                 activate: function (data) {
 
-                    if (data.questionData !== undefined && data.courseId !== undefined && data.sectionId !== undefined) {
-                        this.courseId = data.courseId;
+                    if (typeof data.questionData !== 'undefined' && typeof data.questionData !== 'undefined'
+                        && typeof data.courseId !== 'undefined' && typeof data.sectionId !== 'undefined') {
                         this.sectionId = data.sectionId;
                         this.id = data.questionData.id;
                         this.title(data.questionData.title);
@@ -37,12 +35,12 @@
                         this.type = data.questionData.type;
 
                         this.currentTitle = data.questionData.title;
-                        
+
                         var self = this;
                         self.isChangeable = ko.computed(function () {
                             return self.title.hasError() === (self.title() !== self.currentTitle);
                         });
-                        
+
                     }
                     else {
                         message.stateMessage("Data is not found.");
@@ -50,14 +48,12 @@
                 },
                 editTitle: function () {
                     var self = this;
-                    
-                    questionRepository.editQuestionTitle(this.courseId, this.sectionId, this.id, this.title())
-                        .then(function () {
+
+                    questionRepository.editQuestionTitle(this.id, this.title())
+                        .then(function (modifiedDate) {
                             self.currentTitle = self.title();
+                            app.trigger('question:modified', modifiedDate);
                             message.stateMessage("Title has been changed.", "Success");
-                        })
-                        .fail(function (result) {
-                            message.stateMessage(result, "Error");
                         });
                 },
                 deleteQuestion: function () {
@@ -66,20 +62,18 @@
                     message.confirmMessage()
                         .then(function (result) {
                             if (result) {
-                                questionRepository.deleteQuestion(self.courseId, self.sectionId, self.id)
+                                questionRepository.deleteQuestion(self.id)
                                     .then(function () {
+
                                         app.trigger('question:deleted', self.id);
                                         message.stateMessage("Question has been deleted.", "Success");
-                                    })
-                                    .fail(function (result) {
-                                        message.stateMessage(result, "Error");
                                     });
                             }
                         });
                 },
 
                 openAnswerDialog: function () {
-                    questionEditDialog.show(this.courseId, this.sectionId, this.id, this.type);
+                    answersEditDialog.show(this.id, this.type);
                 }
             };
         };

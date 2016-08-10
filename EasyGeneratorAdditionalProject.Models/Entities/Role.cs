@@ -8,9 +8,9 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
 {
     public class Role : Identifier
     {
-        public string Name { get; set; }
+        public string Name { get; protected internal set; }
 
-        public virtual ICollection<User> UserCollection { get; set; }
+        public virtual ICollection<User> UserCollection { get; protected internal set; }
 
         public Role()
             : base()

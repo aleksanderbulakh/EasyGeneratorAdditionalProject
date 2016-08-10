@@ -8,10 +8,10 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
 {
     public class Course : Entity
     {
-        public virtual User User { get; set; }
-        public string Description { get; set; }
+        public virtual User User { get; protected internal set; }
+        public string Description { get; protected internal set; }
 
-        public virtual ICollection<Section> SectionsList { get; set; }
+        public virtual ICollection<Section> SectionsList { get; protected internal set; }
 
         public Course() 
                 :base()
@@ -38,8 +38,7 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             ThrowIfUserNameInvalid(userName);
 
             Description = description;
-            ModifiedBy = userName;
-            MarkAsModified();
+            MarkAsModified(userName);
         }
         #endregion
 

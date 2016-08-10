@@ -1,4 +1,4 @@
-﻿define(['plugins/http'], function (http) {
+﻿define(['plugins/http', 'errorHandler/errorHandler'], function (http, errorHandler) {
     var defaultErrorMessage = 'Request failed :(';
 
     function post(url, data) {
@@ -15,10 +15,8 @@
                 }
 
                 defer.reject(onError(result.RequestData));
-            })
-        .fail(function (data) {
-            defer.reject(onError(data));
-        });
+            });
+
         return defer.promise;
     }
 
@@ -35,10 +33,7 @@
                     }
                 }
                 defer.reject(onError(result.RequestData));
-            })
-        .fail(function (data) {
-            defer.reject(onError(data));
-        });
+            });
 
         return defer.promise;
     }

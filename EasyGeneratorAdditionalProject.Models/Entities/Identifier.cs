@@ -8,7 +8,7 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
 {
     public class Identifier
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; protected internal set; }
 
         public Identifier()
         {

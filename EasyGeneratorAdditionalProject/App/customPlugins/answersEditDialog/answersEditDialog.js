@@ -1,18 +1,16 @@
-﻿define(['plugins/dialog', 'durandal/app', 'knockout', 'data/answerRepository', 'data/constants',
-    'customPlugins/customMessages/customMessage'],
-    function (dialog, app, ko, answerRepository, constants, message) {
+﻿define(['plugins/dialog', 'durandal/app', 'knockout', 'repositories/answerRepository', 'constants/constants',
+    'customPlugins/customMessages/customMessage', 'services/validateService'],
+    function (dialog, app, ko, answerRepository, constants, message, validateService) {
 
-        var answerEdit = function (dataObj) {
+        var answerEdit = function (questionId, questionType) {
 
-            this.constants = constants;
-            this.courseId = dataObj[0];
-            this.sectionId = dataObj[1];
-            this.questionId = dataObj[2];
-            this.questionType = constants.ANSWER_TYPES[dataObj[3]];
+            this.questionId = questionId;
+            this.questionType = constants.ANSWER_TYPES[questionType];
             this.answers = ko.observableArray([]);
 
             var self = this;
-            answerRepository.getAnswersByQuestionId(this.courseId, this.sectionId, this.questionId)
+
+            answerRepository.getAnswersByQuestionId(this.questionId)
                 .then(function (answers) {
                     self.answers(answers.map(function (answer) {
                         return {
@@ -26,52 +24,46 @@
                 });
 
             app.on('answer:deleted').then(function (answerId) {
-                var answerIndex = self.answers().findIndex(function (answer) {
+                var answer = self.answers().find(function (answer) {
                     return answer.id === answerId;
                 });
 
-                if (answerIndex >= 0)
-                    self.answers().splice(answerIndex, 1);
+                validateService.throwIfObjectIsUndefined(answer, 'Answer');
+
+                self.answers.remove(answer);
             });
+        };
+        
+        answerEdit.show = function (questionId, questionType) {
+            return dialog.show(new answerEdit(questionId, questionType));
         };
 
         answerEdit.prototype.addAnswer = function () {
             self = this;
-            answerRepository.createAnswer(this.courseId, this.sectionId, this.questionId)
+            answerRepository.createAnswer(this.questionId)
                 .then(function (answer) {
-                    self.answers().push(answer);
-                    self.answers.valueHasMutated();
+                    self.answers.push(answer);
                     message.stateMessage("Question has been deleted.", "Success");
                 });
         }
 
-        answerEdit.prototype.ok = function () {
+        answerEdit.prototype.close = function () {
             dialog.close(this);
-        };
-
-        answerEdit.show = function () {
-            return dialog.show(new answerEdit(arguments));
         };
 
         answerEdit.prototype.editText = function (answerId, text) {
             var self = this;
-            answerRepository.editAnswerText(this.courseId, this.sectionId, this.questionId, answerId, text())
-                .then(function () {
+            answerRepository.editAnswerText(this.questionId, answerId, text())
+                .then(function (modifiedDate) {
                     message.stateMessage("Text has been changed.", "Success");
-                })
-                .fail(function (result) {
-                    message.stateMessage(result, "Error");
                 });
         },
 
         answerEdit.prototype.editState = function (answerId, state) {
             var self = this;
-            answerRepository.editAnswerState(this.courseId, this.sectionId, this.questionId, answerId, state())
-                .then(function () {
+            answerRepository.editAnswerState(this.questionId, answerId, this.questionType, state())
+                .then(function (modifiedDate) {
                     message.stateMessage("State has been changed.", "Success");
-                })
-                .fail(function (result) {
-                    message.stateMessage(result, "Error");
                 });
         }
 
@@ -80,39 +72,33 @@
             message.confirmMessage()
                 .then(function (result) {
                     if (result) {
-                        answerRepository.deleteAnswer(self.courseId, self.sectionId, self.questionId, answerId)
+                        answerRepository.deleteAnswer(answerId)
                             .then(function () {
                                 app.trigger('answer:deleted', answerId);
                                 message.stateMessage("Question has been deleted.", "Success");
-                            })
-                            .fail(function (result) {
-                                message.stateMessage(result, "Error");
                             });
                     }
                 });
         }
 
-        answerEdit.prototype.computecorrectAnswer = function (answerId) {
+        answerEdit.prototype.computeCorrectAnswer = function (answerId) {
 
             if (this.questionType === 'radio') {
                 this.answers().forEach(function (answer) {
                     if (answer.id === answerId) {
                         answer.isCorrect(true);
-                    }
-                    else {
+                    } else {
                         answer.isCorrect(false);
                     }
                 });
-            }
-            if (this.questionType === 'checkbox') {
+            } else if (this.questionType === 'checkbox') {
                 var answer = this.answers().find(function (answer) {
                     return answer.id === answerId;
                 });
 
-                if (answer.isCorrect() === true) {
+                if (answer.isCorrect()) {
                     answer.isCorrect(false);
-                }
-                else {
+                } else {
                     answer.isCorrect(true);
                 }
             }

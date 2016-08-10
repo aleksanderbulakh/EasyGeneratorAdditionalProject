@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Models.Entities
 {
-    public class Answers : Identifier
+    public class Answer : Identifier
     {
-        public virtual Question Question { get; set; }
-        public string Text { get; set; }
-        public bool IsCorrect { get; set; }
+        public virtual Question Question { get; protected internal set; }
+        public string Text { get; protected internal set; }
+        public bool IsCorrect { get; protected internal set; }
 
-        public Answers() 
+        public Answer() 
             : base() { }
 
         public void UpdateText(string text, string userName)
@@ -25,12 +25,9 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             MarkAsModified(userName);
         }
 
-        public void UpdateState(bool isCorrect, string userName)
+        public void UpdateState(bool isCorrect)
         {
-            ThrowIfUserNameInvalid(userName);
-
             IsCorrect = isCorrect;
-            MarkAsModified(userName);
         }
 
         protected void ThrowIfTextInvalid(string text)
@@ -51,10 +48,9 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
                 throw new ArgumentException("Invalid question");
         }
 
-        protected void MarkAsModified(string userName)
+        public void MarkAsModified(string userName)
         {
-            Question.ModifiedBy = userName;
-            Question.MarkAsModified();
+            Question.MarkAsModified(userName);
         }
     }
 }

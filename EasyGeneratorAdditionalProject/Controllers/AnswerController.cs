@@ -16,9 +16,9 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         private readonly IAnswerRepository _answerRepository;
         private readonly IMapper _mapper;
         private readonly IDateConvertor _convertor;
-        public AnswerController(IUnitOfWork work, IAnswerRepository answerRepository,
+        public AnswerController(IUnitOfWork work, IUserRepository userRepository, IAnswerRepository answerRepository,
             IMapper mapper, IDateConvertor convertor) 
-            : base(work)
+            : base(work, userRepository)
         {
             _answerRepository = answerRepository;
             _mapper = mapper;
@@ -26,9 +26,11 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         }
 
         [HttpPost]
-        [Route("answer/simple/edit/text", Name = "EditAnswerText")]
-        public JsonResult EditAnswerText(SimpleSelectAnswers answer, User user, string text)
+        [Route("answer/edit/text", Name = "EditAnswerText")]
+        public JsonResult EditAnswerText(SimpleSelectAnswers answer, string text)
         {
+            var user = GetFirstUser();
+
             if (answer == null)
                 return FailResult("question not find.");
 
@@ -41,22 +43,42 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         }
 
         [HttpPost]
-        [Route("answer/simple/edit/state", Name = "EditAnswerState")]
-        public JsonResult EditAnswerState(SimpleSelectAnswers answer, User user, bool state)
+        [Route("answer/single/edit/state", Name = "EditSingleAnswerState")]
+        public JsonResult EditSingleAnswerState(Question question, string answerId)
         {
+            var user = GetFirstUser();
+
+            if (question == null)
+                return FailResult("question not find.");
+
+            if (user == null)
+                return FailResult("user not find.");
+
+            question.ModifySingleSelectAnswersState(answerId, user.UserName);
+
+            return SuccessResult(_convertor.ConvertDateToMilliseconds(question.LastModifiedDate));
+        }
+
+        [HttpPost]
+        [Route("answer/multiple/edit/state", Name = "EditMultipleAnswerState")]
+        public JsonResult EditMultipleAnswerState(SimpleSelectAnswers answer, bool state)
+        {
+            var user = GetFirstUser();
+
             if (answer == null)
                 return FailResult("question not find.");
 
             if (user == null)
                 return FailResult("user not find.");
 
-            answer.UpdateState(state, user.UserName);
+            answer.UpdateState(state);
+            answer.MarkAsModified(user.UserName);
 
             return SuccessResult(_convertor.ConvertDateToMilliseconds(answer.Question.LastModifiedDate));
         }
 
         [HttpPost]
-        [Route("answer/simple/delete", Name = "DeleteAnswer")]
+        [Route("answer/delete", Name = "DeleteAnswer")]
         public JsonResult DeleteAnswer(SimpleSelectAnswers answer)
         {
             if (answer != null)
@@ -66,9 +88,11 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         }
 
         [HttpPost]
-        [Route("answer/simple/create", Name = "CreateAnswer")]
-        public JsonResult CreateAnswer(Question question, User user)
+        [Route("answer/create", Name = "CreateAnswer")]
+        public JsonResult CreateAnswer(Question question)
         {
+            var user = GetFirstUser();
+
             if (question == null)
                 return FailResult("Question not find.");
 
@@ -87,7 +111,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         public JsonResult AnswersList(Question question)
         {
             if (question == null)
-                return FailResult("Section is not found.");
+                throw new ArgumentException("Question is not found.");
 
             var sections = new List<AnswerViewModel>();
 

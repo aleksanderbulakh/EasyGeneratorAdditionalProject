@@ -1,6 +1,7 @@
-﻿define(['knockout', 'plugins/router', 'durandal/app', 'data/sectionRepository', 'data/questionRepository',
-    'customPlugins/customMessages/customMessage', 'customPlugins/createQuestionDialog/createQuestionDialog'],
-    function (ko, router, app, sectionRepository, questionRepository, message, createQuestionDialog) {
+﻿define(['knockout', 'durandal/app', 'repositories/sectionRepository', 'repositories/questionRepository',
+    'customPlugins/customMessages/customMessage', 'customPlugins/createQuestionDialog/createQuestionDialog',
+    'services/validateService', 'errorHandler/errorHandler'],
+    function (ko, app, sectionRepository, questionRepository, message, createQuestionDialog, validateService, errorHandler) {
 
         return function () {
 
@@ -10,7 +11,7 @@
                 sectionData: '',
                 sectionId: '',
                 sectionTitle: ko.observable().extend({
-                    validName: 'Please, enter course title! Maximum number of characters - 255.'
+                    validName: 'Please, enter section title! Maximum number of characters - 255.'
                 }),
                 createdBy: '',
                 createdOn: '',
@@ -21,8 +22,7 @@
                 isChangeable: true,
 
                 activate: function (data) {
-
-                    if (data.sectionData !== undefined && data.courseId !== undefined) {
+                    if (typeof data !== 'undefined' && typeof data.sectionData !== 'undefined' && typeof data.courseId !== 'undefined') {
                         this.courseId = data.courseId;
                         this.sectionId = data.sectionData.id;
                         this.sectionTitle(data.sectionData.title);
@@ -33,7 +33,7 @@
                         this.currentSectionTitle = data.sectionData.title;
 
                         var self = this;
-                        questionRepository.getQuestionsBySectionId(this.courseId, this.sectionId)
+                        return questionRepository.getQuestionsBySectionId(this.sectionId)
                             .then(function (questionList) {
                                 self.questionList(questionList.map(function (question) {
                                     return question;
@@ -49,26 +49,35 @@
                     }
 
                     app.on('question:deleted').then(function (questionId) {
-                        var questionIndex = self.questionList().findIndex(function (question) {
+                        debugger;
+                        var question = self.questionList().find(function (question) {
                             return question.id === questionId;
                         });
 
-                        if (questionIndex >= 0) { 
-                            self.questionList().splice(questionIndex, 1);
-                            self.questionList.valueHasMutated();
-                        }
+                        validateService.throwIfObjectIsUndefined(question, 'Question');
+
+                        self.questionList.remove(question);
+                    });
+
+                    app.on('question:modified').then(function (modifiedDate) {
+
+                        var question = self.questionList().find(function (question) {
+                            return question.id === questionId;
+                        });
+
+                        validateService.throwIfObjectIsUndefined(question, 'Question');
+
+                        question.lastModifiedDate = modifiedDate;
                     });
                 },
                 editSectionTitle: function () {
                     var self = this;
 
-                    sectionRepository.editSectionTitle(this.courseId, this.sectionId, this.sectionTitle())
-                        .then(function () {
+                    sectionRepository.editSectionTitle(this.sectionId, this.sectionTitle())
+                        .then(function (modifiedDate) {
                             self.currentSectionTitle = self.sectionTitle();
+                            self.lastModifiedDate = modifiedDate;
                             message.stateMessage("Title has been changed.", "Success");
-                        })
-                        .fail(function (result) {
-                            message.stateMessage(result, "Error");
                         });
                 },
                 deleteSection: function () {
@@ -77,13 +86,11 @@
                     message.confirmMessage()
                         .then(function (result) {
                             if (result) {
-                                sectionRepository.deleteSection(self.courseId, self.sectionId)
+                                sectionRepository.deleteSection(self.sectionId)
                                     .then(function () {
+                                        debugger;
                                         app.trigger('section:deleted', self.sectionId);
                                         message.stateMessage("Section has been deleted.", "Success");
-                                    })
-                                    .fail(function (result) {
-                                        message.stateMessage(result, "Error");
                                     });
                             }
                         });
@@ -94,16 +101,11 @@
                     createQuestionDialog.show()
                         .then(function (type) {
 
-                            questionRepository.createQuestion(self.courseId, self.sectionId, type)
+                            questionRepository.createQuestion(self.sectionId, type)
                                 .then(function (result) {
-
-                                    self.questionList().push(result);
-                                    self.questionList.valueHasMutated();
+                                    self.questionList.push(result);
                                     message.stateMessage('Section has been created.', 'Success');
-                                })
-                                .fail(function (result) {
-                                    message.stateMessage(result, "Error");
-                                });;
+                                });
                         });
                 }
             };

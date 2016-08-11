@@ -1,51 +1,30 @@
 ﻿define(['knockout', 'repositories/questionRepository', 'repositories/answerRepository', 'preview/resultsRepository',
-    'errorHandler/errorHandler', 'constants/constants'],
-    function (ko, questionRepository, answerRepository, resultsRepository, errorHandler, constants) {
+    'errorHandler/errorHandler', 'constants/constants', 'mapper/mapper'],
+    function (ko, questionRepository, answerRepository, resultsRepository, errorHandler, constants, mapper) {
 
-        function checkSingleSelectQuestion(questionId, answersList) {
+        function checkSingleSelectQuestion(question) {
 
-            return answerRepository.getAnswersByQuestionId(questionId)
+            return answerRepository.getAnswersByQuestionId(question.id)
                 .then(function (answers) {
 
-                    var answerForCheck = answersList.find(function (answer) {
-                        return answer.isCorrect();
-                    });
-
-                    var isAnswerCorrect = answers.find(function (answer) {
-                        return answer.id === answerForCheck.id && answer.isCorrect === answerForCheck.isCorrect();
-                    });
-
-                    return isAnswerCorrect !== undefined ? 1 : 0;
+                    return question.checkForCorrectness(answers);
                 });
         }
 
-        function checkMultipleSelectQuestion(questionId, answersList) {
+        function checkMultipleSelectQuestion(question) {
 
-            return answerRepository.getAnswersByQuestionId(questionId)
+            return answerRepository.getAnswersByQuestionId(question.id)
                 .then(function (answers) {
 
-                    var correctCount = 0;
-                    var countAnswers = answers.length;
-
-                    answers.forEach(function (correctAnswer) {
-                        var answerForCheck = answersList.find(function (answer) {
-                            return answer.id === correctAnswer.id;
-                        });
-
-                        if (correctAnswer.isCorrect === answerForCheck.isCorrect()) {
-                            correctCount++;
-                        }
-                    });
-
-                    return correctCount / countAnswers;
+                    return question.checkForCorrectness(answers);
                 });
         }
 
         return {
             sectionId: '',
-            questions: ko.observableArray([]),
+            questions: ko.observableArray(),
             activate: function (sectionId) {
-
+                this.questions([]);
                 this.sectionId = sectionId;
 
                 var self = this;
@@ -57,69 +36,47 @@
                                 .then(function (answers) {
 
                                     var answersList = answers.map(function (answer) {
-                                        return {
-                                            id: answer.id,
-                                            questionId: answer.questionId,
-                                            text: answer.text,
-                                            isCorrect: ko.observable(false)
-                                        }
+                                        return mapper.mapAnswerPreview(answer);
                                     });
 
-                                    self.questions.push({
-                                        id: question.id,
-                                        title: question.title,
-                                        type: constants.ANSWER_TYPES[question.type],
-                                        answersList: answersList
-                                    })
+                                    if (question.type === constants.SINGLE_SELECT_QUESTION_TYPE) {
+                                        self.questions.push(mapper.mapSingleSelectQuestionPreview({
+                                            id: question.id,
+                                            title: question.title,
+                                            type: question.type,
+                                            answersList: answersList
+                                        }));
+                                    } else if (question.type === constants.MULTIPLE_SELECT_QUESTION_TYPE) {
+                                        self.questions.push(mapper.mapMultipleSelectQuestionPreview({
+                                            id: question.id,
+                                            title: question.title,
+                                            type: question.type,
+                                            answersList: answersList
+                                        }));
+                                    }
                                 })
                         });
                     });
             },
-            computeCorrectAnswer: function (questionId, answerId) {
-                var question = this.questions().find(function (question) {
-                    return question.id === questionId;
-                });
 
-                if (question === undefined)
-                    throw 'error';
-
-                if (question.type === 'radio') {
-                    question.answersList.forEach(function (answer) {
-                        if (answer.id === answerId) {
-                            answer.isCorrect(true);
-                        } else {
-                            answer.isCorrect(false);
-                        }
-                    });
-                } else if (question.type === 'checkbox') {
-                    var answer = question.answersList.find(function (answer) {
-                        return answer.id === answerId;
-                    });
-
-                    if (answer.isCorrect()) {
-                        answer.isCorrect(false);
-                    } else {
-                        answer.isCorrect(true);
-                    }
-                }
-            },
             sendResult: function () {
                 resultsRepositort.setNewResult(this.questions);
             },
+
             checkForCorrectness: function (questionId) {
                 var self = this;
                 var question = this.questions().find(function (question) {
                     return question.id === questionId;
                 });
 
-                if (question.type === 'radio') {
-                    checkSingleSelectQuestion(questionId, question.answersList)
+                if (question.type === constants.QUESTION_TYPE_RADIO) {
+                    checkSingleSelectQuestion(question)
                         .then(function (result) {
                             resultsRepository.setNewResult(self.sectionId, questionId, result);
                             alert(result);
                         });
-                } else {
-                    checkMultipleSelectQuestion(questionId, question.answersList)
+                } else if (question.type === constants.QUESTION_TYPE_CHECKBOX) {
+                    checkMultipleSelectQuestion(question)
                         .then(function (result) {
                             resultsRepository.setNewResult(self.sectionId, questionId, result);
                             alert(result);

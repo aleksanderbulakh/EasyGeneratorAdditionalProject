@@ -1,7 +1,9 @@
-﻿define(['plugins/dialog', 'knockout'],
-    function (dialog, ko, Question) {
+﻿define(['plugins/dialog', 'knockout', 'constants/constants'],
+    function (dialog, ko, constants) {
 
-        var createQuestionDialog = function () { };
+        var createQuestionDialog = function () {
+            this.constants = constants;
+        };
 
         createQuestionDialog.prototype.create = function (type) {
             dialog.close(this, type);

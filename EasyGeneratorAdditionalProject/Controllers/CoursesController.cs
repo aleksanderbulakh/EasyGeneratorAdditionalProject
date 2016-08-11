@@ -17,7 +17,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         private readonly IDateConvertor _convertor;
         public CoursesController(IUnitOfWork work, IUserRepository userRepository, ICourseRepository courseRepository,
             IMapper mapper, IDateConvertor convertor)
-            :base(work, userRepository)
+            : base(work, userRepository)
         {
             _courseRepository = courseRepository;
             _mapper = mapper;

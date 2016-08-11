@@ -1,6 +1,6 @@
 ﻿define(['mapper/mapper', 'http/httpWrapper', 'context/courseContext', 'errorHandler/errorHandler',
-    'services/validateService'],
-    function (mapper, http, courseContext, errorHandler, validateService) {
+    'services/validateService', 'constants/constants'],
+    function (mapper, http, courseContext, errorHandler, validateService, constants) {
         return {
             getCourseList: function () {
 
@@ -26,6 +26,9 @@
             },
 
             createCourse: function (courseTitle) {
+                if (courseTitle === '') {
+                    courseTitle = constants.DEFAULT_COURSE_NAME;
+                }
                 return http.post('course/create', { courseTitle: courseTitle })
                     .then(function (result) {
                         courseContext.courseList.push(mapper.mapCourse(result));
@@ -38,7 +41,7 @@
                     return course.id === courseId;
                 });
 
-                validateService.throwIfObjectIsUndefined(course, 'Course');
+                validateService.throwIfObjectIsUndefined(course, constants.MODELS_NAMES.COURSE);
 
                 return Q.fcall(function () {
                     return course;
@@ -53,7 +56,7 @@
                             return course.id === courseId;
                         });
 
-                        validateService.throwIfObjectIsUndefined(course, 'Course');
+                        validateService.throwIfObjectIsUndefined(course, constants.MODELS_NAMES.COURSE);
 
                         course.title = courseTitle;
                         course.lastModified = new Date(result);
@@ -70,7 +73,7 @@
                             return course.id === courseId;
                         });;
 
-                        validateService.throwIfObjectIsUndefined(course, 'Course');
+                        validateService.throwIfObjectIsUndefined(course, constants.MODELS_NAMES.COURSE);
 
                         course.description = courseDescription;
                         course.lastModified = new Date(result);

@@ -3,7 +3,6 @@
         Entity.call(this, spec);
 
         this.courseId = spec.courseId;
-        this.questionList = spec.questionList;
     }
 
     return Section;

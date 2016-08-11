@@ -1,4 +1,4 @@
-﻿define(['plugins/http', 'errorHandler/errorHandler'], function (http, errorHandler) {
+﻿define(['plugins/http', 'errorHandler/errorHandler', 'constants/constants'], function (http, errorHandler, constants) {
     var defaultErrorMessage = 'Request failed :(';
 
     function post(url, data) {
@@ -6,10 +6,11 @@
 
         http.post(url, data)
             .then(function (result) {
-                if (typeof result === 'object' && result !== null) {
+                if (typeof result === constants.DATA_TYPES.OBJECT && result !== null) {
                     if (result.Success && result.RequestData !== null) {
                         var dataType = typeof result.RequestData;
-                        if ((dataType === 'boolean' && result.RequestData) || dataType === 'object' || dataType === 'number')
+                        if ((dataType === constants.DATA_TYPES.BOOL && result.RequestData) ||
+                            dataType === constants.DATA_TYPES.OBJECT || dataType === constants.DATA_TYPES.NUMBER)
                             return defer.resolve(result.RequestData);
                     }
                 }
@@ -25,10 +26,11 @@
 
         http.get(url, data)
             .then(function (result) {
-                if (typeof result === 'object' && result !== null) {
+                if (typeof result === constants.DATA_TYPES.OBJECT && result !== null) {
                     if (result.Success && result.RequestData !== null) {
                         var dataType = typeof result.RequestData;
-                        if (dataType === 'boolean' || dataType === 'object' || dataType === 'number')
+                        if ((dataType === constants.DATA_TYPES.BOOL && result.RequestData) ||
+                            dataType === constants.DATA_TYPES.OBJECT || dataType === constants.DATA_TYPES.NUMBER)
                             return defer.resolve(result.RequestData);
                     }
                 }

@@ -5,7 +5,7 @@
         var answerEdit = function (questionId, questionType) {
 
             this.questionId = questionId;
-            this.questionType = constants.ANSWER_TYPES[questionType];
+            this.questionType = constants.VIEWS_ANSWER_TYPES[questionType];
             this.answers = ko.observableArray([]);
 
             var self = this;
@@ -23,12 +23,12 @@
                     }));
                 });
 
-            app.on('answer:deleted').then(function (answerId) {
+            app.on(constants.EVENTS.ANSWER_DELETED).then(function (answerId) {
                 var answer = self.answers().find(function (answer) {
                     return answer.id === answerId;
                 });
 
-                validateService.throwIfObjectIsUndefined(answer, 'Answer');
+                validateService.throwIfObjectIsUndefined(answer, constants.MODELS_NAMES.ANSWER);
 
                 self.answers.remove(answer);
             });
@@ -43,7 +43,7 @@
             answerRepository.createAnswer(this.questionId)
                 .then(function (answer) {
                     self.answers.push(answer);
-                    message.stateMessage("Question has been deleted.", "Success");
+                    message.stateMessage("Question has been deleted.", constants.MESSAGES_STATE.SUCCESS);
                 });
         }
 
@@ -55,7 +55,7 @@
             var self = this;
             answerRepository.editAnswerText(this.questionId, answerId, text())
                 .then(function (modifiedDate) {
-                    message.stateMessage("Text has been changed.", "Success");
+                    message.stateMessage("Text has been changed.", constants.MESSAGES_STATE.SUCCESS);
                 });
         },
 
@@ -63,7 +63,7 @@
             var self = this;
             answerRepository.editAnswerState(this.questionId, answerId, this.questionType, state())
                 .then(function (modifiedDate) {
-                    message.stateMessage("State has been changed.", "Success");
+                    message.stateMessage("State has been changed.", constants.MESSAGES_STATE.SUCCESS);
                 });
         }
 
@@ -74,8 +74,8 @@
                     if (result) {
                         answerRepository.deleteAnswer(answerId)
                             .then(function () {
-                                app.trigger('answer:deleted', answerId);
-                                message.stateMessage("Question has been deleted.", "Success");
+                                app.trigger(constants.EVENTS.ANSWER_DELETED, answerId);
+                                message.stateMessage("Question has been deleted.", constants.MESSAGES_STATE.SUCCESS);
                             });
                     }
                 });
@@ -83,7 +83,7 @@
 
         answerEdit.prototype.computeCorrectAnswer = function (answerId) {
 
-            if (this.questionType === 'radio') {
+            if (this.questionType === constants.QUESTION_TYPE_RADIO) {
                 this.answers().forEach(function (answer) {
                     if (answer.id === answerId) {
                         answer.isCorrect(true);
@@ -91,7 +91,7 @@
                         answer.isCorrect(false);
                     }
                 });
-            } else if (this.questionType === 'checkbox') {
+            } else if (this.questionType === constants.QUESTION_TYPE_CHECKBOX) {
                 var answer = this.answers().find(function (answer) {
                     return answer.id === answerId;
                 });

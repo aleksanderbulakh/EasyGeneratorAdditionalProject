@@ -1,6 +1,6 @@
 ﻿define(['mapper/mapper', 'http/httpWrapper', 'errorHandler/errorHandler', 'context/answerContext',
-    'repositories/questionRepository', 'services/validateService'],
-    function (mapper, http, errorHandler, answerContext, questionRepository, validateService) {
+    'repositories/questionRepository', 'services/validateService', 'constants/constants'],
+    function (mapper, http, errorHandler, answerContext, questionRepository, validateService, constants) {
 
         function editSingleAnswerState(questionId, answerId) {
             return http.post('answer/single/edit/state', { questionId: questionId, answerId: answerId })
@@ -10,7 +10,7 @@
                             return answer.questionId === questionId;
                         });
 
-                        validateService.throwIfObjectIsUndefined(answers, 'Answer');
+                        validateService.throwIfObjectIsUndefined(answers, constants.MODELS_NAMES.ANSWER);
 
                         answers.forEach(function (answer) {
                             if (answer.id === answerId) {
@@ -36,7 +36,7 @@
                             return answer.id === answerId;
                         });
 
-                        validateService.throwIfObjectIsUndefined(answer, 'Answer');
+                        validateService.throwIfObjectIsUndefined(answer, constants.MODELS_NAMES.ANSWER);
 
                         answer.isCorrect = state;
 
@@ -105,7 +105,7 @@
                             return answer.id === answerId;
                         });
 
-                        validateService.throwIfObjectIsUndefined(answer, 'Answer');
+                        validateService.throwIfObjectIsUndefined(answer, constants.MODELS_NAMES.ANSWER);
 
                         answer.text = answerText;
 
@@ -119,9 +119,9 @@
 
             editAnswerState: function (questionId, answerId, type, state) {
 
-                if (type === 'radio') {
+                if (type === constants.QUESTION_TYPE_RADIO) {
                     return editSingleAnswerState(questionId, answerId);
-                } else {
+                } else if (type === constants.QUESTION_TYPE_CHECKBOX) {
                     return editMultipleAnswerState(questionId, answerId, state);
                 }
             },

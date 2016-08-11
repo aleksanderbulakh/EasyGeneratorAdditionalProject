@@ -1,4 +1,4 @@
-﻿define(['mapper/mapper', 'preview/previewContext', 'errorHandler/errorHandler'],
+﻿define(['mapper/mapper', 'preview/resultsContext', 'errorHandler/errorHandler'],
     function (mapper, resultsContext, errorHandler) {
         return {
             setNewResult: function (sectionId, questionId, result) {

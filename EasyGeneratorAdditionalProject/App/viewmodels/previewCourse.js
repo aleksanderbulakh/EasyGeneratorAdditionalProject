@@ -1,6 +1,32 @@
 ﻿define(['plugins/router', 'repositories/courseRepository', 'repositories/sectionRepository',
-    'customPlugins/customMessages/customMessage', 'errorHandler/errorHandler', 'preview/resultsRepository'],
-    function (router, courseRepository, sectionRepository, message, errorHandler, resultsRepository) {
+    'customPlugins/customMessages/customMessage', 'errorHandler/errorHandler', 'preview/resultsRepository', 'mapper/mapper'],
+    function (router, courseRepository, sectionRepository, message, errorHandler, resultsRepository, mapper) {
+
+        function computeProgressForSection(sectionsList) {
+            sectionsList.forEach(function (section) {
+                var results = resultsRepository.getResultBySectionId(section.id);
+
+                if (results !== undefined) {
+                    var resultSum = 0;
+                    results.forEach(function (result) {
+                        resultSum += result.result;
+                    });
+                    section.progress = (resultSum / results.length) * 100;
+                }
+            });
+        }
+
+        function computeProgressForCourse(sectionsList) {
+
+            var courseProgress = 0;
+
+            sectionsList.forEach(function (section) {
+                courseProgress += section.progress;
+            });
+
+            return courseProgress / sectionsList.length;
+        }
+
         return {
             courseId: '',
             courseTitle: '',
@@ -9,6 +35,7 @@
             courseProgress: '',
             sectionList: [],
             activate: function (id) {
+                debugger;
                 var self = this;
                 if (id == undefined) {
                     message.stateMessage("Invalid id", "Error");
@@ -25,35 +52,14 @@
 
                             return sectionRepository.getSectionsByCourseId(id)
                                 .then(function (result) {
+
                                     self.sectionList = result.map(function (section) {
-                                        return {
-                                            id: section.id,
-                                            courseId: section.courseId,
-                                            title: section.title,
-                                            createdBy: section.createdBy,
-                                            modifiedBy: section.modifiedBy,
-                                            createdOn: section.createdOn,
-                                            lastModified: section.lastModified,
-                                            sectionProgress: 0
-                                        }
+                                        return mapper.mapSectionPreview(section);
                                     });
-
-                                    var courseProgress = 0;
                                     debugger;
-                                    self.sectionList.forEach(function (section) {
-                                        var results = resultsRepository.getResultBySectionId(section.id);
+                                    computeProgressForSection(self.sectionList);
 
-                                        if (results !== undefined) {
-                                            var resultSum = 0;
-                                            results.forEach(function (result) {
-                                                resultSum += result.result;
-                                            });
-                                            section.sectionProgress = (resultSum / results.length) * 100;
-                                        }
-                                        courseProgress += section.sectionProgress;
-                                    });
-
-                                    self.courseProgress = courseProgress / self.sectionList.length;
+                                    self.courseProgress = computeProgressForCourse(self.sectionList);
                                 });
                         });
                 }

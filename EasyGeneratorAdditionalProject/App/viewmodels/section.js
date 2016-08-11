@@ -1,7 +1,7 @@
 ﻿define(['knockout', 'durandal/app', 'repositories/sectionRepository', 'repositories/questionRepository',
     'customPlugins/customMessages/customMessage', 'customPlugins/createQuestionDialog/createQuestionDialog',
-    'services/validateService', 'errorHandler/errorHandler'],
-    function (ko, app, sectionRepository, questionRepository, message, createQuestionDialog, validateService, errorHandler) {
+    'services/validateService', 'errorHandler/errorHandler', 'constants/constants'],
+    function (ko, app, sectionRepository, questionRepository, message, createQuestionDialog, validateService, errorHandler, constants) {
 
         return function () {
 
@@ -45,27 +45,27 @@
                         });
                     }
                     else {
-                        message.stateMessage("Data is not found.");
+                        message.stateMessage(constants.MESSAGES.DATA_IS_NOT_FOUND);
                     }
 
-                    app.on('question:deleted').then(function (questionId) {
+                    app.on(constants.EVENTS.QUESTION_DELETE).then(function (questionId) {
                         debugger;
                         var question = self.questionList().find(function (question) {
                             return question.id === questionId;
                         });
 
-                        validateService.throwIfObjectIsUndefined(question, 'Question');
+                        validateService.throwIfObjectIsUndefined(question, constants.MODELS_NAMES.QUESTION);
 
                         self.questionList.remove(question);
                     });
 
-                    app.on('question:modified').then(function (modifiedDate) {
+                    app.on(constants.EVENTS.QUESTION_MODIFIED).then(function (modifiedDate) {
 
                         var question = self.questionList().find(function (question) {
                             return question.id === questionId;
                         });
 
-                        validateService.throwIfObjectIsUndefined(question, 'Question');
+                        validateService.throwIfObjectIsUndefined(question, constants.MODELS_NAMES.QUESTION);
 
                         question.lastModifiedDate = modifiedDate;
                     });
@@ -77,7 +77,7 @@
                         .then(function (modifiedDate) {
                             self.currentSectionTitle = self.sectionTitle();
                             self.lastModifiedDate = modifiedDate;
-                            message.stateMessage("Title has been changed.", "Success");
+                            message.stateMessage(constants.MESSAGES.TITLE_CHANGED, constants.MESSAGES_STATE.SUCCESS);
                         });
                 },
                 deleteSection: function () {
@@ -89,8 +89,8 @@
                                 sectionRepository.deleteSection(self.sectionId)
                                     .then(function () {
                                         debugger;
-                                        app.trigger('section:deleted', self.sectionId);
-                                        message.stateMessage("Section has been deleted.", "Success");
+                                        app.trigger(constants.EVENTS.SECTION_DELETED, self.sectionId);
+                                        message.stateMessage('Section has been deleted.', constants.MESSAGES_STATE.SUCCESS);
                                     });
                             }
                         });
@@ -104,7 +104,7 @@
                             questionRepository.createQuestion(self.sectionId, type)
                                 .then(function (result) {
                                     self.questionList.push(result);
-                                    message.stateMessage('Section has been created.', 'Success');
+                                    message.stateMessage('Question has been created.', constants.MESSAGES_STATE.SUCCESS);
                                 });
                         });
                 }

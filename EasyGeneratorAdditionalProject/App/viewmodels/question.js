@@ -1,6 +1,6 @@
 ﻿define(['knockout', 'durandal/app', 'repositories/questionRepository', 'customPlugins/customMessages/customMessage',
-    'customPlugins/answersEditDialog/answersEditDialog', 'errorHandler/errorHandler'],
-    function (ko, app, questionRepository, message, answersEditDialog, errorHandler) {
+    'customPlugins/answersEditDialog/answersEditDialog', 'errorHandler/errorHandler', 'constants/constants'],
+    function (ko, app, questionRepository, message, answersEditDialog, errorHandler, constants) {
 
         return function () {
 
@@ -43,7 +43,7 @@
 
                     }
                     else {
-                        message.stateMessage("Data is not found.");
+                        message.stateMessage(constants.MESSAGES.DATA_IS_NOT_FOUND);
                     }
                 },
                 editTitle: function () {
@@ -52,8 +52,8 @@
                     questionRepository.editQuestionTitle(this.id, this.title())
                         .then(function (modifiedDate) {
                             self.currentTitle = self.title();
-                            app.trigger('question:modified', modifiedDate);
-                            message.stateMessage("Title has been changed.", "Success");
+                            app.trigger(constants.EVENTS.QUESTION_MODIFIED, modifiedDate);
+                            message.stateMessage("Title has been changed.", constants.MESSAGES_STATE.SUCCESS);
                         });
                 },
                 deleteQuestion: function () {
@@ -65,8 +65,8 @@
                                 questionRepository.deleteQuestion(self.id)
                                     .then(function () {
 
-                                        app.trigger('question:deleted', self.id);
-                                        message.stateMessage("Question has been deleted.", "Success");
+                                        app.trigger(constants.EVENTS.QUESTION_DELETE, self.id);
+                                        message.stateMessage("Question has been deleted.", constants.MESSAGES_STATE.SUCCESS);
                                     });
                             }
                         });

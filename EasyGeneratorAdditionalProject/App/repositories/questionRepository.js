@@ -1,6 +1,6 @@
 ﻿define(['mapper/mapper', 'http/httpWrapper', 'errorHandler/errorHandler',
-    'context/questionContext', 'services/validateService'],
-    function (mapper, http, errorHandler, questionContext, validateService) {
+    'context/questionContext', 'services/validateService', 'constants/constants'],
+    function (mapper, http, errorHandler, questionContext, validateService, constants) {
         return {
             getQuestionsBySectionId: function (sectionId) {
 
@@ -56,7 +56,7 @@
                             return question.id === questionId;
                         });
 
-                        validateService.throwIfObjectIsUndefined(question, 'Question');
+                        validateService.throwIfObjectIsUndefined(question, constants.MODELS_NAMES.QUESTION);
 
                         question.title = questionTitle;
                         question.lastModifiedDate = new Date(result);
@@ -87,7 +87,7 @@
                     return question.id === questionId;
                 });
 
-                validateService.throwIfObjectIsUndefined(question, 'Question');
+                validateService.throwIfObjectIsUndefined(question, constants.MODELS_NAMES.QUESTION);
 
                 question.lastModifiedDate = newDate;
             }

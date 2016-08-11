@@ -1,5 +1,8 @@
-﻿define(['models/course', 'models/section', 'models/question', 'models/answer', 'models/result'],
-    function (Course, Section, Question, Answer, Result) {
+﻿define(['models/course', 'models/section', 'models/question', 'models/answer', 'models/result', 'models/sectionPreview',
+    'models/singleSelectQuestionPreview', 'models/multipleSelectQuestionPreview', 'models/answerPreview',
+    'constants/constants'],
+    function (Course, Section, Question, Answer, Result, SectionPreview, SingleSelectQuestionPreview,
+        MultipleSelectQuestionPreview, AnswerPreview, constants) {
         return {
 
             mapCourse: function (spec) {
@@ -26,6 +29,13 @@
                 });
             },
 
+            mapSectionPreview: function (spec) {
+                return new SectionPreview({
+                    id: spec.id,
+                    title: spec.title
+                });
+            },
+
             mapQuestion: function (spec, sectionId) {
                 return new Question({
                     id: spec.Id,
@@ -39,12 +49,38 @@
                 });
             },
 
+            mapSingleSelectQuestionPreview: function(spec){
+                return new SingleSelectQuestionPreview({
+                    id: spec.id,
+                    title: spec.title,
+                    type: constants.VIEWS_ANSWER_TYPES[spec.type],
+                    answersList: spec.answersList
+                });
+            },
+
+            mapMultipleSelectQuestionPreview: function (spec) {
+                return new MultipleSelectQuestionPreview({
+                    id: spec.id,
+                    title: spec.title,
+                    type: constants.VIEWS_ANSWER_TYPES[spec.type],
+                    answersList: spec.answersList
+                });
+            },
+
             mapAnswer: function (spec, questionId) {
                 return new Answer({
                     id: spec.Id,
                     questionId: questionId,
                     text: spec.Text,
                     isCorrect: spec.IsCorrect
+                });
+            },
+
+            mapAnswerPreview: function(spec){
+                return new AnswerPreview({
+                    id: spec.id,
+                    text: spec.text,
+                    isCorrect: false
                 });
             },
 

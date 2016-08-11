@@ -1,6 +1,6 @@
 ﻿define(['mapper/mapper', 'http/httpWrapper', 'errorHandler/errorHandler', 'context/sectionContext',
-    'services/validateService'],
-    function (mapper, http, errorHandler, sectionContext, validateService) {
+    'services/validateService', 'constants/constants'],
+    function (mapper, http, errorHandler, sectionContext, validateService, constants) {
 
         return {
             getSectionsByCourseId: function (courseId) {
@@ -57,7 +57,7 @@
                             return section.id === sectionId;
                         });
 
-                        validateService.throwIfObjectIsUndefined(section, 'Section');
+                        validateService.throwIfObjectIsUndefined(section, constants.MODELS_NAMES.SECTION);
 
                         section.title = sectionTitle;
                         section.lastModifiedDate = new Date(result);

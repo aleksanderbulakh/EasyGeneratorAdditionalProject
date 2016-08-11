@@ -1,6 +1,7 @@
 ﻿define(['knockout', 'durandal/app', 'repositories/courseRepository', 'repositories/sectionRepository',
-    'customPlugins/customMessages/customMessage', 'services/validateService', 'errorHandler/errorHandler'],
-    function (ko, app, courseRepository, sectionRepository, message, validateService, errorHandler) {
+    'customPlugins/customMessages/customMessage', 'services/validateService', 'errorHandler/errorHandler',
+    'constants/constants'],
+    function (ko, app, courseRepository, sectionRepository, message, validateService, errorHandler, constants) {
         return {
             courseId: '',
             courseTitle: ko.observable().extend({
@@ -32,13 +33,13 @@
                         });
                     });
 
-                app.on('section:deleted').then(function (sectionId) {
+                app.on(constants.EVENTS.SECTION_DELETED).then(function (sectionId) {
                     debugger;
                     var section = self.courseSection().find(function (section) {
                         return section.id === sectionId;
                     });
 
-                    validateService.throwIfObjectIsUndefined(section, 'Section');
+                    validateService.throwIfObjectIsUndefined(section, constants.MODELS_NAMES.SECTION);
 
                     self.courseSection.remove(section);
                 });
@@ -49,7 +50,7 @@
                 courseRepository.editCourseTitle(self.courseId, self.courseTitle())
                     .then(function () {
                         self.currentCourseTitle = self.courseTitle();
-                        message.stateMessage("Title has been changed.", "Success");
+                        message.stateMessage(constants.MESSAGES_STATE.TITLE_CHANGED, constants.MESSAGES_STATE.SUCCESS);
                     });
             },
             editDescription: function () {
@@ -57,7 +58,7 @@
 
                 courseRepository.editCourseDescription(self.courseId, self.courseDescription())
                     .then(function () {
-                        message.stateMessage("Description has been changed.", "Success");
+                        message.stateMessage('Description has been changed.', constants.MESSAGES_STATE.SUCCESS);
                     });
             },
             createSection: function () {
@@ -65,7 +66,7 @@
                 sectionRepository.createSection(self.courseId)
                     .then(function (result) {
                         self.courseSection.push(result);
-                        message.stateMessage("Section hes been created.", "Success");
+                        message.stateMessage('Section has been created.', constants.MESSAGES_STATE.SUCCESS);
                     });
             }
         }

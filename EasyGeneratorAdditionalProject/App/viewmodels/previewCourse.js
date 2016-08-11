@@ -3,7 +3,7 @@
 
         function computeProgressForSection(sectionsList) {
             sectionsList.forEach(function (section) {
-                var results = IoC.getRepository(constants.REPOSITORIES_NAMES.RESULT).getResultBySectionId(section.id);
+                var results = IoC.resultsRepository.getResultBySectionId(section.id);
 
                 if (results !== undefined) {
                     var resultSum = 0;
@@ -41,7 +41,7 @@
                 }
                 else {
 
-                    return IoC.getRepository(constants.REPOSITORIES_NAMES.COURSE).getCourseById(id)
+                    return IoC.courseRepository.getCourseById(id)
                         .then(function (result) {
 
                             self.courseId = result.id;
@@ -49,7 +49,7 @@
                             self.courseDescription = result.description;
                             self.createdBy = result.createdBy;
 
-                            return IoC.getRepository(constants.REPOSITORIES_NAMES.SECTION).getSectionsByCourseId(id)
+                            return IoC.sectionRepository.getSectionsByCourseId(id)
                                 .then(function (result) {
 
                                     self.sectionList = result.map(function (section) {

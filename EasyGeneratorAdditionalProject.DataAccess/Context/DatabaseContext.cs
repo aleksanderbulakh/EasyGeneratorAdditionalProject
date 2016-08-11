@@ -11,13 +11,13 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Context
 {
     public class DatabaseContext : DbContext, IUnitOfWork, IDatabaseContext
     {
-        public DbSet<Role> Roles { get; protected internal set; }
-        public DbSet<User> Users { get; protected internal set; }
-        public DbSet<Course> Courses { get; protected internal set; }
-        public DbSet<Section> Sections { get; protected internal set; }
-        public DbSet<Question> Question { get; protected internal set; }
-        public DbSet<Answer> Answers { get; protected internal set; }
-        public DbSet<SingleSelectImagePhoto> Photos { get; protected internal set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Section> Sections { get; set; }
+        public DbSet<Question> Question { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+        public DbSet<SingleSelectImagePhoto> Photos { get; set; }
 
         public IDbSet<T> GetSet<T>() where T : class
         {

@@ -33,7 +33,7 @@
                         this.currentSectionTitle = data.sectionData.title;
 
                         var self = this;
-                        return IoC.getRepository(constants.REPOSITORIES_NAMES.QUESTION).getQuestionsBySectionId(this.sectionId)
+                        return IoC.questionRepository.getQuestionsBySectionId(this.sectionId)
                             .then(function (questionList) {
                                 self.questionList(questionList.map(function (question) {
                                     return question;
@@ -73,7 +73,7 @@
                 editSectionTitle: function () {
                     var self = this;
 
-                    IoC.getRepository(constants.REPOSITORIES_NAMES.SECTION).editSectionTitle(this.sectionId, this.sectionTitle())
+                    IoC.sectionRepository.editSectionTitle(this.sectionId, this.sectionTitle())
                         .then(function (modifiedDate) {
                             self.currentSectionTitle = self.sectionTitle();
                             self.lastModifiedDate = modifiedDate;
@@ -86,7 +86,7 @@
                     message.confirmMessage()
                         .then(function (result) {
                             if (result) {
-                                IoC.getRepository(constants.REPOSITORIES_NAMES.SECTION).deleteSection(self.sectionId)
+                                IoC.sectionRepository.deleteSection(self.sectionId)
                                     .then(function () {
 
                                         app.trigger(constants.EVENTS.SECTION_DELETED, self.sectionId);
@@ -101,7 +101,7 @@
                     createQuestionDialog.show()
                         .then(function (type) {
 
-                            IoC.getRepository(constants.REPOSITORIES_NAMES.QUESTION).createQuestion(self.sectionId, type)
+                            IoC.questionRepository.createQuestion(self.sectionId, type)
                                 .then(function (result) {
                                     self.questionList.push(result);
                                     message.stateMessage('Question has been created.', constants.MESSAGES_STATE.SUCCESS);

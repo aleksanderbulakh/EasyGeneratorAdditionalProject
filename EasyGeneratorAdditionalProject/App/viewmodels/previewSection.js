@@ -3,7 +3,7 @@
 
         function checkSingleSelectQuestion(question) {
 
-            return IoC.getRepository(constants.REPOSITORIES_NAMES.ANSWER).getAnswersByQuestionId(question.id)
+            return IoC.answerRepository.getAnswersByQuestionId(question.id)
                 .then(function (answers) {
 
                     return question.checkForCorrectness(answers);
@@ -12,7 +12,7 @@
 
         function checkMultipleSelectQuestion(question) {
 
-            return IoC.getRepository(constants.REPOSITORIES_NAMES.ANSWER).getAnswersByQuestionId(question.id)
+            return IoC.answerRepository.getAnswersByQuestionId(question.id)
                 .then(function (answers) {
 
                     return question.checkForCorrectness(answers);
@@ -28,10 +28,10 @@
 
                 var self = this;
 
-                return IoC.getRepository(constants.REPOSITORIES_NAMES.QUESTION).getQuestionsBySectionId(sectionId)
+                return IoC.questionRepository.getQuestionsBySectionId(sectionId)
                     .then(function (questions) {
                         questions.forEach(function (question) {
-                            return IoC.getRepository(constants.REPOSITORIES_NAMES.ANSWER).getAnswersByQuestionId(question.id)
+                            return IoC.answerRepository.getAnswersByQuestionId(question.id)
                                 .then(function (answers) {
 
                                     var answersList = answers.map(function (answer) {
@@ -59,7 +59,7 @@
             },
 
             sendResult: function () {
-                IoC.getRepository(constants.REPOSITORIES_NAMES.RESULT).setNewResult(this.questions);
+                IoC.resultsRepository.setNewResult(this.questions);
             },
 
             checkForCorrectness: function (questionId) {
@@ -71,13 +71,13 @@
                 if (question.type === constants.QUESTION_TYPE_RADIO) {
                     checkSingleSelectQuestion(question)
                         .then(function (result) {
-                            IoC.getRepository(constants.REPOSITORIES_NAMES.RESULT).setNewResult(self.sectionId, questionId, result);
+                            IoC.resultsRepository.setNewResult(self.sectionId, questionId, result);
                             alert(result);
                         });
                 } else if (question.type === constants.QUESTION_TYPE_CHECKBOX) {
                     checkMultipleSelectQuestion(question)
                         .then(function (result) {
-                            IoC.getRepository(constants.REPOSITORIES_NAMES.RESULT).setNewResult(self.sectionId, questionId, result);
+                            IoC.resultsRepository.setNewResult(self.sectionId, questionId, result);
                             alert(result);
                         });
                 }

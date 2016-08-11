@@ -49,7 +49,7 @@
                 editTitle: function () {
                     var self = this;
 
-                    IoC.getRepository(constants.REPOSITORIES_NAMES.QUESTION).editQuestionTitle(this.id, this.title())
+                    IoC.questionRepository.editQuestionTitle(this.id, this.title())
                         .then(function (modifiedDate) {
                             self.currentTitle = self.title();
                             app.trigger(constants.EVENTS.QUESTION_MODIFIED, modifiedDate);
@@ -62,7 +62,7 @@
                     message.confirmMessage()
                         .then(function (result) {
                             if (result) {
-                                IoC.getRepository(constants.REPOSITORIES_NAMES.QUESTION).deleteQuestion(self.id)
+                                IoC.questionRepository.deleteQuestion(self.id)
                                     .then(function () {
 
                                         app.trigger(constants.EVENTS.QUESTION_DELETE, self.id);

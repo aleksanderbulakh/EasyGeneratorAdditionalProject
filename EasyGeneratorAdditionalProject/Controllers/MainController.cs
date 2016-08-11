@@ -37,7 +37,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
         protected User GetFirstUser()
         {
-            return _userRepository.GetById(Guid.Parse("9f9338ba-55ab-4d12-a28a-fff7e8b3bda3"));
+            return _userRepository.GetById(Guid.Parse("757de169-255e-4e77-b160-2b5ce2323856"));
         }
     }
 }

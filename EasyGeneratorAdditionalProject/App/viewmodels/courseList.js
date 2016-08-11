@@ -8,9 +8,10 @@
             activate: function () {
 
                 var self = this;
-                return IoC.getRepository(constants.REPOSITORIES_NAMES.COURSE).getCourseList().then(function (data) {
-                    self.courseList(data);
-                });
+                return IoC.courseRepository.getCourseList()
+                    .then(function (data) {
+                        self.courseList(data);
+                    });
             },
 
             routToCoursePreview: function (id) {
@@ -22,7 +23,7 @@
                 message.confirmMessage()
                     .then(function (result) {
                         if (result) {
-                            IoC.getRepository(constants.REPOSITORIES_NAMES.COURSE).deleteCourse(id)
+                            IoC.courseRepository.deleteCourse(id)
                                 .then(function () {
                                     self.courseList.valueHasMutated();
                                     message.stateMessage("Course has been deleted.", "Success");
@@ -34,7 +35,7 @@
             createCourse: function () {
                 createDialog.show()
                     .then(function (response) {
-                        IoC.getRepository(constants.REPOSITORIES_NAMES.COURSE).createCourse(response)
+                        IoC.courseRepository.createCourse(response)
                             .then(function (courseId) {
                                 router.navigate('#course/' + courseId);
                             });

@@ -10,7 +10,7 @@
 
             var self = this;
 
-            IoC.getRepository(constants.REPOSITORIES_NAMES.ANSWER).getAnswersByQuestionId(this.questionId)
+            IoC.answerRepository.getAnswersByQuestionId(this.questionId)
                 .then(function (answers) {
                     self.answers(answers.map(function (answer) {
                         return {
@@ -40,7 +40,7 @@
 
         answerEdit.prototype.addAnswer = function () {
             self = this;
-            IoC.getRepository(constants.REPOSITORIES_NAMES.ANSWER).createAnswer(this.questionId)
+            IoC.answerRepository.createAnswer(this.questionId)
                 .then(function (answer) {
                     self.answers.push(answer);
                     message.stateMessage("Question has been deleted.", constants.MESSAGES_STATE.SUCCESS);
@@ -53,7 +53,7 @@
 
         answerEdit.prototype.editText = function (answerId, text) {
             var self = this;
-            IoC.getRepository(constants.REPOSITORIES_NAMES.ANSWER).editAnswerText(this.questionId, answerId, text())
+            IoC.answerRepository.editAnswerText(this.questionId, answerId, text())
                 .then(function (modifiedDate) {
                     message.stateMessage("Text has been changed.", constants.MESSAGES_STATE.SUCCESS);
                 });
@@ -61,7 +61,7 @@
 
         answerEdit.prototype.editState = function (answerId, state) {
             var self = this;
-            IoC.getRepository(constants.REPOSITORIES_NAMES.ANSWER).editAnswerState(this.questionId, answerId, this.questionType, state())
+            IoC.answerRepository.editAnswerState(this.questionId, answerId, this.questionType, state())
                 .then(function (modifiedDate) {
                     message.stateMessage("State has been changed.", constants.MESSAGES_STATE.SUCCESS);
                 });
@@ -72,7 +72,7 @@
             message.confirmMessage()
                 .then(function (result) {
                     if (result) {
-                        IoC.getRepository(constants.REPOSITORIES_NAMES.ANSWER).deleteAnswer(answerId)
+                        IoC.answerRepository.deleteAnswer(answerId)
                             .then(function () {
                                 app.trigger(constants.EVENTS.ANSWER_DELETED, answerId);
                                 message.stateMessage("Question has been deleted.", constants.MESSAGES_STATE.SUCCESS);

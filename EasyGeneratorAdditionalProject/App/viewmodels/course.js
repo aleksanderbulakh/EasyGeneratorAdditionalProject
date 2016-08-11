@@ -13,14 +13,14 @@
             activate: function (id) {
                 var self = this;
 
-                return IoC.getRepository(constants.REPOSITORIES_NAMES.COURSE).getCourseById(id)
+                return IoC.courseRepository.getCourseById(id)
                     .then(function (result) {
 
                         self.courseId = result.id;
                         self.courseTitle(result.title);
                         self.courseDescription(result.description);
                         self.currentCourseTitle = result.title;
-                        IoC.getRepository(constants.REPOSITORIES_NAMES.SECTION).getSectionsByCourseId(id)
+                        IoC.sectionRepository.getSectionsByCourseId(id)
                             .then(function (sectionList) {
                                 self.courseSection(sectionList.map(function (section) {
                                     return section;
@@ -47,7 +47,7 @@
             editTitle: function () {
                 var self = this;
 
-                IoC.getRepository(constants.REPOSITORIES_NAMES.COURSE).editCourseTitle(self.courseId, self.courseTitle())
+                IoC.courseRepository.editCourseTitle(self.courseId, self.courseTitle())
                     .then(function () {
                         self.currentCourseTitle = self.courseTitle();
                         message.stateMessage(constants.MESSAGES_STATE.TITLE_CHANGED, constants.MESSAGES_STATE.SUCCESS);
@@ -56,14 +56,14 @@
             editDescription: function () {
                 var self = this;
 
-                IoC.getRepository(constants.REPOSITORIES_NAMES.COURSE).editCourseDescription(self.courseId, self.courseDescription())
+                IoC.courseRepository.editCourseDescription(self.courseId, self.courseDescription())
                     .then(function () {
                         message.stateMessage('Description has been changed.', constants.MESSAGES_STATE.SUCCESS);
                     });
             },
             createSection: function () {
                 var self = this;
-                IoC.getRepository(constants.REPOSITORIES_NAMES.SECTION).createSection(self.courseId)
+                IoC.sectionRepository.createSection(self.courseId)
                     .then(function (result) {
                         self.courseSection.push(result);
                         message.stateMessage('Section has been created.', constants.MESSAGES_STATE.SUCCESS);

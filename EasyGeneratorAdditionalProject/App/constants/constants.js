@@ -24,8 +24,13 @@
         MODELS_NAMES: {
             COURSE: 'Course',
             SECTION: 'Section',
+            SECTION_PREVIEW: 'Section_Preview',
             QUESTION: 'Question',
-            ANSWER: 'Answer'
+            SINGLE_SELECT_QUESTION_PREVIEW: 'Single_Preview',
+            MULTIPLE_SELECT_QUESTION_PREVIEW: 'Multiple_Preview',
+            ANSWER: 'Answer',
+            ANSWER_PREVIEW: 'AnswerPreview',
+            RESULT: 'Result'
         },
         MESSAGES: {
             DATA_IS_NOT_FOUND: 'Data is not found.',
@@ -40,8 +45,7 @@
             QUESTION_DELETE: 'question:deleted',
             QUESTION_MODIFIED: 'question:modified',
             SECTION_DELETED: 'section:deleted',
-            ANSWER_DELETED: 'answer:deleted',
-
+            ANSWER_DELETED: 'answer:deleted'
         }
-    }
-})
+    };
+});

@@ -27,7 +27,7 @@ define(['durandal/system', 'durandal/app', 'durandal/viewLocator', 'durandal/com
 
                 courseContext.initialize()
                     .then(function () {
-                        app.setRoot('viewmodels/shell', 'entrance')
+                        app.setRoot('viewmodels/shell', 'entrance');
                     });
             });
     });

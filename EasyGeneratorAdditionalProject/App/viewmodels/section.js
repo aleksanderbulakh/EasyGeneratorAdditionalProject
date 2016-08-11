@@ -49,7 +49,7 @@
                     }
 
                     app.on(constants.EVENTS.QUESTION_DELETE).then(function (questionId) {
-                        debugger;
+
                         var question = self.questionList().find(function (question) {
                             return question.id === questionId;
                         });
@@ -88,7 +88,7 @@
                             if (result) {
                                 sectionRepository.deleteSection(self.sectionId)
                                     .then(function () {
-                                        debugger;
+
                                         app.trigger(constants.EVENTS.SECTION_DELETED, self.sectionId);
                                         message.stateMessage('Section has been deleted.', constants.MESSAGES_STATE.SUCCESS);
                                     });

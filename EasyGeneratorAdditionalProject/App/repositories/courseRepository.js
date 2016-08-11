@@ -71,7 +71,7 @@
 
                         var course = courseContext.courseList.find(function (course) {
                             return course.id === courseId;
-                        });;
+                        });
 
                         validateService.throwIfObjectIsUndefined(course, constants.MODELS_NAMES.COURSE);
 

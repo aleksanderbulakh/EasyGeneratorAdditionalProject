@@ -17,7 +17,7 @@
             } else {
                 answer.isCorrect(true);
             }
-        }
+        };
 
         this.checkForCorrectness = function (answers) {
             var correctCount = 0;
@@ -34,7 +34,7 @@
             });
 
             return correctCount / countAnswers;
-        }
+        };
     }
 
     return MultipleSelectQuestionPreview;

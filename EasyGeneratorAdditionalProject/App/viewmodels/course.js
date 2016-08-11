@@ -33,8 +33,9 @@
                         });
                     });
 
-                app.on(constants.EVENTS.SECTION_DELETED).then(function (sectionId) {
-                    debugger;
+                app.on(constants.EVENTS.SECTION_DELETED)
+                    .then(function (sectionId) {
+
                     var section = self.courseSection().find(function (section) {
                         return section.id === sectionId;
                     });
@@ -69,5 +70,5 @@
                         message.stateMessage('Section has been created.', constants.MESSAGES_STATE.SUCCESS);
                     });
             }
-        }
+        };
     });

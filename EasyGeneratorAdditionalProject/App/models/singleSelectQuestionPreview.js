@@ -19,7 +19,7 @@
                 currentCorrectAnswer.isCorrect(false);
             }
             newCorrectAnswer.isCorrect(true);
-        }
+        };
 
         this.checkForCorrectness = function (answers) {
             var answerForCheck = self.answersList.find(function (answer) {
@@ -31,7 +31,7 @@
             });
 
             return isAnswerCorrect !== undefined ? 1 : 0;
-        }
+        };
     }
 
     return SingleSelectQuestionPreview;

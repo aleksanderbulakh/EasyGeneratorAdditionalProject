@@ -45,7 +45,7 @@
                     self.answers.push(answer);
                     message.stateMessage("Question has been deleted.", constants.MESSAGES_STATE.SUCCESS);
                 });
-        }
+        };
 
         answerEdit.prototype.close = function () {
             dialog.close(this);
@@ -65,7 +65,7 @@
                 .then(function (modifiedDate) {
                     message.stateMessage("State has been changed.", constants.MESSAGES_STATE.SUCCESS);
                 });
-        }
+        };
 
         answerEdit.prototype.deleteAnswer = function (answerId) {
             var self = this;
@@ -79,7 +79,7 @@
                             });
                     }
                 });
-        }
+        };
 
         answerEdit.prototype.computeCorrectAnswer = function (answerId) {
 
@@ -102,7 +102,7 @@
                     answer.isCorrect(true);
                 }
             }
-        }
+        };
 
         return answerEdit;
     });

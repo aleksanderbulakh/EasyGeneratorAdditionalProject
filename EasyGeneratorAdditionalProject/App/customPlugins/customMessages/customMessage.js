@@ -4,7 +4,7 @@
             app.showMessage(title, state, ["Ok"], true, null);
         },
         confirmMessage: function () {
-            return app.showMessage("Are you sure?", "", [{ text: "Yes", value: true }, { text: "No", value: false }], false)
+            return app.showMessage("Are you sure?", "", [{ text: "Yes", value: true }, { text: "No", value: false }], false);
         }
     };
 });

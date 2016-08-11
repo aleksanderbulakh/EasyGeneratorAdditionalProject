@@ -167,6 +167,7 @@
     <Content Include="App\customPlugins\createQuestionDialog\createQuestionDialog.js" />
     <Content Include="App\context\answerContext.js" />
     <Content Include="App\models\answerPreview.js" />
+    <Content Include="App\models\modelFactory.js" />
     <Content Include="App\models\multipleSelectQuestionPreview.js" />
     <Content Include="App\models\singleSelectQuestionPreview.js" />
     <Content Include="App\models\sectionPreview.js" />
@@ -246,6 +247,8 @@
     <Content Include="Scripts\r.js" />
     <Content Include="Scripts\require.js" />
     <Content Include="Scripts\text.js" />
+    <Content Include="Scripts\underscore.js" />
+    <Content Include="Scripts\underscore.min.js" />
     <Content Include="Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -288,6 +291,7 @@
     <Content Include="Content\style.less" />
     <Content Include="Scripts\jquery-1.9.0.min.map" />
     <Content Include="Scripts\jquery-2.2.4.min.map" />
+    <Content Include="Scripts\underscore.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

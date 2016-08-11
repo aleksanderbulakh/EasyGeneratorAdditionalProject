@@ -5,13 +5,13 @@
         return {
             getSectionsByCourseId: function (courseId) {
 
-                if (sectionContext.sectionList != undefined) {
+                if (sectionContext.sectionList !== undefined) {
 
                     var sections = sectionContext.sectionList.filter(function (section) {
                         return section.courseId === courseId;
                     });
 
-                    if (sections != undefined) { 
+                    if (sections !== undefined) { 
                         return Q.fcall(function () {
                             return sections;
                         });

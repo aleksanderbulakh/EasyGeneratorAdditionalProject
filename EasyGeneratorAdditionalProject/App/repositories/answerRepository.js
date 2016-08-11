@@ -57,7 +57,7 @@
                         return answer.questionId === questionId;
                     });
 
-                    if (answers.length != 0) {
+                    if (answers.length !== 0) {
                         return Q.fcall(function () {
                             return answers;
                         });

@@ -35,9 +35,9 @@
             courseProgress: '',
             sectionList: [],
             activate: function (id) {
-                debugger;
+
                 var self = this;
-                if (id == undefined) {
+                if (id === undefined) {
                     message.stateMessage("Invalid id", "Error");
                 }
                 else {
@@ -56,7 +56,7 @@
                                     self.sectionList = result.map(function (section) {
                                         return mapper.mapSectionPreview(section);
                                     });
-                                    debugger;
+
                                     computeProgressForSection(self.sectionList);
 
                                     self.courseProgress = computeProgressForCourse(self.sectionList);

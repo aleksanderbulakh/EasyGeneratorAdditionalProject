@@ -1,12 +1,9 @@
-﻿define(['models/course', 'models/section', 'models/question', 'models/answer', 'models/result', 'models/sectionPreview',
-    'models/singleSelectQuestionPreview', 'models/multipleSelectQuestionPreview', 'models/answerPreview',
-    'constants/constants'],
-    function (Course, Section, Question, Answer, Result, SectionPreview, SingleSelectQuestionPreview,
-        MultipleSelectQuestionPreview, AnswerPreview, constants) {
+﻿define(['models/modelFactory', 'constants/constants'],
+    function (modelFactory, constants) {
         return {
 
             mapCourse: function (spec) {
-                return new Course({
+                return modelFactory.newModel({
                     id: spec.Id,
                     title: spec.Title,
                     description: spec.Description,
@@ -14,11 +11,11 @@
                     createdBy: spec.CreatedBy,
                     modifiedBy: spec.ModifiedBy,
                     lastModified: new Date(spec.LastModifiedDate)
-                });
+                }, constants.MODELS_NAMES.COURSE);
             },
 
             mapSection: function (spec, courseId) {
-                return new Section({
+                return modelFactory.newModel({
                     id: spec.Id,
                     courseId: courseId,
                     title: spec.Title,
@@ -26,18 +23,18 @@
                     modifiedBy: spec.ModifiedBy,
                     createdOn: new Date(spec.CreatedOn),
                     lastModified: new Date(spec.LastModifiedDate)
-                });
+                }, constants.MODELS_NAMES.SECTION);
             },
 
             mapSectionPreview: function (spec) {
-                return new SectionPreview({
+                return modelFactory.newModel({
                     id: spec.id,
                     title: spec.title
-                });
+                }, constants.MODELS_NAMES.SECTION_PREVIEW);
             },
 
             mapQuestion: function (spec, sectionId) {
-                return new Question({
+                return modelFactory.newModel({
                     id: spec.Id,
                     sectionId: sectionId,
                     title: spec.Title,
@@ -46,50 +43,50 @@
                     createdOn: new Date(spec.CreatedOn),
                     lastModified: new Date(spec.LastModifiedDate),
                     type: spec.Type
-                });
+                }, constants.MODELS_NAMES.QUESTION);
             },
 
             mapSingleSelectQuestionPreview: function(spec){
-                return new SingleSelectQuestionPreview({
+                return modelFactory.newModel({
                     id: spec.id,
                     title: spec.title,
                     type: constants.VIEWS_ANSWER_TYPES[spec.type],
                     answersList: spec.answersList
-                });
+                }, constants.MODELS_NAMES.SINGLE_SELECT_QUESTION_PREVIEW);
             },
 
             mapMultipleSelectQuestionPreview: function (spec) {
-                return new MultipleSelectQuestionPreview({
+                return modelFactory.newModel({
                     id: spec.id,
                     title: spec.title,
                     type: constants.VIEWS_ANSWER_TYPES[spec.type],
                     answersList: spec.answersList
-                });
+                }, constants.MODELS_NAMES.MULTIPLE_SELECT_QUESTION_PREVIEW);
             },
 
             mapAnswer: function (spec, questionId) {
-                return new Answer({
+                return modelFactory.newModel({
                     id: spec.Id,
                     questionId: questionId,
                     text: spec.Text,
                     isCorrect: spec.IsCorrect
-                });
+                }, constants.MODELS_NAMES.ANSWER);
             },
 
             mapAnswerPreview: function(spec){
-                return new AnswerPreview({
+                return modelFactory.newModel({
                     id: spec.id,
                     text: spec.text,
                     isCorrect: false
-                });
+                }, constants.MODELS_NAMES.ANSWER_PREVIEW);
             },
 
             mapResult: function (sectionId, questionId, result) {
-                return new Result({
+                return modelFactory.newModel({
                     sectionId: sectionId,
                     questionId: questionId,
                     result: result
-                });
+                }, constants.MODELS_NAMES.RESULT);
             }
         };
     });

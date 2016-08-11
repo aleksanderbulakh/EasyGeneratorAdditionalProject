@@ -166,6 +166,7 @@
     <Content Include="App\customPlugins\createQuestionDialog\createQuestionDialog.html" />
     <Content Include="App\customPlugins\createQuestionDialog\createQuestionDialog.js" />
     <Content Include="App\context\answerContext.js" />
+    <Content Include="App\IoC\IoC.js" />
     <Content Include="App\models\answerPreview.js" />
     <Content Include="App\models\modelFactory.js" />
     <Content Include="App\models\multipleSelectQuestionPreview.js" />

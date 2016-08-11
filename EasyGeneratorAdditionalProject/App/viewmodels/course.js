@@ -1,7 +1,6 @@
-﻿define(['knockout', 'durandal/app', 'repositories/courseRepository', 'repositories/sectionRepository',
-    'customPlugins/customMessages/customMessage', 'services/validateService', 'errorHandler/errorHandler',
-    'constants/constants'],
-    function (ko, app, courseRepository, sectionRepository, message, validateService, errorHandler, constants) {
+﻿define(['knockout', 'durandal/app', 'IoC/IoC', 'customPlugins/customMessages/customMessage', 'services/validateService',
+    'errorHandler/errorHandler', 'constants/constants'],
+    function (ko, app, IoC, message, validateService, errorHandler, constants) {
         return {
             courseId: '',
             courseTitle: ko.observable().extend({
@@ -14,14 +13,14 @@
             activate: function (id) {
                 var self = this;
 
-                return courseRepository.getCourseById(id)
+                return IoC.getRepository(constants.REPOSITORIES_NAMES.COURSE).getCourseById(id)
                     .then(function (result) {
 
                         self.courseId = result.id;
                         self.courseTitle(result.title);
                         self.courseDescription(result.description);
                         self.currentCourseTitle = result.title;
-                        sectionRepository.getSectionsByCourseId(id)
+                        IoC.getRepository(constants.REPOSITORIES_NAMES.SECTION).getSectionsByCourseId(id)
                             .then(function (sectionList) {
                                 self.courseSection(sectionList.map(function (section) {
                                     return section;
@@ -48,7 +47,7 @@
             editTitle: function () {
                 var self = this;
 
-                courseRepository.editCourseTitle(self.courseId, self.courseTitle())
+                IoC.getRepository(constants.REPOSITORIES_NAMES.COURSE).editCourseTitle(self.courseId, self.courseTitle())
                     .then(function () {
                         self.currentCourseTitle = self.courseTitle();
                         message.stateMessage(constants.MESSAGES_STATE.TITLE_CHANGED, constants.MESSAGES_STATE.SUCCESS);
@@ -57,14 +56,14 @@
             editDescription: function () {
                 var self = this;
 
-                courseRepository.editCourseDescription(self.courseId, self.courseDescription())
+                IoC.getRepository(constants.REPOSITORIES_NAMES.COURSE).editCourseDescription(self.courseId, self.courseDescription())
                     .then(function () {
                         message.stateMessage('Description has been changed.', constants.MESSAGES_STATE.SUCCESS);
                     });
             },
             createSection: function () {
                 var self = this;
-                sectionRepository.createSection(self.courseId)
+                IoC.getRepository(constants.REPOSITORIES_NAMES.SECTION).createSection(self.courseId)
                     .then(function (result) {
                         self.courseSection.push(result);
                         message.stateMessage('Section has been created.', constants.MESSAGES_STATE.SUCCESS);

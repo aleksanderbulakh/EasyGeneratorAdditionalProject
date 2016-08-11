@@ -1,10 +1,9 @@
-﻿define(['plugins/router', 'repositories/courseRepository', 'repositories/sectionRepository',
-    'customPlugins/customMessages/customMessage', 'errorHandler/errorHandler', 'preview/resultsRepository', 'mapper/mapper'],
-    function (router, courseRepository, sectionRepository, message, errorHandler, resultsRepository, mapper) {
+﻿define(['plugins/router', 'IoC/IoC', 'customPlugins/customMessages/customMessage', 'errorHandler/errorHandler', 'mapper/mapper'],
+    function (router, IoC, message, errorHandler, mapper) {
 
         function computeProgressForSection(sectionsList) {
             sectionsList.forEach(function (section) {
-                var results = resultsRepository.getResultBySectionId(section.id);
+                var results = IoC.getRepository(constants.REPOSITORIES_NAMES.RESULT).getResultBySectionId(section.id);
 
                 if (results !== undefined) {
                     var resultSum = 0;
@@ -42,7 +41,7 @@
                 }
                 else {
 
-                    return courseRepository.getCourseById(id)
+                    return IoC.getRepository(constants.REPOSITORIES_NAMES.COURSE).getCourseById(id)
                         .then(function (result) {
 
                             self.courseId = result.id;
@@ -50,7 +49,7 @@
                             self.courseDescription = result.description;
                             self.createdBy = result.createdBy;
 
-                            return sectionRepository.getSectionsByCourseId(id)
+                            return IoC.getRepository(constants.REPOSITORIES_NAMES.SECTION).getSectionsByCourseId(id)
                                 .then(function (result) {
 
                                     self.sectionList = result.map(function (section) {

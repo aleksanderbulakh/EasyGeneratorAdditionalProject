@@ -1,6 +1,6 @@
-﻿define(['knockout', 'plugins/router', 'repositories/courseRepository', 'customPlugins/createDialog/createDialog',
-    'customPlugins/customMessages/customMessage', 'errorHandler/errorHandler'],
-    function (ko, router, courseRepository, createDialog, message, errorHandler) {
+﻿define(['knockout', 'plugins/router', 'IoC/IoC', 'customPlugins/createDialog/createDialog',
+    'customPlugins/customMessages/customMessage', 'errorHandler/errorHandler', 'constants/constants'],
+    function (ko, router, IoC, createDialog, message, errorHandler, constants) {
 
         return {
             courseList: ko.observableArray([]),
@@ -8,7 +8,7 @@
             activate: function () {
 
                 var self = this;
-                return courseRepository.getCourseList().then(function (data) {
+                return IoC.getRepository(constants.REPOSITORIES_NAMES.COURSE).getCourseList().then(function (data) {
                     self.courseList(data);
                 });
             },
@@ -22,7 +22,7 @@
                 message.confirmMessage()
                     .then(function (result) {
                         if (result) {
-                            courseRepository.deleteCourse(id)
+                            IoC.getRepository(constants.REPOSITORIES_NAMES.COURSE).deleteCourse(id)
                                 .then(function () {
                                     self.courseList.valueHasMutated();
                                     message.stateMessage("Course has been deleted.", "Success");
@@ -34,7 +34,7 @@
             createCourse: function () {
                 createDialog.show()
                     .then(function (response) {
-                        courseRepository.createCourse(response)
+                        IoC.getRepository(constants.REPOSITORIES_NAMES.COURSE).createCourse(response)
                             .then(function (courseId) {
                                 router.navigate('#course/' + courseId);
                             });

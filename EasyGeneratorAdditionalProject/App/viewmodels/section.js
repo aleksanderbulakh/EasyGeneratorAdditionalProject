@@ -1,7 +1,7 @@
-﻿define(['knockout', 'durandal/app', 'repositories/sectionRepository', 'repositories/questionRepository',
+﻿define(['knockout', 'durandal/app', 'IoC/IoC', 
     'customPlugins/customMessages/customMessage', 'customPlugins/createQuestionDialog/createQuestionDialog',
     'services/validateService', 'errorHandler/errorHandler', 'constants/constants'],
-    function (ko, app, sectionRepository, questionRepository, message, createQuestionDialog, validateService, errorHandler, constants) {
+    function (ko, app, IoC, message, createQuestionDialog, validateService, errorHandler, constants) {
 
         return function () {
 
@@ -33,7 +33,7 @@
                         this.currentSectionTitle = data.sectionData.title;
 
                         var self = this;
-                        return questionRepository.getQuestionsBySectionId(this.sectionId)
+                        return IoC.getRepository(constants.REPOSITORIES_NAMES.QUESTION).getQuestionsBySectionId(this.sectionId)
                             .then(function (questionList) {
                                 self.questionList(questionList.map(function (question) {
                                     return question;
@@ -73,7 +73,7 @@
                 editSectionTitle: function () {
                     var self = this;
 
-                    sectionRepository.editSectionTitle(this.sectionId, this.sectionTitle())
+                    IoC.getRepository(constants.REPOSITORIES_NAMES.SECTION).editSectionTitle(this.sectionId, this.sectionTitle())
                         .then(function (modifiedDate) {
                             self.currentSectionTitle = self.sectionTitle();
                             self.lastModifiedDate = modifiedDate;
@@ -86,7 +86,7 @@
                     message.confirmMessage()
                         .then(function (result) {
                             if (result) {
-                                sectionRepository.deleteSection(self.sectionId)
+                                IoC.getRepository(constants.REPOSITORIES_NAMES.SECTION).deleteSection(self.sectionId)
                                     .then(function () {
 
                                         app.trigger(constants.EVENTS.SECTION_DELETED, self.sectionId);
@@ -101,7 +101,7 @@
                     createQuestionDialog.show()
                         .then(function (type) {
 
-                            questionRepository.createQuestion(self.sectionId, type)
+                            IoC.getRepository(constants.REPOSITORIES_NAMES.QUESTION).createQuestion(self.sectionId, type)
                                 .then(function (result) {
                                     self.questionList.push(result);
                                     message.stateMessage('Question has been created.', constants.MESSAGES_STATE.SUCCESS);

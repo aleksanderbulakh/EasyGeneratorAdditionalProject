@@ -1,10 +1,9 @@
-﻿define(['knockout', 'repositories/questionRepository', 'repositories/answerRepository', 'preview/resultsRepository',
-    'errorHandler/errorHandler', 'constants/constants', 'mapper/mapper'],
-    function (ko, questionRepository, answerRepository, resultsRepository, errorHandler, constants, mapper) {
+﻿define(['knockout', 'IoC/IoC', 'errorHandler/errorHandler', 'constants/constants', 'mapper/mapper'],
+    function (ko, IoC, errorHandler, constants, mapper) {
 
         function checkSingleSelectQuestion(question) {
 
-            return answerRepository.getAnswersByQuestionId(question.id)
+            return IoC.getRepository(constants.REPOSITORIES_NAMES.ANSWER).getAnswersByQuestionId(question.id)
                 .then(function (answers) {
 
                     return question.checkForCorrectness(answers);
@@ -13,7 +12,7 @@
 
         function checkMultipleSelectQuestion(question) {
 
-            return answerRepository.getAnswersByQuestionId(question.id)
+            return IoC.getRepository(constants.REPOSITORIES_NAMES.ANSWER).getAnswersByQuestionId(question.id)
                 .then(function (answers) {
 
                     return question.checkForCorrectness(answers);
@@ -29,10 +28,10 @@
 
                 var self = this;
 
-                return questionRepository.getQuestionsBySectionId(sectionId)
+                return IoC.getRepository(constants.REPOSITORIES_NAMES.QUESTION).getQuestionsBySectionId(sectionId)
                     .then(function (questions) {
                         questions.forEach(function (question) {
-                            return answerRepository.getAnswersByQuestionId(question.id)
+                            return IoC.getRepository(constants.REPOSITORIES_NAMES.ANSWER).getAnswersByQuestionId(question.id)
                                 .then(function (answers) {
 
                                     var answersList = answers.map(function (answer) {
@@ -60,7 +59,7 @@
             },
 
             sendResult: function () {
-                resultsRepositort.setNewResult(this.questions);
+                IoC.getRepository(constants.REPOSITORIES_NAMES.RESULT).setNewResult(this.questions);
             },
 
             checkForCorrectness: function (questionId) {
@@ -72,13 +71,13 @@
                 if (question.type === constants.QUESTION_TYPE_RADIO) {
                     checkSingleSelectQuestion(question)
                         .then(function (result) {
-                            resultsRepository.setNewResult(self.sectionId, questionId, result);
+                            IoC.getRepository(constants.REPOSITORIES_NAMES.RESULT).setNewResult(self.sectionId, questionId, result);
                             alert(result);
                         });
                 } else if (question.type === constants.QUESTION_TYPE_CHECKBOX) {
                     checkMultipleSelectQuestion(question)
                         .then(function (result) {
-                            resultsRepository.setNewResult(self.sectionId, questionId, result);
+                            IoC.getRepository(constants.REPOSITORIES_NAMES.RESULT).setNewResult(self.sectionId, questionId, result);
                             alert(result);
                         });
                 }

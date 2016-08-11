@@ -1,6 +1,6 @@
-﻿define(['knockout', 'durandal/app', 'repositories/questionRepository', 'customPlugins/customMessages/customMessage',
+﻿define(['knockout', 'durandal/app', 'IoC/IoC', 'customPlugins/customMessages/customMessage',
     'customPlugins/answersEditDialog/answersEditDialog', 'errorHandler/errorHandler', 'constants/constants'],
-    function (ko, app, questionRepository, message, answersEditDialog, errorHandler, constants) {
+    function (ko, app, IoC, message, answersEditDialog, errorHandler, constants) {
 
         return function () {
 
@@ -49,7 +49,7 @@
                 editTitle: function () {
                     var self = this;
 
-                    questionRepository.editQuestionTitle(this.id, this.title())
+                    IoC.getRepository(constants.REPOSITORIES_NAMES.QUESTION).editQuestionTitle(this.id, this.title())
                         .then(function (modifiedDate) {
                             self.currentTitle = self.title();
                             app.trigger(constants.EVENTS.QUESTION_MODIFIED, modifiedDate);
@@ -62,7 +62,7 @@
                     message.confirmMessage()
                         .then(function (result) {
                             if (result) {
-                                questionRepository.deleteQuestion(self.id)
+                                IoC.getRepository(constants.REPOSITORIES_NAMES.QUESTION).deleteQuestion(self.id)
                                     .then(function () {
 
                                         app.trigger(constants.EVENTS.QUESTION_DELETE, self.id);

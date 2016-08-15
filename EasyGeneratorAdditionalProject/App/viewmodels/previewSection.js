@@ -1,23 +1,5 @@
-﻿define(['knockout', 'IoC/IoC', 'errorHandler/errorHandler', 'constants/constants', 'mapper/mapper'],
-    function (ko, IoC, errorHandler, constants, mapper) {
-
-        function checkSingleSelectQuestion(question) {
-
-            return IoC.answerRepository.getAnswersByQuestionId(question.id)
-                .then(function (answers) {
-
-                    return question.checkForCorrectness(answers);
-                });
-        }
-
-        function checkMultipleSelectQuestion(question) {
-
-            return IoC.answerRepository.getAnswersByQuestionId(question.id)
-                .then(function (answers) {
-
-                    return question.checkForCorrectness(answers);
-                });
-        }
+﻿define(['knockout', 'preview/previewRepository', 'errorHandler/errorHandler', 'constants/constants', 'mapper/mapper'],
+    function (ko, previewRepository, errorHandler, constants, mapper) {
 
         return {
             sectionId: '',
@@ -28,59 +10,16 @@
 
                 var self = this;
 
-                return IoC.questionRepository.getQuestionsBySectionId(sectionId)
-                    .then(function (questions) {
-                        questions.forEach(function (question) {
-                            return IoC.answerRepository.getAnswersByQuestionId(question.id)
-                                .then(function (answers) {
-
-                                    var answersList = answers.map(function (answer) {
-                                        return mapper.mapAnswerPreview(answer);
-                                    });
-
-                                    if (question.type === constants.SINGLE_SELECT_QUESTION_TYPE) {
-                                        self.questions.push(mapper.mapSingleSelectQuestionPreview({
-                                            id: question.id,
-                                            title: question.title,
-                                            type: question.type,
-                                            answersList: answersList
-                                        }));
-                                    } else if (question.type === constants.MULTIPLE_SELECT_QUESTION_TYPE) {
-                                        self.questions.push(mapper.mapMultipleSelectQuestionPreview({
-                                            id: question.id,
-                                            title: question.title,
-                                            type: question.type,
-                                            answersList: answersList
-                                        }));
-                                    }
-                                });
-                        });
+                return previewRepository.getQuestionsBySectionId(sectionId)
+                    .then(function (questionsList) {
+                        self.questions(questionsList);
                     });
             },
 
-            sendResult: function () {
-                IoC.resultsRepository.setNewResult(this.questions);
-            },
-
-            checkForCorrectness: function (questionId) {
+            checkForCorrectness: function (question) {
                 var self = this;
-                var question = this.questions().find(function (question) {
-                    return question.id === questionId;
-                });
-
-                if (question.type === constants.QUESTION_TYPE_RADIO) {
-                    checkSingleSelectQuestion(question)
-                        .then(function (result) {
-                            IoC.resultsRepository.setNewResult(self.sectionId, questionId, result);
-                            alert(result);
-                        });
-                } else if (question.type === constants.QUESTION_TYPE_CHECKBOX) {
-                    checkMultipleSelectQuestion(question)
-                        .then(function (result) {
-                            IoC.resultsRepository.setNewResult(self.sectionId, questionId, result);
-                            alert(result);
-                        });
-                }
+                question.checkForCorrectness();
+                alert(question.result);
             }
         };
     });

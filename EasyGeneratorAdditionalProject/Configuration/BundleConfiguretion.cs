@@ -19,6 +19,7 @@ namespace EasyGeneratorAdditionalProject.Web.Configuration
                   .Include("~/Scripts/knockout-{version}.js")
                   .Include("~/Scripts/less-{version}.js")
                   .Include("~/Scripts/q.min.js")
+                  .Include("~/Scripts/underscore.min.js")
                   .IncludeDirectory("~/Scripts/extenders/", "*extender.js")
                   .IncludeDirectory("~/Scripts/knockout-bindings/", "*binding.js")
               );

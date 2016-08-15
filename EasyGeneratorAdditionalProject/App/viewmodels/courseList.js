@@ -18,12 +18,12 @@
                 return '#preview/' + id;
             },
 
-            deleteCourse: function (id) {
+            deleteCourse: function (course) {
                 var self = this;
                 message.confirmMessage()
                     .then(function (result) {
                         if (result) {
-                            IoC.courseRepository.deleteCourse(id)
+                            IoC.courseRepository.deleteCourse(course.id)
                                 .then(function () {
                                     self.courseList.valueHasMutated();
                                     message.stateMessage("Course has been deleted.", "Success");
@@ -42,8 +42,8 @@
                     });
             },
 
-            navigateToCourse: function (courseId) {
-                router.navigate('#course/' + courseId);
+            navigateToCourse: function (course) {
+                router.navigate('#course/' + course.id);
             }
         };
     });

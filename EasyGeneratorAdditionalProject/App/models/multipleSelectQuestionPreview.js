@@ -4,36 +4,28 @@
         this.title = spec.title;
         this.answersList = spec.answersList;
         this.type = spec.type;
+        this.result = 0;
 
         var self = this;
 
-        this.computeCorrectness = function (answerId) {
-            var answer = self.answersList.find(function (answer) {
-                return answer.id === answerId;
-            });
+        this.computeCorrectness = function (answer) {
 
-            if (answer.isCorrect()) {
-                answer.isCorrect(false);
-            } else {
-                answer.isCorrect(true);
-            }
+            answer.checked(!answer.checked());
         };
 
-        this.checkForCorrectness = function (answers) {
-            var correctCount = 0;
-            var countAnswers = answers.length;
+        this.checkForCorrectness = function () {
+            
+            var countCorrect = 0;
 
-            answers.forEach(function (correctAnswer) {
-                var answerForCheck = self.answersList.find(function (answer) {
-                    return answer.id === correctAnswer.id && answer.isCorrect() === correctAnswer.isCorrect;
-                });
-
-                if (answerForCheck !== undefined) {
-                    correctCount++;
-                }
+            var correctAnswers = _.filter(self.answersList, function (answer) {
+                return answer.isCorrect === answer.checked();
             });
 
-            return correctCount / countAnswers;
+            if (correctAnswers !== undefined) {
+                countCorrect = correctAnswers.length;
+            }
+
+            this.result = countCorrect / self.answersList.length;
         };
     }
 

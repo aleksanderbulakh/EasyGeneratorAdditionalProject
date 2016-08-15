@@ -6,13 +6,13 @@
             return http.post('answer/single/edit/state', { questionId: questionId, answerId: answerId })
                     .then(function (result) {
 
-                        var answers = answerContext.answerList.filter(function (answer) {
+                        var answers = _.filter(answerContext.answerList, function (answer) {
                             return answer.questionId === questionId;
                         });
 
                         validateService.throwIfObjectIsUndefined(answers, constants.MODELS_NAMES.ANSWER);
 
-                        answers.forEach(function (answer) {
+                        _.each(answers, function (answer) {
                             if (answer.id === answerId) {
                                 answer.isCorrect = true;
                             } else {
@@ -32,7 +32,7 @@
             return http.post('answer/multiple/edit/state', { questionId: questionId, answerId: answerId, state: state })
                     .then(function (result) {
 
-                        var answer = answerContext.answerList.find(function (answer) {
+                        var answer = _.find(answerContext.answerList, function (answer) {
                             return answer.id === answerId;
                         });
 
@@ -53,7 +53,7 @@
 
                 if (answerContext.answerList !== undefined) {
 
-                    var answers = answerContext.answerList.filter(function (answer) {
+                    var answers = _.filter(answerContext.answerList, function (answer) {
                         return answer.questionId === questionId;
                     });
 
@@ -71,11 +71,11 @@
                             answerContext.answerList = [];
                         }
 
-                        result.forEach(function (answer) {
-                            answerContext.answerList.push(mapper.mapAnswer(answer, questionId));
+                        _.each(result, function (answer) {
+                                answerContext.answerList.push(mapper.mapAnswer(answer, questionId));
                         });
 
-                        var answers = answerContext.answerList.filter(function (answer) {
+                        var answers = _.filter(answerContext.answerList, function (answer) {
                             return answer.questionId === questionId;
                         });
 
@@ -101,7 +101,7 @@
                 return http.post('answer/edit/text', { answerId: answerId, text: answerText })
                     .then(function (result) {
 
-                        var answer = answerContext.answerList.find(function (answer) {
+                        var answer = _.find(answerContext.answerList, function (answer) {
                             return answer.id === answerId;
                         });
 

@@ -34,7 +34,7 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
 
         #region Answers state modify
 
-        public void ModifySingleSelectAnswersState(string answerId, string userName)
+        public void SetCorrectAnswer(string answerId, string userName)
         {
             var parsedAnswerId = ThrowIfAnswerIdIsParseFaild(answerId);
             ThrowIfUserNameInvalid(userName);

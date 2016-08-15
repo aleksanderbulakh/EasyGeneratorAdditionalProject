@@ -3,7 +3,8 @@
 
         this.id = spec.id;
         this.text = spec.text;
-        this.isCorrect = ko.observable(spec.isCorrect);
+        this.isCorrect = spec.isCorrect;
+        this.checked = ko.observable(false);
     }
 
     return AnswerPreview;

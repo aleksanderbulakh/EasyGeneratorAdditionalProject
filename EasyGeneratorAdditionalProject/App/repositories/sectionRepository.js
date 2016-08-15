@@ -7,7 +7,7 @@
 
                 if (sectionContext.sectionList !== undefined) {
 
-                    var sections = sectionContext.sectionList.filter(function (section) {
+                    var sections = _.filter(sectionContext.sectionList, function (section) {
                         return section.courseId === courseId;
                     });
 
@@ -25,11 +25,11 @@
                             sectionContext.sectionList = [];
                         }
 
-                        result.forEach(function (section) {
+                        _.each(result, function (section) {
                             sectionContext.sectionList.push(mapper.mapSection(section, courseId));
                         });
 
-                        var sections = sectionContext.sectionList.filter(function (section) {
+                        var sections = _.filter(sectionContext.sectionList, function (section) {
                             return section.courseId === courseId;
                         });
 
@@ -53,7 +53,7 @@
                 return http.post('section/edit/title', { sectionId: sectionId, title: sectionTitle })
                     .then(function (result) {
 
-                        var section = sectionContext.sectionList.find(function (section) {
+                        var section = _.find(sectionContext.sectionList, function (section) {
                             return section.id === sectionId;
                         });
 

@@ -1,4 +1,4 @@
-﻿define(['knockout', 'durandal/app', 'IoC/IoC', 
+﻿define(['knockout', 'durandal/app', 'IoC/IoC',
     'customPlugins/customMessages/customMessage', 'customPlugins/createQuestionDialog/createQuestionDialog',
     'services/validateService', 'errorHandler/errorHandler', 'constants/constants'],
     function (ko, app, IoC, message, createQuestionDialog, validateService, errorHandler, constants) {
@@ -33,42 +33,48 @@
                         this.currentSectionTitle = data.sectionData.title;
 
                         var self = this;
-                        return IoC.questionRepository.getQuestionsBySectionId(this.sectionId)
-                            .then(function (questionList) {
-                                self.questionList(questionList.map(function (question) {
-                                    return question;
-                                }));
-                            });
-
                         this.isChangeable = ko.computed(function () {
                             return self.sectionTitle.hasError() === (self.sectionTitle() !== self.currentSectionTitle);
                         });
+
+                        app.on(constants.EVENTS.QUESTION_DELETE)
+                            .then(function (questionId) {
+
+                                var question = _.find(self.questionList(), function (question) {
+                                    return question.id === questionId;
+                                });
+
+                                if (question !== undefined) {
+
+                                    self.questionList.remove(question);
+                                }
+                            });
+
+                        app.on(constants.EVENTS.QUESTION_MODIFIED)
+                            .then(function (modifiedDate) {
+
+                                var question = _.find(self.questionList(), function (question) {
+                                    return question.id === questionId;
+                                });
+
+                                validateService.throwIfObjectIsUndefined(question, constants.MODELS_NAMES.QUESTION);
+
+                                question.lastModifiedDate = modifiedDate;
+                            });
+
+                        return IoC.questionRepository.getQuestionsBySectionId(this.sectionId)
+                            .then(function (questionList) {
+
+                                self.questionList(_.map(questionList, function (question) {
+                                    return question;
+                                }));
+
+
+                            });
                     }
                     else {
                         message.stateMessage(constants.MESSAGES.DATA_IS_NOT_FOUND);
                     }
-
-                    app.on(constants.EVENTS.QUESTION_DELETE).then(function (questionId) {
-
-                        var question = self.questionList().find(function (question) {
-                            return question.id === questionId;
-                        });
-
-                        validateService.throwIfObjectIsUndefined(question, constants.MODELS_NAMES.QUESTION);
-
-                        self.questionList.remove(question);
-                    });
-
-                    app.on(constants.EVENTS.QUESTION_MODIFIED).then(function (modifiedDate) {
-
-                        var question = self.questionList().find(function (question) {
-                            return question.id === questionId;
-                        });
-
-                        validateService.throwIfObjectIsUndefined(question, constants.MODELS_NAMES.QUESTION);
-
-                        question.lastModifiedDate = modifiedDate;
-                    });
                 },
                 editSectionTitle: function () {
                     var self = this;

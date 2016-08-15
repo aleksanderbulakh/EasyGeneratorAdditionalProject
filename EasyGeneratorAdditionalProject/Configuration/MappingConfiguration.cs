@@ -19,7 +19,7 @@ namespace EasyGeneratorAdditionalProject.Web.Configuration
             Mapper.Initialize(config =>
             {
                 config.CreateMap<User, UserViewModel>();
-                config.CreateMap<SimpleSelectAnswers, AnswerViewModel>();
+                config.CreateMap<SimpleSelectAnswer, AnswerViewModel>();
 
                 config.CreateMap<Course, CourseViewModel>()
                 .ForMember(p => p.CreatedOn, sourse => sourse.MapFrom(p => _convertor.ConvertDateToMilliseconds(p.CreatedOn)))

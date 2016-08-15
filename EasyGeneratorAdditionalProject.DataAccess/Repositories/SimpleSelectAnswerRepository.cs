@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.DataAccess.Repositories
 {
-    public class AnswerRepository : Repository<SimpleSelectAnswers>, IAnswerRepository
+    public class SimpleSelectAnswerRepository : Repository<SimpleSelectAnswer>, ISimpleSelectAnswerRepository
     {
-        public AnswerRepository(IDatabaseContext context)
+        public SimpleSelectAnswerRepository(IDatabaseContext context)
             : base(context) { }
 
-        public List<SimpleSelectAnswers> GetByQuestionId(Guid id)
+        public List<SimpleSelectAnswer> GetByQuestionId(Guid id)
         {
             return Entity().Where(t => t.Question.Id == id).ToList();
         }

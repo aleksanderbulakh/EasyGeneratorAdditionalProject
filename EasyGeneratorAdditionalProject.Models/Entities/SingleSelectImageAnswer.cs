@@ -8,6 +8,21 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
 {
     public class SingleSelectImageAnswer : Answer
     {
-        public virtual SingleSelectImagePhoto Photo { get; protected internal set; }
+        public SingleSelectImageAnswer()
+            : base()
+        { }
+
+        public SingleSelectImageAnswer(string text, string userName, Question question, bool isCorrect)
+            : this()
+        {
+            ThrowIfTextInvalid(text);
+            ThrowIfUserNameInvalid(userName);
+            ThrowIfQuestionInvalid(question);
+
+            Text = text;
+            Question = question;
+            IsCorrect = isCorrect;
+            MarkAsModified(userName);
+        }
     }
 }

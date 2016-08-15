@@ -1,6 +1,6 @@
 ﻿define(function () {
 
     return {
-        resultsList: undefined
+        course: undefined
     };
 });

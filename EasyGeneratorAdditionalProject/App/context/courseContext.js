@@ -5,8 +5,7 @@
         var self = this;
         return http.get('course/list')
             .then(function (courseList) {
-                self.courseList = [];
-                courseList.forEach(function (course) { 
+                _.each(courseList, function (course) { 
                     self.courseList.push(mapper.mapCourse(course));
                 });
             });
@@ -14,6 +13,6 @@
 
     return {
         initialize: initialize,
-        courseList: undefined
+        courseList: []
     };
 });

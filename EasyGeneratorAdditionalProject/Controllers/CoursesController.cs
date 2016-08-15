@@ -30,11 +30,8 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         {
             var user = GetFirstUser();
 
-            if (course == null)
-                return FailResult("Course not find.");
-
-            if (user == null)
-                return FailResult("user not find.");
+            if (course == null || user == null)
+                throw new ArgumentException();
 
             course.UpdateTitle(title, user.UserName);
 
@@ -47,11 +44,8 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         {
             var user = GetFirstUser();
 
-            if (course == null)
-                return FailResult("Course not find.");
-
-            if (user == null)
-                return FailResult("user not find.");
+            if (course == null || user == null)
+                throw new ArgumentException();
 
             course.UpdateDescription(description, user.UserName);
 
@@ -62,7 +56,6 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         [Route("course/delete", Name = "DeleteCourse")]
         public JsonResult DeleteCourse(Course course)
         {
-
             if (course != null)
                 _courseRepository.Delete(course);
 
@@ -76,7 +69,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             var user = GetFirstUser();
 
             if (user == null)
-                return FailResult("User is not found.");
+                throw new ArgumentException();
 
             var newCourse = new Course(courseTitle, "course description", user);
 
@@ -92,7 +85,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             var user = GetFirstUser();
 
             if (user == null)
-                return FailResult("User is not found.");
+                throw new ArgumentException();
 
             var courses = new List<CourseViewModel>();
 

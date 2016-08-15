@@ -11,12 +11,12 @@ using System.Web.Mvc;
 
 namespace EasyGeneratorAdditionalProject.Web.Controllers
 {
-    public class AnswerController : MainController
+    public class SimpleSelectAnswerController : MainController
     {
-        private readonly IAnswerRepository _answerRepository;
+        private readonly ISimpleSelectAnswerRepository _answerRepository;
         private readonly IMapper _mapper;
         private readonly IDateConvertor _convertor;
-        public AnswerController(IUnitOfWork work, IUserRepository userRepository, IAnswerRepository answerRepository,
+        public SimpleSelectAnswerController(IUnitOfWork work, IUserRepository userRepository, ISimpleSelectAnswerRepository answerRepository,
             IMapper mapper, IDateConvertor convertor) 
             : base(work, userRepository)
         {
@@ -27,15 +27,12 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
         [HttpPost]
         [Route("answer/edit/text", Name = "EditAnswerText")]
-        public JsonResult EditAnswerText(SimpleSelectAnswers answer, string text)
+        public JsonResult EditAnswerText(SimpleSelectAnswer answer, string text)
         {
             var user = GetFirstUser();
 
-            if (answer == null)
-                return FailResult("question not find.");
-
-            if (user == null)
-                return FailResult("user not find.");
+            if (answer == null || user == null)
+                throw new ArgumentException();
 
             answer.UpdateText(text, user.UserName);
 
@@ -48,28 +45,22 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         {
             var user = GetFirstUser();
 
-            if (question == null)
-                return FailResult("question not find.");
+            if (question == null || user == null)
+                throw new ArgumentException();
 
-            if (user == null)
-                return FailResult("user not find.");
-
-            question.ModifySingleSelectAnswersState(answerId, user.UserName);
+            question.SetCorrectAnswer(answerId, user.UserName);
 
             return SuccessResult(_convertor.ConvertDateToMilliseconds(question.LastModifiedDate));
         }
 
         [HttpPost]
         [Route("answer/multiple/edit/state", Name = "EditMultipleAnswerState")]
-        public JsonResult EditMultipleAnswerState(SimpleSelectAnswers answer, bool state)
+        public JsonResult EditMultipleAnswerState(SimpleSelectAnswer answer, bool state)
         {
             var user = GetFirstUser();
 
-            if (answer == null)
-                return FailResult("question not find.");
-
-            if (user == null)
-                return FailResult("user not find.");
+            if (answer == null || user == null)
+                throw new ArgumentException();
 
             answer.UpdateState(state);
             answer.MarkAsModified(user.UserName);
@@ -79,7 +70,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 
         [HttpPost]
         [Route("answer/delete", Name = "DeleteAnswer")]
-        public JsonResult DeleteAnswer(SimpleSelectAnswers answer)
+        public JsonResult DeleteAnswer(SimpleSelectAnswer answer)
         {
             if (answer != null)
                 _answerRepository.Delete(answer);
@@ -93,13 +84,10 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         {
             var user = GetFirstUser();
 
-            if (question == null)
-                return FailResult("Question not find.");
+            if (question == null || user == null)
+                throw new ArgumentException();
 
-            if (user == null)
-                return FailResult("User not find.");
-
-            var newAnswer = new SimpleSelectAnswers("answer text", user.UserName, question, false);
+            var newAnswer = new SimpleSelectAnswer("answer text", user.UserName, question, false);
 
             _answerRepository.Add(newAnswer);
 
@@ -111,7 +99,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         public JsonResult AnswersList(Question question)
         {
             if (question == null)
-                throw new ArgumentException("Question is not found.");
+                throw new ArgumentException();
 
             var sections = new List<AnswerViewModel>();
 

@@ -50,7 +50,7 @@
 
         MESSAGES_STATE: {
             SUCCESS: 'Seccess',
-            Error: 'Error'
+            ERROR: 'Error'
         },
 
         EVENTS: {

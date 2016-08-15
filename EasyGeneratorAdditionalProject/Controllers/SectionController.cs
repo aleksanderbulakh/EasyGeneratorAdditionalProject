@@ -34,11 +34,8 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         {
             var user = GetFirstUser();
 
-            if (section == null)
-                return FailResult("section not find.");
-
-            if (user == null)
-                return FailResult("user not find.");
+            if (section == null || user == null)
+                throw new ArgumentException();
 
             section.UpdateTitle(title, user.UserName);
 
@@ -61,11 +58,8 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         {
             var user = GetFirstUser();
 
-            if (course == null)
-                return FailResult("Section not find.");
-
-            if (user == null)
-                return FailResult("user not find.");
+            if (course == null || user == null)
+                throw new ArgumentException();
 
             var newSection = new Section("section title", user.UserName, course);
 
@@ -79,7 +73,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         public JsonResult SectionsList(Course course)
         {
             if (course == null)
-                return FailResult("Course is not found.");
+                throw new ArgumentException();
 
             var sections = new List<SectionViewModel>();
 

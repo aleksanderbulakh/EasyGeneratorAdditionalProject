@@ -74,7 +74,7 @@ namespace EasyGeneratorAdditionalProject.DataAccess.Context
             modelBuilder.Entity<Answer>().Property(t => t.Text).IsRequired();
             modelBuilder.Entity<Answer>().Property(t => t.IsCorrect).IsRequired();
             modelBuilder.Entity<Answer>()
-                .Map<SimpleSelectAnswers>(t => t.Requires("AnswerType").HasValue("simple"))
+                .Map<SimpleSelectAnswer>(t => t.Requires("AnswerType").HasValue("simple"))
                 .Map<SingleSelectImageAnswer>(t => t.Requires("AnswerType").HasValue("image"));
             #endregion
 

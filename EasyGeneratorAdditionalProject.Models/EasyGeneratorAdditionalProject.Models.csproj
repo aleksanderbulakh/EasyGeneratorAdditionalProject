@@ -63,7 +63,7 @@
     <Compile Include="Entities\Course.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\Section.cs" />
-    <Compile Include="Entities\SimpleSelectAnswers.cs" />
+    <Compile Include="Entities\SimpleSelectAnswer.cs" />
     <Compile Include="Entities\SingleSelectImageAnswer.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\Answer.cs" />

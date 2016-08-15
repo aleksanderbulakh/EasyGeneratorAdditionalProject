@@ -166,19 +166,21 @@
     <Content Include="App\customPlugins\createQuestionDialog\createQuestionDialog.html" />
     <Content Include="App\customPlugins\createQuestionDialog\createQuestionDialog.js" />
     <Content Include="App\context\answerContext.js" />
+    <Content Include="App\errorHandler\notImplementedError.js" />
     <Content Include="App\IoC\IoC.js" />
     <Content Include="App\models\answerPreview.js" />
+    <Content Include="App\models\course.js" />
     <Content Include="App\models\modelFactory.js" />
     <Content Include="App\models\multipleSelectQuestionPreview.js" />
     <Content Include="App\models\singleSelectQuestionPreview.js" />
     <Content Include="App\models\sectionPreview.js" />
-    <Content Include="App\preview\resultsContext.js" />
+    <Content Include="App\preview\previewContext.js" />
     <Content Include="App\repositories\answerRepository.js" />
     <Content Include="App\constants\constants.js" />
     <Content Include="App\context\courseContext.js" />
     <Content Include="App\context\questionContext.js" />
     <Content Include="App\repositories\questionRepository.js" />
-    <Content Include="App\preview\resultsRepository.js" />
+    <Content Include="App\preview\previewRepository.js" />
     <Content Include="App\context\sectionContext.js" />
     <Content Include="App\repositories\sectionRepository.js" />
     <Content Include="App\customPlugins\customMessages\customMessage.js" />
@@ -187,7 +189,7 @@
     <Content Include="App\http\httpWrapper.js" />
     <Content Include="App\main.js" />
     <Content Include="App\mapper\mapper.js" />
-    <Content Include="App\models\course.js" />
+    <Content Include="App\models\coursePreview.js" />
     <Content Include="App\models\question.js" />
     <Content Include="App\models\result.js" />
     <Content Include="App\models\section.js" />
@@ -213,6 +215,7 @@
     <Content Include="Content\durandal.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Images\default.jpg" />
     <Content Include="Scripts\almond-custom.js" />
     <Content Include="Scripts\durandal\activator.js" />
     <Content Include="Scripts\durandal\app.js" />
@@ -231,6 +234,8 @@
     <Content Include="Scripts\durandal\viewEngine.js" />
     <Content Include="Scripts\durandal\viewLocator.js" />
     <Content Include="Scripts\extenders\valid-name-extender.js" />
+    <None Include="Properties\PublishProfiles\easy-generator-additional-project - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\easy-generator-additional-project - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.9.0.intellisense.js" />
     <Content Include="Scripts\jquery-1.9.0.js" />
     <Content Include="Scripts\jquery-1.9.0.min.js" />
@@ -241,6 +246,7 @@
     <Content Include="Scripts\knockout-3.4.0.js" />
     <Content Include="Scripts\knockout-bindings\date-to-local-format-binding.js" />
     <Content Include="Scripts\knockout-bindings\editable-html-binding.js" />
+    <Content Include="Scripts\knockout-bindings\file-input-binding.js" />
     <Content Include="Scripts\less-1.5.1.js" />
     <Content Include="Scripts\less-1.5.1.min.js" />
     <Content Include="Scripts\q.js" />
@@ -260,7 +266,7 @@
     <Compile Include="Configuration\FilterConfiguration.cs" />
     <Compile Include="Configuration\MappingConfiguration.cs" />
     <Compile Include="Configuration\RouteConfig.cs" />
-    <Compile Include="Controllers\AnswerController.cs" />
+    <Compile Include="Controllers\SimpleSelectAnswerController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MainController.cs" />
@@ -300,7 +306,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\SingleSelectImageAnswer\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyGeneratorAdditionalProject.DataAccess\EasyGeneratorAdditionalProject.DataAccess.csproj">
       <Project>{2d39c2b7-e29e-4484-adc5-6ca5797ad23b}</Project>

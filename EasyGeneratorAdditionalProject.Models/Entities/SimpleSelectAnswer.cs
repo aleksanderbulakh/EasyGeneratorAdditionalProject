@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace EasyGeneratorAdditionalProject.Models.Entities
 {
-    public class SimpleSelectAnswers : Answer
+    public class SimpleSelectAnswer : Answer
     {
-        public SimpleSelectAnswers()
+        public SimpleSelectAnswer()
             : base()
         { }
 
-        public SimpleSelectAnswers(string text, string userName, Question question, bool isCorrect)
+        public SimpleSelectAnswer(string text, string userName, Question question, bool isCorrect)
             : this()
         {
             ThrowIfTextInvalid(text);

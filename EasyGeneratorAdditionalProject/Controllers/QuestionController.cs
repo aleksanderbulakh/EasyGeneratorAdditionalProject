@@ -14,11 +14,11 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
     public class QuestionController : MainController
     {
         private readonly IQuestionRepository _questionRepository;
-        private readonly IAnswerRepository _answerRepository;
+        private readonly ISimpleSelectAnswerRepository _answerRepository;
         private readonly IMapper _mapper;
         private readonly IDateConvertor _convertor;
-        public QuestionController(IUnitOfWork work, IUserRepository userRepository, IQuestionRepository questionRepository, 
-            IMapper mapper, IDateConvertor convertor, IAnswerRepository answerRepository) 
+        public QuestionController(IUnitOfWork work, IUserRepository userRepository, IQuestionRepository questionRepository,
+            IMapper mapper, IDateConvertor convertor, ISimpleSelectAnswerRepository answerRepository)
             : base(work, userRepository)
         {
             _questionRepository = questionRepository;
@@ -33,11 +33,8 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         {
             var user = GetFirstUser();
 
-            if (question == null)
-                return FailResult("question not find.");
-
-            if (user == null)
-                return FailResult("user not find.");
+            if (question == null || user == null)
+                throw new ArgumentException();
 
             question.UpdateTitle(title, user.UserName);
 
@@ -55,26 +52,23 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         }
 
         [HttpPost]
-        [Route("question/create", Name = "CreateQuestion")]
-        public JsonResult CreateQuestion(Section section, string type)
+        [Route("question/create/simple-question", Name = "CreateSingleQuestion")]
+        public JsonResult CreateSimpleQuestion(Section section, string type)
         {
             var user = GetFirstUser();
 
-            if (section == null)
-                return FailResult("Section not find.");
-
-            if (user == null)
-                return FailResult("User not find.");
+            if (section == null || user == null)
+                throw new ArgumentException();
 
             var newQuestion = new Question("question title", user.UserName, section, type);
 
             _questionRepository.Add(newQuestion);
-            
-            var answer = new SimpleSelectAnswers("Question answer", newQuestion.CreatedBy, newQuestion, true);
+
+            var answer = new SimpleSelectAnswer("Question answer", newQuestion.CreatedBy, newQuestion, true);
 
             _answerRepository.Add(answer);
 
-            answer = new SimpleSelectAnswers("Question answer", newQuestion.CreatedBy, newQuestion, false);
+            answer = new SimpleSelectAnswer("Question answer", newQuestion.CreatedBy, newQuestion, false);
 
             _answerRepository.Add(answer);
 
@@ -86,7 +80,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         public JsonResult QuestionList(Section section)
         {
             if (section == null)
-                throw new ArgumentException("Invalid data");
+                throw new ArgumentException();
 
             var sections = new List<QuestionViewModel>();
 

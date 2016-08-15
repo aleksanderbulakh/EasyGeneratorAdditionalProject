@@ -67,7 +67,7 @@
 
                                         app.trigger(constants.EVENTS.QUESTION_DELETE, self.id);
                                         message.stateMessage("Question has been deleted.", constants.MESSAGES_STATE.SUCCESS);
-                                    });
+                                    })
                             }
                         });
                 },

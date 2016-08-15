@@ -9,14 +9,14 @@
         <div data-bind="foreach: answersList">
             <div>
                 <span data-bind="text: $index()+1"></span>
-                <div data-bind="click: (function(){ $parent.computeCorrectness(id) }), css: { 'single-select-answer': $parent.type == 'radio', 'multiple-select-answer': $parent.type == 'checkbox' }">
-                    <span class="checked" data-bind="visible: isCorrect"></span>
+                <div data-bind="click: $parent.computeCorrectness.bind($parent), css: { 'single-select-answer': $parent.type == 'radio', 'multiple-select-answer': $parent.type == 'checkbox' }">
+                    <span class="checked" data-bind="visible: checked"></span>
                 </div>
                 <span data-bind="text: text"></span>
             </div>
             <hr /><hr />
         </div>
         <hr />
-        <button data-bind="click: (function(){ $root.checkForCorrectness(id) })">check</button>
+        <button data-bind="click: $root.checkForCorrectness.bind($root)">check</button>
     </div>
 </div>

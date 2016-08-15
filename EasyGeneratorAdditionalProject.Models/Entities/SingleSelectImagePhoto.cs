@@ -15,5 +15,10 @@ namespace EasyGeneratorAdditionalProject.Models.Entities
             Id = answerId;
             Photo = photo;
         }
+
+        public void UpdatePhoto(string photo)
+        {
+            Photo = photo;
+        }
     }
 }

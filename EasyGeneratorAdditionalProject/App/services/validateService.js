@@ -1,8 +1,9 @@
-﻿define(function () {
+﻿define(['errorHandler/notImplementedError'], function (NotImplementedError) {
     return {
         throwIfObjectIsUndefined: function (object, name) {
-            if (object === undefined)
-                throw name + ' is not found';
+            if (object === undefined) {
+                throw new NotImplementedError(name + ' is not found');
+            }
         }
     };
 });

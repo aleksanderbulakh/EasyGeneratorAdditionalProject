@@ -6,27 +6,30 @@
 
                 if (questionContext.questionList !== undefined) {
 
-                    var questions = questionContext.questionList.filter(function (question) {
+                    var questions = _.filter(questionContext.questionList, function (question) {
                         return question.sectionId === sectionId;
                     });
 
-                    return Q.fcall(function () {
-                        return questions;
-                    });
+
+                    if (questions.length !== 0) {
+                        return Q.fcall(function () {
+                            return questions;
+                        });
+                    }
                 }
 
                 return http.get('question/list', { sectionId: sectionId })
                     .then(function (result) {
 
-                        if (questionContext.questionList === undefined) { 
+                        if (questionContext.questionList === undefined) {
                             questionContext.questionList = [];
                         }
 
-                        result.forEach(function (question) {
+                        _.each(result, function (question) {
                             questionContext.questionList.push(mapper.mapQuestion(question, sectionId));
                         });
 
-                        var questions = questionContext.questionList.filter(function (question) {
+                        var questions = _.filter(questionContext.questionList, function (question) {
                             return question.sectionId === sectionId;
                         });
 
@@ -36,7 +39,7 @@
 
             createQuestion: function (sectionId, questionType) {
 
-                return http.post('question/create', { sectionId: sectionId, type: questionType })
+                return http.post('question/create/simple-question', { sectionId: sectionId, type: questionType })
                     .then(function (result) {
 
                         var question = mapper.mapQuestion(result, sectionId);
@@ -52,7 +55,7 @@
                 return http.post('question/edit/title', { questionId: questionId, title: questionTitle })
                     .then(function (result) {
 
-                        var question = questionContext.questionList.find(function (question) {
+                        var question = _.find(questionContext.questionList, function (question) {
                             return question.id === questionId;
                         });
 
@@ -83,7 +86,7 @@
 
             modify: function (questionId, newDate) {
 
-                var question = questionContext.questionList.find(function (question) {
+                var question = _.find(questionContext.questionList, function (question) {
                     return question.id === questionId;
                 });
 

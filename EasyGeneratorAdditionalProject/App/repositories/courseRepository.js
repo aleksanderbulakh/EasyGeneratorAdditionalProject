@@ -12,12 +12,12 @@
 
                 return http.get('course/list')
                     .then(function (result) {
-
+                        debugger;
                         if (courseContext.courseList === undefined) { 
                             courseContext.courseList = [];
                         }
 
-                        result.forEach(function (course) {
+                        _.each(result, function (course) {
                             courseContext.courseList.push(mapper.mapCourse(course));
                         });
 
@@ -37,7 +37,7 @@
             },
 
             getCourseById: function (courseId) {
-                var course = courseContext.courseList.find(function (course) {
+                var course = _.find(courseContext.courseList, function (course) {
                     return course.id === courseId;
                 });
 
@@ -52,7 +52,7 @@
                 return http.post('course/edit/title', { courseId: courseId, title: courseTitle })
                     .then(function (result) {
 
-                        var course = courseContext.courseList.find(function (course) {
+                        var course = _.find(courseContext.courseList, function (course) {
                             return course.id === courseId;
                         });
 
@@ -69,7 +69,7 @@
                 return http.post('course/edit/description', { courseId: courseId, description: courseDescription })
                     .then(function (result) {
 
-                        var course = courseContext.courseList.find(function (course) {
+                        var course = _.find(courseContext.courseList, function (course) {
                             return course.id === courseId;
                         });
 

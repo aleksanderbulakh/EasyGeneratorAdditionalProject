@@ -20,29 +20,32 @@
                         self.courseTitle(result.title);
                         self.courseDescription(result.description);
                         self.currentCourseTitle = result.title;
-                        IoC.sectionRepository.getSectionsByCourseId(id)
-                            .then(function (sectionList) {
-                                self.courseSection(sectionList.map(function (section) {
-                                    return section;
-                                }));
-                            });
+
+                        app.on(constants.EVENTS.SECTION_DELETED)
+                           .then(function (sectionId) {
+
+                               var section = _.find(self.courseSection(), function (section) {
+                                   return section.id === sectionId;
+                               });
+
+                               validateService.throwIfObjectIsUndefined(section, constants.MODELS_NAMES.SECTION);
+
+                               self.courseSection.remove(section);
+                           });
 
                         self.isChangeable = ko.computed(function () {
                             return self.courseTitle.hasError() === (self.courseTitle() !== self.currentCourseTitle);
                         });
+
+                        return  IoC.sectionRepository.getSectionsByCourseId(id)
+                            .then(function (sectionList) {
+                                self.courseSection(_.map(sectionList, function (section) {
+                                    return section;
+                                }));
+                            });
+
+                       
                     });
-
-                app.on(constants.EVENTS.SECTION_DELETED)
-                    .then(function (sectionId) {
-
-                    var section = self.courseSection().find(function (section) {
-                        return section.id === sectionId;
-                    });
-
-                    validateService.throwIfObjectIsUndefined(section, constants.MODELS_NAMES.SECTION);
-
-                    self.courseSection.remove(section);
-                });
             },
             editTitle: function () {
                 var self = this;
@@ -50,7 +53,7 @@
                 IoC.courseRepository.editCourseTitle(self.courseId, self.courseTitle())
                     .then(function () {
                         self.currentCourseTitle = self.courseTitle();
-                        message.stateMessage(constants.MESSAGES_STATE.TITLE_CHANGED, constants.MESSAGES_STATE.SUCCESS);
+                        message.stateMessage(constants.MESSAGES.TITLE_CHANGED, constants.MESSAGES_STATE.SUCCESS);
                     });
             },
             editDescription: function () {

@@ -1,16 +1,31 @@
 ﻿<div>
     <div class="answer-list" data-bind="foreach: answers">
         <div class="answer">
-            <div data-bind="click: (function(){ $parent.computeCorrectAnswer(id) }), css: { 'single-select-answer': $parent.questionType == 'radio', 'multiple-select-answer': $parent.questionType == 'checkbox' }">
+            <div data-bind="click: $parent.computeCorrectAnswer.bind($parent), css: { 'single-select-answer': $parent.questionType == 'radio', 'multiple-select-answer': $parent.questionType == 'checkbox' }">
                 <span class="checked" data-bind="visible: isCorrect"></span>
             </div>
             <span data-bind="attr: { contenteditable: true }, editableHTML: text"></span>
             <span class="title-validate-message" data-bind="visible: text.hasError, text: text.validationMessage"></span>
-            <button data-bind="click: (function(){ $parent.editText(id, text) })">Save</button>
-            <button data-bind="click: (function(){ $parent.editState(id, isCorrect) })">Sava state</button>
-            <button data-bind="click: (function(){ $parent.deleteAnswer(id) })">delete</button>
+            <button data-bind="click: $parent.editText.bind($parent)">Save</button>
+            <button data-bind="click: $parent.editState.bind($parent)">Sava state</button>
+            <button data-bind="click: $parent.deleteAnswer.bind($parent)">delete</button>
         </div>
     </div>
     <button class="add-answer" data-bind="click: addAnswer">Add answer</button>
+
+    <div>
+        <div>
+            <div>
+                <img style="height: 125px;" data-bind="attr: { src: photo().dataURL }, visible: photo().dataURL">
+                <div data-bind="ifnot: photo().dataURL">
+                    <label class="drag-label">Drag file here</label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <input type="file" data-bind="fileInput: photo" accept="image/*">
+            </div>
+        </div>
+    </div>
+
     <button class="ok" data-bind="click: close">Close</button>
 </div>

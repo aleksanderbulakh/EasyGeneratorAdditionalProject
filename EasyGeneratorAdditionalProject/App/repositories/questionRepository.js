@@ -4,7 +4,7 @@
         return {
             getQuestionsBySectionId: function (sectionId) {
 
-                if (questionContext.questionList !== undefined) {
+                if (!_.isUndefined(questionContext.questionList)) {
 
                     var questions = _.filter(questionContext.questionList, function (question) {
                         return question.sectionId === sectionId;
@@ -21,7 +21,7 @@
                 return http.get('question/list', { sectionId: sectionId })
                     .then(function (result) {
 
-                        if (questionContext.questionList === undefined) {
+                        if (_.isUndefined(questionContext.questionList)) {
                             questionContext.questionList = [];
                         }
 
@@ -32,6 +32,10 @@
                         var questions = _.filter(questionContext.questionList, function (question) {
                             return question.sectionId === sectionId;
                         });
+
+                        if (_.isUndefined(questions)) {
+                            questions = [];
+                        }
 
                         return questions;
                     });

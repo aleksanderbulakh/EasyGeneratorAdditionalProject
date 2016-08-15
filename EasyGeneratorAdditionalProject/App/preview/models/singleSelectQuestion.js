@@ -1,9 +1,10 @@
 ﻿define(function () {
-    function SingleSelectQuestionPreview(spec) {
+    function SingleSelectQuestion(spec) {
         this.id = spec.id;
         this.title = spec.title;
         this.answersList = spec.answersList;
         this.type = spec.type;
+        this.checkedAnswer = 0;
         this.result = 0;
 
         var self = this;
@@ -13,10 +14,12 @@
                 return answer.checked();
             });
 
-            if (currentCorrectAnswer !== undefined) {
+            if (!_.isUndefined(currentCorrectAnswer)) {
                 currentCorrectAnswer.checked(!currentCorrectAnswer.checked());
             }
             answer.checked(!answer.checked());
+
+            this.checkedAnswer = answer.id;
         };
 
         this.checkForCorrectness = function () {
@@ -26,9 +29,16 @@
                 return r;
             });
 
-            this.result = answersCheck !== undefined ? 1 : 0;
+            this.result = !_.isUndefined(answersCheck) ? 1 : 0;
         };
+
+        this.getResults = function () {
+            return {
+                checkedAnswer: this.checkedAnswer,
+                result: this.result
+            }
+        }
     }
 
-    return SingleSelectQuestionPreview;
+    return SingleSelectQuestion;
 });

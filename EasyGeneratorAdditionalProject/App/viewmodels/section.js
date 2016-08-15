@@ -22,7 +22,9 @@
                 isChangeable: true,
 
                 activate: function (data) {
-                    if (typeof data !== 'undefined' && typeof data.sectionData !== 'undefined' && typeof data.courseId !== 'undefined') {
+                    if (_.isUndefined(data)) {
+                        message.stateMessage(constants.MESSAGES.DATA_IS_NOT_FOUND);
+                    } else if (!_.isUndefined(data.sectionData) && !_.isUndefined(data.courseId)) {
                         this.courseId = data.courseId;
                         this.sectionId = data.sectionData.id;
                         this.sectionTitle(data.sectionData.title);
@@ -44,22 +46,10 @@
                                     return question.id === questionId;
                                 });
 
-                                if (question !== undefined) {
+                                if (!_.isUndefined(question)) {
 
                                     self.questionList.remove(question);
                                 }
-                            });
-
-                        app.on(constants.EVENTS.QUESTION_MODIFIED)
-                            .then(function (modifiedDate) {
-
-                                var question = _.find(self.questionList(), function (question) {
-                                    return question.id === questionId;
-                                });
-
-                                validateService.throwIfObjectIsUndefined(question, constants.MODELS_NAMES.QUESTION);
-
-                                question.lastModifiedDate = modifiedDate;
                             });
 
                         return IoC.questionRepository.getQuestionsBySectionId(this.sectionId)
@@ -68,8 +58,6 @@
                                 self.questionList(_.map(questionList, function (question) {
                                     return question;
                                 }));
-
-
                             });
                     }
                     else {

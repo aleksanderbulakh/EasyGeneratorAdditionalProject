@@ -7,11 +7,10 @@
 
             http.post(url, data)
                 .then(function (result) {
-                    if (typeof result === constants.DATA_TYPES.OBJECT && result !== null) {
-                        if (result.Success && result.RequestData !== null) {
-                            var dataType = typeof result.RequestData;
-                            if ((dataType === constants.DATA_TYPES.BOOL && result.RequestData) ||
-                                dataType === constants.DATA_TYPES.OBJECT || dataType === constants.DATA_TYPES.NUMBER)
+                    if (_.isObject(result)) {
+                        if (result.Success && !_.isNull(result.RequestData)) {
+                            if ((_.isBoolean(result.RequestData) && result.RequestData) ||
+                                _.isObject(result.RequestData) || _.isNumber(result.RequestData))
                                 return defer.resolve(result.RequestData);
                         }
                     }
@@ -30,11 +29,10 @@
 
             http.get(url, data)
                 .then(function (result) {
-                    if (typeof result === constants.DATA_TYPES.OBJECT && result !== null) {
-                        if (result.Success && result.RequestData !== null) {
-                            var dataType = typeof result.RequestData;
-                            if ((dataType === constants.DATA_TYPES.BOOL && result.RequestData) ||
-                                dataType === constants.DATA_TYPES.OBJECT || dataType === constants.DATA_TYPES.NUMBER)
+                    if (_.isObject(result)) {
+                        if (result.Success && !_.isNull(result.RequestData)) {
+                            if ((_.isBoolean(result.RequestData) && result.RequestData) ||
+                                _.isObject(result.RequestData) || _.isNumber(result.RequestData))
                                 return defer.resolve(result.RequestData);
                         }
                     }

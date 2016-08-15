@@ -51,7 +51,7 @@
         return {
             getAnswersByQuestionId: function (questionId) {
 
-                if (answerContext.answerList !== undefined) {
+                if (!_.isUndefined(answerContext.answerList)) {
 
                     var answers = _.filter(answerContext.answerList, function (answer) {
                         return answer.questionId === questionId;
@@ -67,7 +67,7 @@
                 return http.get('answer/list', { questionId: questionId })
                     .then(function (result) {
 
-                        if (answerContext.answerList === undefined) { 
+                        if (_.isUndefined(answerContext.answerList)) {
                             answerContext.answerList = [];
                         }
 
@@ -78,6 +78,10 @@
                         var answers = _.filter(answerContext.answerList, function (answer) {
                             return answer.questionId === questionId;
                         });
+
+                        if (_.isUndefined(answers)) {
+                            answers = [];
+                        }
 
                         return  answers;
                         

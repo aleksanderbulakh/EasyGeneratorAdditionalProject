@@ -1,16 +1,23 @@
 ﻿define(function () {
-    function MultipleSelectQuestionPreview(spec) {
+    function MultipleSelectQuestion(spec) {
         this.id = spec.id;
         this.title = spec.title;
         this.answersList = spec.answersList;
         this.type = spec.type;
+        this.checkedAnswers = [];
         this.result = 0;
 
         var self = this;
 
         this.computeCorrectness = function (answer) {
-
+            
             answer.checked(!answer.checked());
+
+            if (answer.checked()) {
+                this.checkedAnswers.push(answer.id);
+            } else {
+                this.checkedAnswers = _.without(this.checkedAnswers, answer.id)
+            }            
         };
 
         this.checkForCorrectness = function () {
@@ -21,13 +28,20 @@
                 return answer.isCorrect === answer.checked();
             });
 
-            if (correctAnswers !== undefined) {
+            if (!_.isUndefined(correctAnswers)) {
                 countCorrect = correctAnswers.length;
             }
 
             this.result = countCorrect / self.answersList.length;
         };
+
+        this.getResults = function () {
+            return {
+                checkedAnswers: this.checkedAnswers,
+                result: this.result
+            }
+        }
     }
 
-    return MultipleSelectQuestionPreview;
+    return MultipleSelectQuestion;
 });

@@ -14,17 +14,16 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
     public class QuestionController : MainController
     {
         private readonly IQuestionRepository _questionRepository;
-        private readonly ISimpleSelectAnswerRepository _answerRepository;
         private readonly IMapper _mapper;
         private readonly IDateConvertor _convertor;
-        public QuestionController(IUnitOfWork work, IUserRepository userRepository, IQuestionRepository questionRepository,
+        public QuestionController(IUnitOfWork work, IUserRepository userRepository,
+            ISectionRepository sectionRepository, IQuestionRepository questionRepository,
             IMapper mapper, IDateConvertor convertor, ISimpleSelectAnswerRepository answerRepository)
-            : base(work, userRepository)
+            : base(work, userRepository, sectionRepository, questionRepository, answerRepository)
         {
             _questionRepository = questionRepository;
             _mapper = mapper;
             _convertor = convertor;
-            _answerRepository = answerRepository;
         }
 
         [HttpPost]
@@ -55,22 +54,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         [Route("question/create/simple-question", Name = "CreateSingleQuestion")]
         public JsonResult CreateSimpleQuestion(Section section, string type)
         {
-            var user = GetFirstUser();
-
-            if (section == null || user == null)
-                throw new ArgumentException();
-
-            var newQuestion = new Question("question title", user.UserName, section, type);
-
-            _questionRepository.Add(newQuestion);
-
-            var answer = new SimpleSelectAnswer("Question answer", newQuestion.CreatedBy, newQuestion, true);
-
-            _answerRepository.Add(answer);
-
-            answer = new SimpleSelectAnswer("Question answer", newQuestion.CreatedBy, newQuestion, false);
-
-            _answerRepository.Add(answer);
+            var newQuestion = CreateSimpleSelectQuestionMethod(section, type);
 
             return SuccessResult(_mapper.Map<QuestionViewModel>(newQuestion));
         }

@@ -16,9 +16,10 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         private readonly ISimpleSelectAnswerRepository _answerRepository;
         private readonly IMapper _mapper;
         private readonly IDateConvertor _convertor;
-        public SimpleSelectAnswerController(IUnitOfWork work, IUserRepository userRepository, ISimpleSelectAnswerRepository answerRepository,
+        public SimpleSelectAnswerController(IUnitOfWork work, IUserRepository userRepository, ISectionRepository sectionRepository,
+            IQuestionRepository questionRepository, ISimpleSelectAnswerRepository answerRepository,
             IMapper mapper, IDateConvertor convertor) 
-            : base(work, userRepository)
+            : base(work, userRepository, sectionRepository, questionRepository, answerRepository)
         {
             _answerRepository = answerRepository;
             _mapper = mapper;
@@ -82,14 +83,7 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         [Route("answer/create", Name = "CreateAnswer")]
         public JsonResult CreateAnswer(Question question)
         {
-            var user = GetFirstUser();
-
-            if (question == null || user == null)
-                throw new ArgumentException();
-
-            var newAnswer = new SimpleSelectAnswer("answer text", user.UserName, question, false);
-
-            _answerRepository.Add(newAnswer);
+            var newAnswer = CreateSimpleSelectAnswer(question, false);
 
             return SuccessResult(_mapper.Map<AnswerViewModel>(newAnswer));
         }

@@ -5,13 +5,13 @@
         return {
             getSectionsByCourseId: function (courseId) {
 
-                if (sectionContext.sectionList !== undefined) {
+                if (!_.isUndefined(sectionContext.sectionList)) {
 
                     var sections = _.filter(sectionContext.sectionList, function (section) {
                         return section.courseId === courseId;
                     });
 
-                    if (sections !== undefined) { 
+                    if (!_.isUndefined(sections)) { 
                         return Q.fcall(function () {
                             return sections;
                         });
@@ -21,7 +21,7 @@
                 return http.get('section/list', { courseId: courseId })
                     .then(function (result) {
 
-                        if (sectionContext.sectionList === undefined) { 
+                        if (_.isUndefined(sectionContext.sectionList)) { 
                             sectionContext.sectionList = [];
                         }
 
@@ -32,6 +32,10 @@
                         var sections = _.filter(sectionContext.sectionList, function (section) {
                             return section.courseId === courseId;
                         });
+
+                        if (_.isUndefined(sections)) {
+                            sectionContext = [];
+                        }
 
                         return sections;
                     });
@@ -50,6 +54,7 @@
             },
 
             editSectionTitle: function (sectionId, sectionTitle) {
+
                 return http.post('section/edit/title', { sectionId: sectionId, title: sectionTitle })
                     .then(function (result) {
 

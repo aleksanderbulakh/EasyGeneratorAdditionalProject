@@ -2,9 +2,25 @@
     <h3>Course list page</h3>
     <div class="container-course-list">
         <div class="course-list-navigation">
+            <div>
+                <span>Enter course title for filtering: </span>
+                <span class="filter" data-bind="attr: { contenteditable: true }, editableHTML: courseNameFilter"></span>
+            </div>
+            <div>
+                <div>Enter date interval: </div>
+                <div>
+                    <span>Start date: </span>
+                    <input type="date" data-bind="value: startDateFilter">
+                </div>
+                <div>
+                    <span>End date: </span>
+                    <input type="date" data-bind="value: endDateFilter">
+                </div>
+            </div>
             <button class="navigation-create" data-bind="click: createCourse">Create new course</button>
         </div>
-        <div class="list-course-data" data-bind="foreach: courseList">
+
+        <div class="list-course-data" data-bind="foreach: filteredCourseList">
             <a data-bind="click: $root.navigateToCourse.bind($root)">
                 <div class="course-data-position-top">
                     <div class="position-top-title" data-bind="text: title"></div>

@@ -4,7 +4,7 @@
         return {
             getCourseList: function () {
 
-                if (courseContext.courseList !== undefined) {
+                if (!_.isUndefined(courseContext.courseList)) {
                     return Q.fcall(function () {
                         return courseContext.courseList;
                     });
@@ -13,7 +13,7 @@
                 return http.get('course/list')
                     .then(function (result) {
                         debugger;
-                        if (courseContext.courseList === undefined) { 
+                        if (_.isUndefined(courseContext.courseList)) { 
                             courseContext.courseList = [];
                         }
 

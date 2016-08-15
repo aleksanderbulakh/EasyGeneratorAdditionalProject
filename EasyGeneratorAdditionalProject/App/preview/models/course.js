@@ -1,5 +1,5 @@
 ﻿define(function () {
-    function CoursePreview(spec) {
+    function Course(spec) {
 
         this.id = spec.id;
         this.title = spec.title;
@@ -21,5 +21,5 @@
         }
     }
 
-    return CoursePreview;
+    return Course;
 });

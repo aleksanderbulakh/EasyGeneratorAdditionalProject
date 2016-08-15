@@ -16,8 +16,9 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         private readonly IMapper _mapper;
         private readonly IDateConvertor _convertor;
         public CoursesController(IUnitOfWork work, IUserRepository userRepository, ICourseRepository courseRepository,
-            IMapper mapper, IDateConvertor convertor)
-            : base(work, userRepository)
+            IMapper mapper, IDateConvertor convertor, ISectionRepository sectionRepository,
+            IQuestionRepository questionRepository, ISimpleSelectAnswerRepository answerRepository)
+            : base(work, userRepository, sectionRepository, questionRepository, answerRepository)
         {
             _courseRepository = courseRepository;
             _mapper = mapper;
@@ -74,6 +75,10 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
             var newCourse = new Course(courseTitle, "course description", user);
 
             _courseRepository.Add(newCourse);
+
+            var newSection = CreateSectionMethod(newCourse);
+
+            CreateSimpleSelectQuestionMethod(newSection, "single");
 
             return SuccessResult(_mapper.Map<CourseViewModel>(newCourse));
         }

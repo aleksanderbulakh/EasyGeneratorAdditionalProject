@@ -1,5 +1,6 @@
-﻿define(['mapper/mapper', 'preview/previewContext', 'errorHandler/errorHandler', 'IoC/IoC', 'constants/constants'],
-    function (mapper, previewContext, errorHandler, IoC, constants) {
+﻿define(['preview/mapper/mapper', 'preview/data/previewContext', 'IoC/IoC', 'constants/constants',
+    'services/validateService'],
+    function (mapper, previewContext, IoC, constants, validateService) {
 
         function getSections(course) {
 
@@ -17,7 +18,7 @@
                                 mapSectionsList.push(mapSection);
 
                                 if (lastSection.id === mapSection.id) {
-                                    defer.resolve(mapper.mapCoursePreview({
+                                    defer.resolve(mapper.mapCourse({
                                         id: course.id,
                                         title: course.title,
                                         description: course.description,
@@ -46,7 +47,7 @@
                                 mapQuestionList.push(mapQuestion);
 
                                 if (lastQuestion.id === mapQuestion.id) {
-                                    defer.resolve(mapper.mapSectionPreview({
+                                    defer.resolve(mapper.mapSection({
                                         id: section.id,
                                         title: section.title,
                                         questionList: mapQuestionList
@@ -55,7 +56,7 @@
                             });
                     });
 
-                    return defer.promise;                    
+                    return defer.promise;
                 });
         }
 
@@ -65,27 +66,21 @@
                 .then(function (answersList) {
 
                     var mapAnswersList = _.map(answersList, function (answer) {
-                        return mapper.mapAnswerPreview(answer);
+                        return mapper.mapAnswer({
+                            id: answer.id,
+                            text: answer.text,
+                            isCorrect: answer.isCorrect,
+                            checked: false
+                        });
                     });
 
-                    if (question.type === constants.SINGLE_SELECT_QUESTION_TYPE) {
-
-                        defer.resolve(mapper.mapSingleSelectQuestionPreview({
-                            id: question.id,
-                            title: question.title,
-                            type: question.type,
-                            answersList: mapAnswersList
-                        }));
-
-                    } else if (question.type === constants.MULTIPLE_SELECT_QUESTION_TYPE) {
-
-                        defer.resolve(mapper.mapMultipleSelectQuestionPreview({
-                            id: question.id,
-                            title: question.title,
-                            type: question.type,
-                            answersList: mapAnswersList
-                        }));
-                    }
+                    defer.resolve({
+                        id: question.id,
+                        title: question.title,
+                        type: constants.VIEWS_ANSWER_TYPES[question.type],
+                        answersList: mapAnswersList,
+                        result: 0
+                    });
                 });
             return defer.promise;
         }
@@ -93,9 +88,10 @@
         return {
             getCourseById: function (courseId) {
 
-                if (previewContext.course !== undefined) {
+                if (!_.isUndefined(previewContext.course)) {
                     if (previewContext.course.id === courseId) {
                         return Q.fcall(function () {
+                            previewContext.course.computeProgress();
                             return previewContext.course;
                         });
                     }
@@ -106,21 +102,62 @@
 
                         return getSections(course)
                             .then(function (mapCourse) {
+
                                 previewContext.course = mapCourse;
 
-                                return mapCourse;
+                                previewContext.course.computeProgress();
+
+                                return previewContext.course;
                             });
                     });
+            },
+
+            saveAnswer: function (sectionId, questionId, results) {
+
+                var section = _.find(previewContext.course.sectionList, function (section) {
+                    return section.id === sectionId;
+                });
+
+                validateService.throwIfObjectIsUndefined(section, constants.MODELS_NAMES.SECTION);
+
+                var question = _.find(section.questionList, function (question) {
+                    return question.id === questionId;
+                });
+
+                validateService.throwIfObjectIsUndefined(question, constants.MODELS_NAMES.QUESTION);
+
+                question.result = results.result;
+
+                if (question.type === constants.QUESTION_TYPE_RADIO) {
+                    var currentCorrectAnswer = _.find(question.answersList, function (answer) {
+                        return answer.checked;
+                    });
+
+                    var newCorrectAnswer = _.find(question.answersList, function (answer) {
+                        return answer.id === results.checkedAnswer;
+                    });
+
+                    if (!_.isUndefined(currentCorrectAnswer)) {
+                        currentCorrectAnswer.checked = !currentCorrectAnswer.checked;
+                    }
+                    newCorrectAnswer.checked = !newCorrectAnswer.checked;
+                } else if (question.type === constants.QUESTION_TYPE_CHECKBOX) {
+                    _.each(question.answersList, function (answer) {
+                        if (results.checkedAnswers.indexOf(answer.id) !== -1) {
+                            answer.checked = true;
+                        } else {
+                            answer.checked = false;
+                        }
+                    });
+                }
             },
 
             getQuestionsBySectionId: function (sectionId) {
                 var section = _.find(previewContext.course.sectionList, function (section) {
                     return section.id === sectionId;
-                })
+                });
 
-                if (section === undefined) {
-                    throw "AAAAAAAAAAAAAAAA";
-                }
+                validateService.throwIfObjectIsUndefined(section, constants.MODELS_NAMES.SECTION);
 
                 return Q.fcall(function () {
                     return section.questionList;

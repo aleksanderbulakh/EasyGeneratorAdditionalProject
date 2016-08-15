@@ -22,9 +22,10 @@
                 isChangeable: true,
 
                 activate: function (data) {
-
-                    if (typeof data.questionData !== 'undefined' && typeof data.questionData !== 'undefined'
-                        && typeof data.courseId !== 'undefined' && typeof data.sectionId !== 'undefined') {
+                    if (_.isUndefined(data)) {
+                        message.stateMessage(constants.MESSAGES.DATA_IS_NOT_FOUND);
+                    } else if (!_.isUndefined(data.questionData) && !_.isUndefined(data.questionData)
+                        && !_.isUndefined(data.courseId) && !_.isUndefined(data.sectionId)) {
                         this.sectionId = data.sectionId;
                         this.id = data.questionData.id;
                         this.title(data.questionData.title);
@@ -40,7 +41,6 @@
                         self.isChangeable = ko.computed(function () {
                             return self.title.hasError() === (self.title() !== self.currentTitle);
                         });
-
                     }
                     else {
                         message.stateMessage(constants.MESSAGES.DATA_IS_NOT_FOUND);
@@ -52,8 +52,8 @@
                     IoC.questionRepository.editQuestionTitle(this.id, this.title())
                         .then(function (modifiedDate) {
                             self.currentTitle = self.title();
-                            app.trigger(constants.EVENTS.QUESTION_MODIFIED, modifiedDate);
-                            message.stateMessage("Title has been changed.", constants.MESSAGES_STATE.SUCCESS);
+                            self.lastModifiedDate = modifiedDate;
+                            message.stateMessage('Title has been changed.', constants.MESSAGES_STATE.SUCCESS);
                         });
                 },
                 deleteQuestion: function () {
@@ -66,7 +66,7 @@
                                     .then(function () {
 
                                         app.trigger(constants.EVENTS.QUESTION_DELETE, self.id);
-                                        message.stateMessage("Question has been deleted.", constants.MESSAGES_STATE.SUCCESS);
+                                        message.stateMessage('Question has been deleted.', constants.MESSAGES_STATE.SUCCESS);
                                     })
                             }
                         });

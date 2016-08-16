@@ -173,10 +173,12 @@
     <Content Include="App\models\modelFactory.js" />
     <Content Include="App\preview\models\modelFactory.js" />
     <Content Include="App\preview\models\multipleSelectQuestion.js" />
+    <Content Include="App\preview\models\multipleSelectQuestionViewModel.js" />
     <Content Include="App\preview\models\singleSelectQuestion.js" />
     <Content Include="App\preview\models\section.js" />
     <Content Include="App\preview\data\previewContext.js" />
     <Content Include="App\preview\mapper\mapper.js" />
+    <Content Include="App\preview\models\singleSelectQuestionViewModel.js" />
     <Content Include="App\repositories\answerRepository.js" />
     <Content Include="App\constants\constants.js" />
     <Content Include="App\context\courseContext.js" />

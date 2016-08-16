@@ -7,6 +7,16 @@
             return IoC.sectionRepository.getSectionsByCourseId(course.id)
                 .then(function (sectionsList) {
 
+                    if (sectionsList.length === 0) {
+                        return mapper.mapCourse({
+                            id: course.id,
+                            title: course.title,
+                            description: course.description,
+                            createdBy: course.createdBy,
+                            sectionList: []
+                        });
+                    }
+
                     var lastSection = _.last(sectionsList);
                     var mapSectionsList = [];
                     var defer = Q.defer();
@@ -37,6 +47,14 @@
             return IoC.questionRepository.getQuestionsBySectionId(section.id)
                 .then(function (questionsList) {
 
+                    if (questionsList.length === 0) {
+                        return mapper.mapSection({
+                            id: section.id,
+                            title: section.title,
+                            questionList: []
+                        })
+                    }
+
                     var lastQuestion = _.last(questionsList);
                     var mapQuestionList = [];
                     var defer = Q.defer();
@@ -65,14 +83,18 @@
             IoC.answerRepository.getAnswersByQuestionId(question.id)
                 .then(function (answersList) {
 
-                    var mapAnswersList = _.map(answersList, function (answer) {
-                        return mapper.mapAnswer({
-                            id: answer.id,
-                            text: answer.text,
-                            isCorrect: answer.isCorrect,
-                            checked: false
+                    var mapAnswersList = [];
+
+                    if (answersList.length !== 0) {
+                        mapAnswersList = _.map(answersList, function (answer) {
+                            return mapper.mapAnswer({
+                                id: answer.id,
+                                text: answer.text,
+                                isCorrect: answer.isCorrect,
+                                checked: false
+                            });
                         });
-                    });
+                    }
 
                     defer.resolve(mapper.mapQuestion({
                         id: question.id,
@@ -112,7 +134,7 @@
                     });
             },
 
-            saveAnswer: function (sectionId, questionId, results) {
+            checkAnswer: function (sectionId, questionId, results) {
 
                 var section = _.find(previewContext.course.sectionList, function (section) {
                     return section.id === sectionId;
@@ -126,7 +148,7 @@
 
                 validateService.throwIfObjectIsUndefined(question, constants.MODELS_NAMES.QUESTION);
 
-                question.result = results.result;
+                question.checkAnswer = results;
 
                 if (question.type === constants.QUESTION_TYPE_RADIO) {
                     var currentCorrectAnswer = _.find(question.answersList, function (answer) {
@@ -134,7 +156,7 @@
                     });
 
                     var newCorrectAnswer = _.find(question.answersList, function (answer) {
-                        return answer.id === results.checkedAnswer;
+                        return answer.id === results;
                     });
 
                     if (!_.isUndefined(currentCorrectAnswer)) {
@@ -143,13 +165,17 @@
                     newCorrectAnswer.checked = !newCorrectAnswer.checked;
                 } else if (question.type === constants.QUESTION_TYPE_CHECKBOX) {
                     _.each(question.answersList, function (answer) {
-                        if (results.checkedAnswers.indexOf(answer.id) !== -1) {
+                        if (results.indexOf(answer.id) !== -1) {
                             answer.checked = true;
                         } else {
                             answer.checked = false;
                         }
                     });
                 }
+
+                question.checkForCorrectness();
+
+                return question.result;
             },
 
             getQuestionsBySectionId: function (sectionId) {

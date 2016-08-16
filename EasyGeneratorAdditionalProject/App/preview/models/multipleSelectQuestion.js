@@ -4,28 +4,17 @@
         this.title = spec.title;
         this.answersList = spec.answersList;
         this.type = spec.type;
-        this.checkedAnswers = [];
+        this.checkedAnswer = [];
         this.result = 0;
 
         var self = this;
-
-        this.computeCorrectness = function (answer) {
-            
-            answer.checked(!answer.checked());
-
-            if (answer.checked()) {
-                this.checkedAnswers.push(answer.id);
-            } else {
-                this.checkedAnswers = _.without(this.checkedAnswers, answer.id)
-            }            
-        };
 
         this.checkForCorrectness = function () {
             
             var countCorrect = 0;
 
             var correctAnswers = _.filter(self.answersList, function (answer) {
-                return answer.isCorrect === answer.checked();
+                return answer.isCorrect === answer.checked;
             });
 
             if (!_.isUndefined(correctAnswers)) {
@@ -34,13 +23,6 @@
 
             this.result = countCorrect / self.answersList.length;
         };
-
-        this.getResults = function () {
-            return {
-                checkedAnswers: this.checkedAnswers,
-                result: this.result
-            }
-        }
     }
 
     return MultipleSelectQuestion;

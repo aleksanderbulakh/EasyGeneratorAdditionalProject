@@ -14,16 +14,13 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
 {
     public class SectionController : MainController
     {
-        private readonly ICourseRepository _courseRepository;
         private readonly ISectionRepository _sectionRepository;
         private readonly IMapper _mapper;
         private readonly IDateConvertor _convertor;
-        public SectionController(IUnitOfWork work, IUserRepository userRepository, ICourseRepository courseRepository,
-            ISectionRepository sectionRepository, IQuestionRepository questionRepository,
-            ISimpleSelectAnswerRepository simpleSelectAnswerRepository, IMapper mapper, IDateConvertor convertor)
-            : base(work, userRepository, sectionRepository, questionRepository, simpleSelectAnswerRepository)
+        public SectionController(IUnitOfWork work, IUserRepository userRepository,
+            ISectionRepository sectionRepository, IMapper mapper, IDateConvertor convertor)
+            : base(work, userRepository)
         {
-            _courseRepository = courseRepository;
             _sectionRepository = sectionRepository;
             _mapper = mapper;
             _convertor = convertor;
@@ -57,7 +54,14 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         [Route("section/create", Name = "CreateSection")]
         public JsonResult CreateSection(Course course)
         {
-            var newSection = CreateSectionMethod(course);
+            var user = GetFirstUser();
+
+            if (course == null || user == null)
+                throw new ArgumentException();
+
+            var newSection = new Section("section title", user.UserName, course);
+
+            _sectionRepository.Add(newSection);
 
             return SuccessResult(_mapper.Map<SectionViewModel>(newSection));
         }

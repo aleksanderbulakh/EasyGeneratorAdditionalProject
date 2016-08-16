@@ -14,16 +14,18 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
     public class QuestionController : MainController
     {
         private readonly IQuestionRepository _questionRepository;
+        private readonly ISimpleSelectAnswerRepository _singleSelectAnswerRepository;
         private readonly IMapper _mapper;
         private readonly IDateConvertor _convertor;
         public QuestionController(IUnitOfWork work, IUserRepository userRepository,
-            ISectionRepository sectionRepository, IQuestionRepository questionRepository,
-            IMapper mapper, IDateConvertor convertor, ISimpleSelectAnswerRepository answerRepository)
-            : base(work, userRepository, sectionRepository, questionRepository, answerRepository)
+            IQuestionRepository questionRepository, IMapper mapper, IDateConvertor convertor, 
+            ISimpleSelectAnswerRepository singleSelectAnswerRepository)
+            : base(work, userRepository)
         {
             _questionRepository = questionRepository;
             _mapper = mapper;
             _convertor = convertor;
+            _singleSelectAnswerRepository = singleSelectAnswerRepository;
         }
 
         [HttpPost]
@@ -54,7 +56,22 @@ namespace EasyGeneratorAdditionalProject.Web.Controllers
         [Route("question/create/simple-question", Name = "CreateSingleQuestion")]
         public JsonResult CreateSimpleQuestion(Section section, string type)
         {
-            var newQuestion = CreateSimpleSelectQuestionMethod(section, type);
+            var user = GetFirstUser();
+
+            if (section == null || user == null)
+                throw new ArgumentException();
+
+            var newQuestion = new Question("question title", user.UserName, section, type);
+
+            _questionRepository.Add(newQuestion);
+
+            var firstAnswer = new SimpleSelectAnswer("answer text", user.UserName, newQuestion, true);
+
+            _singleSelectAnswerRepository.Add(firstAnswer);
+
+            var secondAnswer = new SimpleSelectAnswer("answer text", user.UserName, newQuestion, false);
+
+            _singleSelectAnswerRepository.Add(secondAnswer);
 
             return SuccessResult(_mapper.Map<QuestionViewModel>(newQuestion));
         }

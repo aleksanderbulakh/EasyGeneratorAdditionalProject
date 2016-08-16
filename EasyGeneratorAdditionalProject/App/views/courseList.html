@@ -7,7 +7,7 @@
                 <span class="filter" data-bind="attr: { contenteditable: true }, editableHTML: courseNameFilter"></span>
             </div>
             <div>
-                <div>Enter date interval: </div>
+                <div>Enter modified date interval: </div>
                 <div>
                     <span>Start date: </span>
                     <input type="date" data-bind="value: startDateFilter">
@@ -16,6 +16,7 @@
                     <span>End date: </span>
                     <input type="date" data-bind="value: endDateFilter">
                 </div>
+                <span class="course-title-validate-message" data-bind="visible: dateIntervalIsNotCorrect">Date interval is not valid.</span>
             </div>
             <button class="navigation-create" data-bind="click: createCourse">Create new course</button>
         </div>

@@ -6,14 +6,17 @@
         this.questionList = spec.questionList;
 
         this.computeProgress = function () {
-            
-            var resultSum = 0;
 
-            _.each(this.questionList, function (question) {
-                resultSum += question.result;
-            });
+            if (this.questionList.length === 0) {
+                this.progress = 0;
+            } else {
+                var resultSum = 0;
 
-            this.progress = (resultSum / this.questionList.length) * 100;
+                _.each(this.questionList, function (question) {
+                    resultSum += question.result;
+                });
+                this.progress = (resultSum / this.questionList.length) * 100;
+            }
         }
     }
 

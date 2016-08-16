@@ -9,15 +9,18 @@
         this.progress = 0;
 
         this.computeProgress = function () {
+            if (this.sectionList.length === 0) {
+                this.progress = 0;
+            } else {
+                var courseProgress = 0;
 
-            var courseProgress = 0;
+                _.each(this.sectionList, function (section) {
+                    section.computeProgress();
+                    courseProgress += section.progress;
+                });
 
-            _.each(this.sectionList, function (section) {
-                section.computeProgress();
-                courseProgress += section.progress;
-            });
-
-            this.progress = courseProgress / this.sectionList.length;
+                this.progress = courseProgress / this.sectionList.length;
+            }
         }
     }
 

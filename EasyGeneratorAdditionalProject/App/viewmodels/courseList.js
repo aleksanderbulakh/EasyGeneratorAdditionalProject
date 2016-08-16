@@ -2,7 +2,7 @@
     'customPlugins/customMessages/customMessage', 'errorHandler/errorHandler', 'constants/constants'],
     function (ko, router, IoC, createDialog, mapper, message, errorHandler, constants) {
 
-        function filteringCourseList(courseList, courseName, startDate, endDate) {
+        function filteringCourseList(courseList, courseName, startDate, endDate, dateIntervalIsNotCorrect) {
 
             var filteredCourseForName = _.filter(courseList, function (course) {
 
@@ -11,6 +11,10 @@
 
                 return courseTitle.indexOf(filteringCourseTitle) !== -1;
             });
+
+            if (dateIntervalIsNotCorrect) {
+                return filteredCourseForName;
+            }
 
             var startDateObj = startDate === '' ? new Date('1970-01-01') : new Date(startDate);
             var endDateObj = endDate === '' ? new Date() : new Date(endDate);
@@ -26,6 +30,7 @@
             endDateFilter: ko.observable(),
             courseList: ko.observableArray([]),
             filteredCourseList: false,
+            dateIntervalIsNotCorrect: '',
             activate: function () {
 
                 var self = this;
@@ -48,8 +53,17 @@
                         self.startDateFilter('');
                         self.endDateFilter('');
 
+                        self.dateIntervalIsNotCorrect = ko.computed(function () {
+                            
+                            var startDateObj = self.startDateFilter() === '' ? new Date('1970-01-01') : new Date(self.startDateFilter());
+                            var endDateObj = self.endDateFilter() === '' ? new Date() : new Date(self.endDateFilter());
+
+                            return startDateObj > endDateObj;
+                        });
+
                         self.filteredCourseList = ko.computed(function () {
-                            return filteringCourseList(self.courseList(), self.courseNameFilter(), self.startDateFilter(), self.endDateFilter());
+
+                            return filteringCourseList(self.courseList(), self.courseNameFilter(), self.startDateFilter(), self.endDateFilter(), self.dateIntervalIsNotCorrect());
                         });
                     });
             },

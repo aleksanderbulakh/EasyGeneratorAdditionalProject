@@ -14,15 +14,15 @@
                     .then(function (questionsList) {
                         self.questions(_.map(questionsList, function (question) {
 
-                            return mapper.mapQuestion({
+                            return mapper.mapQuestionViewModel({
                                 id: question.id,
                                 title: question.title,
                                 type: question.type,
+                                checked: question.checkedAnswer,
                                 answersList: _.map(question.answersList, function (answer) {
                                     return {
                                         id: answer.id,
                                         text: answer.text,
-                                        isCorrect: answer.isCorrect,
                                         checked: ko.observable(answer.checked)
                                     }
                                 })
@@ -32,9 +32,8 @@
             },
 
             checkForCorrectness: function (question) {
-                question.checkForCorrectness();
-                previewRepository.saveAnswer(this.sectionId, question.id, question.getResults());
-                alert(question.result);
+                var result = previewRepository.checkAnswer(this.sectionId, question.id, question.getResult());
+                alert(result);
             }
         };
     });

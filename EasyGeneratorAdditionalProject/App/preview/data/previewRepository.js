@@ -2,7 +2,7 @@
     'services/validateService'],
     function (mapper, previewContext, IoC, constants, validateService) {
 
-        function getSections(course) {
+        function getMappedCourse(course) {
 
             return IoC.sectionRepository.getSectionsByCourseId(course.id)
                 .then(function (sectionsList) {
@@ -13,7 +13,7 @@
 
                     _.each(sectionsList, function (section) {
 
-                        getQuestions(section)
+                        getMappedSection(section)
                             .then(function (mapSection) {
                                 mapSectionsList.push(mapSection);
 
@@ -33,7 +33,7 @@
                 });
         }
 
-        function getQuestions(section) {
+        function getMappedSection(section) {
             return IoC.questionRepository.getQuestionsBySectionId(section.id)
                 .then(function (questionsList) {
 
@@ -42,7 +42,7 @@
                     var defer = Q.defer();
 
                     _.each(questionsList, function (question) {
-                        getAnswers(question)
+                        getMappedQuestion(question)
                             .then(function (mapQuestion) {
                                 mapQuestionList.push(mapQuestion);
 
@@ -60,7 +60,7 @@
                 });
         }
 
-        function getAnswers(question) {
+        function getMappedQuestion(question) {
             var defer = Q.defer();
             IoC.answerRepository.getAnswersByQuestionId(question.id)
                 .then(function (answersList) {
@@ -74,13 +74,13 @@
                         });
                     });
 
-                    defer.resolve({
+                    defer.resolve(mapper.mapQuestion({
                         id: question.id,
                         title: question.title,
                         type: constants.VIEWS_ANSWER_TYPES[question.type],
                         answersList: mapAnswersList,
                         result: 0
-                    });
+                    }));
                 });
             return defer.promise;
         }
@@ -100,7 +100,7 @@
                 return IoC.courseRepository.getCourseById(courseId)
                     .then(function (course) {
 
-                        return getSections(course)
+                        return getMappedCourse(course)
                             .then(function (mapCourse) {
 
                                 previewContext.course = mapCourse;
